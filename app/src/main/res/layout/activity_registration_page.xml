@@ -24,20 +24,10 @@
             android:layout_width="44dp"
             android:layout_height="39dp" android:id="@+id/btnReturn"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
-            android:onClick="OnClickReturn"
+            android:onClick="onClickReturn"
             android:background="@drawable/resource_return" android:layout_marginTop="13dp"
             android:layout_marginStart="16dp"/>
 
-    <Button
-            android:text="Log In"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/btnLogin"
-            android:onClick="OnClickLogin"
-            android:fontFamily="@font/mada_medium" android:textSize="24sp"
-            android:textColor="@color/PLANTITOblack" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="4dp"
-            app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="10dp" android:background="#00FFFFFF"
-            android:textAllCaps="false"/>
     <TextView
             android:text="Welcome to Plantitotita!"
             android:layout_width="wrap_content"
@@ -67,123 +57,172 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="200dp">
+        
+        <ScrollView android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
 
-        <TextView
-                android:text="Name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/textView12"
-                android:fontFamily="@font/mada_medium" android:textSize="20sp"
-                android:textColor="@color/white" app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="30dp"
-                android:layout_marginStart="40dp"/>
-        <EditText
-                android:layout_width="320dp"
-                android:layout_height="70dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:inputType="text"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/custom_button_white"
-                android:layout_marginTop="1dp"
-                android:textSize="20sp" android:textColor="@color/black" android:fontFamily="@font/mada_medium"
-                android:paddingStart="25dp" android:paddingEnd="15dp"
-                app:layout_constraintTop_toBottomOf="@+id/textView12"/>
-        <TextView
-                android:text="Email Address"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/textView13"
-                android:fontFamily="@font/mada_medium" android:textSize="20sp"
-                android:textColor="@color/white" app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="135dp"
-                android:layout_marginStart="40dp"/>
-        <EditText
-                android:layout_width="320dp"
-                android:layout_height="70dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:inputType="text|textEmailAddress"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/custom_button_white"
-                android:layout_marginTop="1dp"
-                android:textSize="20sp" android:textColor="@color/black" android:fontFamily="@font/mada_medium"
-                android:paddingStart="25dp" android:paddingEnd="15dp"
-                app:layout_constraintTop_toBottomOf="@+id/textView13"/>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
+                <TextView
+                        android:text="Name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/textView12"
+                        android:fontFamily="@font/mada_medium" android:textSize="20sp"
+                        android:textColor="@color/white" app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="30dp"
+                        android:layout_marginStart="40dp"/>
+                <EditText
+                        android:layout_width="320dp"
+                        android:layout_height="70dp"
+                        android:id="@+id/editTxtName"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:inputType="text"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/custom_button_white"
+                        android:layout_marginTop="1dp"
+                        android:textSize="20sp" android:textColor="@color/black" android:fontFamily="@font/mada_medium"
+                        android:paddingStart="25dp" android:paddingEnd="15dp"
+                        app:layout_constraintTop_toBottomOf="@+id/textView12"/>
 
-        <TextView
-                android:text="Mobile Number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/textView14"
-                android:fontFamily="@font/mada_medium" android:textSize="20sp"
-                android:textColor="@color/white" app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="240dp"
-                android:layout_marginStart="40dp"/>
-        <EditText
-                android:layout_width="320dp"
-                android:layout_height="70dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:inputType="text|phone|number"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/custom_button_white"
-                android:layout_marginTop="1dp"
-                android:textSize="20sp" android:textColor="@color/black" android:fontFamily="@font/mada_medium"
-                android:paddingStart="25dp" android:paddingEnd="15dp"
-                app:layout_constraintTop_toBottomOf="@+id/textView14"/>
-        <TextView
-                android:text="Password"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/textView15"
-                android:fontFamily="@font/mada_medium" android:textSize="20sp"
-                android:textColor="@color/white" app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="345dp"
-                android:layout_marginStart="40dp"/>
+                <TextView
+                        android:text="Email Address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/textView13"
+                        android:fontFamily="@font/mada_medium" android:textSize="20sp"
+                        android:textColor="@color/white" app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="135dp"
+                        android:layout_marginStart="40dp"/>
 
-        <EditText
-                android:layout_width="320dp"
-                android:layout_height="70dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:inputType="text|textPassword"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/custom_button_white"
-                android:layout_marginTop="1dp"
-                android:textSize="20sp" android:textColor="@color/black" android:fontFamily="@font/mada_medium"
-                android:paddingStart="25dp" android:paddingEnd="15dp"
-                app:layout_constraintTop_toBottomOf="@+id/textView15" android:id="@+id/editTextPassword"/>
+                <EditText
+                        android:layout_width="320dp"
+                        android:layout_height="70dp"
+                        android:id="@+id/editTxtEmailAddress"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:inputType="text|textEmailAddress"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/custom_button_white"
+                        android:layout_marginTop="1dp"
+                        android:textSize="20sp" android:textColor="@color/black" android:fontFamily="@font/mada_medium"
+                        android:paddingStart="25dp" android:paddingEnd="15dp"
+                        app:layout_constraintTop_toBottomOf="@+id/textView13"/>
 
-        <TextView
-                android:text="Confirm Password"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/textView16"
-                android:fontFamily="@font/mada_medium" android:textSize="20sp"
-                android:textColor="@color/white" app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="450dp"
-                android:layout_marginStart="40dp"/>
-        <EditText
-                android:layout_width="320dp"
-                android:layout_height="70dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:inputType="text|textPassword"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/custom_button_white"
-                android:layout_marginTop="1dp"
-                android:textSize="20sp" android:textColor="@color/black" android:fontFamily="@font/mada_medium"
-                android:paddingStart="25dp" android:paddingEnd="15dp"
-                app:layout_constraintTop_toBottomOf="@+id/textView16" android:id="@+id/editTextConfirmPassword"/>
+                <TextView
+                        android:text="Mobile Number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/textView14"
+                        android:fontFamily="@font/mada_medium" android:textSize="20sp"
+                        android:textColor="@color/white" app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="240dp"
+                        android:layout_marginStart="40dp"/>
+                <EditText
+                        android:layout_width="320dp"
+                        android:layout_height="70dp"
+                        android:id="@+id/editTxtMobileNumber"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:inputType="text|phone|number"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/custom_button_white"
+                        android:layout_marginTop="1dp"
+                        android:textSize="20sp" android:textColor="@color/black" android:fontFamily="@font/mada_medium"
+                        android:paddingStart="25dp" android:paddingEnd="15dp"
+                        app:layout_constraintTop_toBottomOf="@+id/textView14"/>
+                <TextView
+                        android:text="Password"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/textView15"
+                        android:fontFamily="@font/mada_medium" android:textSize="20sp"
+                        android:textColor="@color/white" app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="345dp"
+                        android:layout_marginStart="40dp"/>
 
-        <Button
-                android:text="Create Account"
-                android:layout_width="161dp"
-                android:layout_height="68dp"
-                app:layout_constraintTop_toBottomOf="@+id/editTextConfirmPassword" app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toBottomOf="parent"
-                android:scrollbars="vertical"
-                android:id="@+id/btnCreateAccount" android:background="@drawable/custom_button_yellow"
-                android:fontFamily="@font/mada_black" android:textAllCaps="false" android:textSize="16sp"
-                android:textColor="@color/PLANTITOblack"/>
+                <EditText
+                        android:layout_width="320dp"
+                        android:layout_height="70dp"
+                        android:id="@+id/editTxtPassword"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:inputType="text|textPassword"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/custom_button_white"
+                        android:layout_marginTop="1dp"
+                        android:textSize="20sp" android:textColor="@color/black" android:fontFamily="@font/mada_medium"
+                        android:paddingStart="25dp" android:paddingEnd="15dp"
+                        app:layout_constraintTop_toBottomOf="@+id/textView15"/>
 
+                <TextView
+                        android:text="Confirm Password"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/textView16"
+                        android:fontFamily="@font/mada_medium" android:textSize="20sp"
+                        android:textColor="@color/white" app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="450dp"
+                        android:layout_marginStart="40dp"/>
+                <EditText
+                        android:layout_width="320dp"
+                        android:layout_height="70dp"
+                        android:id="@+id/editTxtConfirmPassword"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:inputType="text|textPassword"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/custom_button_white"
+                        android:layout_marginTop="1dp"
+                        android:textSize="20sp" android:textColor="@color/black" android:fontFamily="@font/mada_medium"
+                        android:paddingStart="25dp" android:paddingEnd="15dp"
+                        app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
+                <Button
+                        android:text="Create Account"
+                        android:layout_width="161dp"
+                        android:layout_height="68dp"
+                        app:layout_constraintTop_toBottomOf="@+id/editTxtConfirmPassword" app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+                        android:id="@+id/btnCreateAccount" android:background="@drawable/custom_button_yellow"
+                        android:fontFamily="@font/mada_black" android:textAllCaps="false" android:textSize="16sp"
+                        android:onClick="onClickCreateAccount"
+                        android:textColor="@color/PLANTITOblack"
+                        android:layout_marginBottom="55dp"/>
+
+                <Button
+                        android:text="Have an account?"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/textViewHaveAnAcc"
+                        android:fontFamily="@font/mada_medium" android:textSize="20sp"
+                        android:textColor="@color/black" app:layout_constraintTop_toBottomOf="@+id/btnCreateAccount"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/btnSignIn1"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginBottom="30dp"
+                        android:textAllCaps="false"
+                        android:background="#00FFFFFF" android:clickable="false"/>
+
+                <Button
+                        android:text="Sign In"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/btnSignIn1"
+                        android:fontFamily="@font/mada_medium" android:textSize="20sp"
+                        android:textColor="@color/PLANTITOyellow" app:layout_constraintTop_toTopOf="@+id/textViewHaveAnAcc"
+                        app:layout_constraintBottom_toBottomOf="@id/textViewHaveAnAcc"
+                        app:layout_constraintStart_toEndOf="@id/textViewHaveAnAcc"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginStart="-80dp"
+                        android:onClick="onClickSignIn1"
+                        android:textAllCaps="false" android:background="#00FFFFFF"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

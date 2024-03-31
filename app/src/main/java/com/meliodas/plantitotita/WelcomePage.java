@@ -14,14 +14,14 @@ public class WelcomePage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_page);
     }
-    public void OnClickSignIn(View v){
+    public void onClickSignIn(View v){
         Button Btn = findViewById(R.id.btnSignIn);
-        startActivity(new Intent(WelcomePage.this, LoginPage.class));
+        startActivity(new Intent(this, LoginPage.class));
     }
 
-    public void OnClickSignUp(View v){
+    public void onClickSignUp(View v){
         Button Btn = findViewById(R.id.btnSignUp);
-        startActivity(new Intent(WelcomePage.this, RegistrationPage.class));
+        startActivity(new Intent(this, RegistrationPage.class));
     }
 
 }

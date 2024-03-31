@@ -81,7 +81,7 @@
                     app:layout_constraintStart_toEndOf="@+id/btnSignIn" app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintTop_toTopOf="@+id/btnSignIn"
                     app:layout_constraintBottom_toBottomOf="@+id/btnSignIn"
-                    android:onClick="OnClickSignUp"
+                    android:onClick="onClickSignUp"
                     android:fontFamily="@font/mada_black"
             />
 
@@ -93,7 +93,7 @@
                     android:textAllCaps="false" android:textColor="@color/PLANTITOblack" android:textStyle="bold"
                     android:textSize="20sp"
                     android:paddingBottom="5dp"
-                    android:onClick="OnClickSignIn"
+                    android:onClick="onClickSignIn"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/btnSignUp"
                     app:layout_constraintTop_toBottomOf="@+id/textView6" android:layout_marginTop="68dp"

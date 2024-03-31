@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "268915967310",
+    "project_id": "plantitotita-23161",
+    "storage_bucket": "plantitotita-23161.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:268915967310:android:61177ba3f68e6c08edca1f",
+        "android_client_info": {
+          "package_name": "com.meliodas.plantitotita"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8ifSRBx3ks2W7hRXOoOuIlNZwnON5qwU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
