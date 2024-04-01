@@ -1,12 +1,16 @@
 package com.meliodas.plantitotita;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -17,17 +21,6 @@ public class RegistrationPage extends AppCompatActivity {
 
     private EditText editTextName, editTextEmailAddress, editTextMobileNumber, editTextPassword, editTextConfirmPassword;
     private FirebaseAuth mAuth;
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            startActivity(new Intent(this, HomePage.class));
-            finish();
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,27 +120,40 @@ public class RegistrationPage extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
-                            showDialog("Registration Successful", "Your registration has been completed successfully!","Sign In", () -> onClickSignIn1(findViewById(R.id.btnSignIn1)));
+                            showDialog();
                         } else {
                             // If sign in fails, display a message to the user.
-                            showDialog("Registration Failed", "Please try again","Retry", () -> recreate());
+                            showDialog();
                         }
                     }
                 });
     }
 
-    private void showDialog(String title, String message, String positiveButtonText, Runnable onClickRunnable) {
+    private void showDialog(ViewGroup layoutDialog) {
+        if (!(layoutDialog instanceof ConstraintLayout constraintLayoutDialog)){
+
+        }
+
+        View view = LayoutInflater.from(this).inflate(R.layout.custom_alert_dialog_success, constraint);
+        Button continueButton = view.findViewById(R.id.dialogContinueButton);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(title);
-        builder.setMessage(message);
-        builder.setPositiveButton(positiveButtonText, (dialog, which) -> {
-            if (onClickRunnable != null) {
-                onClickRunnable.run();
+        builder.setView(view);
+        final AlertDialog alertDialog = builder.create();
+
+        continueButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+                startActivity(new Intent(getApplicationContext(), HomePage.class));
             }
         });
 
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        if (alertDialog.getWindow() != null){
+            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+
+        alertDialog.show();
     }
 
     public void onClickReturn(View v){

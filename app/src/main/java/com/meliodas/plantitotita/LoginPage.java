@@ -1,5 +1,4 @@
 package com.meliodas.plantitotita;
-
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
@@ -14,23 +13,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-
 public class LoginPage extends AppCompatActivity {
 
     private EditText editTextEmailAddressLogin, editTextPasswordLogin;
     private FirebaseAuth mAuth;
     AlertDialog dialog;
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            startActivity(new Intent(this, HomePage.class));
-            finish();
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +52,6 @@ public class LoginPage extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
                             startActivity(new Intent(LoginPage.this, HomePage.class));
                             finish();
-                            System.exit(0);
 
                         } else {
                             // If sign in fails, display a message to the user.
