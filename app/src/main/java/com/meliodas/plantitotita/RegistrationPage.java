@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -120,7 +121,7 @@ public class RegistrationPage extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
-                            showDialog();
+                            showDialog(findViewById(R.id.layoutDialog), Layout.ERROR, findViewById(R.id.dialogContinueButton));
                         } else {
                             // If sign in fails, display a message to the user.
                             showDialog();
@@ -129,24 +130,20 @@ public class RegistrationPage extends AppCompatActivity {
                 });
     }
 
-    private void showDialog(ViewGroup layoutDialog) {
-        if (!(layoutDialog instanceof ConstraintLayout constraintLayoutDialog)){
-
-        }
-
-        View view = LayoutInflater.from(this).inflate(R.layout.custom_alert_dialog_success, constraint);
-        Button continueButton = view.findViewById(R.id.dialogContinueButton);
+    private void showDialog(ConstraintLayout constraintLayoutDialog, Layout layout, Button continueButton) {
+        View view = LayoutInflater.from(this).inflate(
+        switch (layout) {
+            case SUCCESS -> R.layout.custom_alert_dialog_success;
+            case ERROR -> R.layout.custom_alert_dialog_error;
+        },  constraintLayoutDialog);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(view);
         final AlertDialog alertDialog = builder.create();
 
-        continueButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                alertDialog.dismiss();
-                startActivity(new Intent(getApplicationContext(), HomePage.class));
-            }
+        continueButton.setOnClickListener(view1 -> {
+            alertDialog.dismiss();
+            startActivity(new Intent(getApplicationContext(), HomePage.class));
         });
 
         if (alertDialog.getWindow() != null){
@@ -166,5 +163,10 @@ public class RegistrationPage extends AppCompatActivity {
         Button Btn = findViewById(R.id.btnSignIn1);
         startActivity(new Intent(this, LoginPage.class));
         finish();
+    }
+
+    enum Layout {
+        SUCCESS,
+        ERROR,
     }
 }
