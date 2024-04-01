@@ -121,10 +121,10 @@ public class RegistrationPage extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
-                            showDialog(findViewById(R.id.layoutDialog), Layout.ERROR, findViewById(R.id.dialogContinueButton));
+                            showDialog(findViewById(R.id.layoutDialog), Layout.SUCCESS, findViewById(R.id.dialogContinueButton));
                         } else {
                             // If sign in fails, display a message to the user.
-                            showDialog();
+                            showDialog(findViewById(R.id.layoutDialog), Layout.ERROR, findViewById(R.id.dialogContinueButton));
                         }
                     }
                 });
@@ -142,8 +142,10 @@ public class RegistrationPage extends AppCompatActivity {
         final AlertDialog alertDialog = builder.create();
 
         continueButton.setOnClickListener(view1 -> {
-            alertDialog.dismiss();
-            startActivity(new Intent(getApplicationContext(), HomePage.class));
+            switch(layout){
+                case SUCCESS -> startActivity(new Intent(getApplicationContext(), HomePage.class));
+                case ERROR -> alertDialog.dismiss();
+            }
         });
 
         if (alertDialog.getWindow() != null){
