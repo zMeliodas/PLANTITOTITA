@@ -1,20 +1,16 @@
 package com.meliodas.plantitotita;
+
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import androidx.annotation.LayoutRes;
-import androidx.annotation.NonNull;
+import androidx.annotation.IdRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -27,6 +23,7 @@ public class RegistrationPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration_page);
+
         mAuth = FirebaseAuth.getInstance();
         editTextName = findViewById(R.id.editTxtName);
         editTextEmailAddress = findViewById(R.id.editTxtEmailAddress);
@@ -36,8 +33,6 @@ public class RegistrationPage extends AppCompatActivity {
     }
 
     public void onClickCreateAccount(View v) {
-        Button create = (Button) v;
-
         if (editTextName.getText() == null || editTextName.getText().toString().isEmpty()){
             editTextName.setError("Name can't be blank.");
             editTextName.requestFocus();
@@ -115,54 +110,54 @@ public class RegistrationPage extends AppCompatActivity {
         String password = editTextPassword.getText().toString();
 
         mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            showDialog(findViewById(R.id.layoutDialog), Layout.SUCCESS, findViewById(R.id.dialogContinueButton));
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            showDialog(findViewById(R.id.layoutDialog), Layout.ERROR, findViewById(R.id.dialogContinueButton));
-                        }
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        System.out.println("Success!");
+                        showDialog(Layout.SUCCESS);
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        System.out.println("Failed!");
+                        showDialog(Layout.ERROR);
                     }
                 });
     }
 
-    private void showDialog(ConstraintLayout constraintLayoutDialog, Layout layout, Button continueButton) {
+    private void showDialog(Layout layout) {
         View view = LayoutInflater.from(this).inflate(
         switch (layout) {
             case SUCCESS -> R.layout.custom_alert_dialog_success;
             case ERROR -> R.layout.custom_alert_dialog_error;
-        },  constraintLayoutDialog);
+        },  null);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(view);
+
         final AlertDialog alertDialog = builder.create();
 
+        Button continueButton = view.findViewById(R.id.dialogContinueButton);
+
         continueButton.setOnClickListener(view1 -> {
-            switch(layout){
+            switch(layout) {
                 case SUCCESS -> startActivity(new Intent(getApplicationContext(), HomePage.class));
                 case ERROR -> alertDialog.dismiss();
             }
         });
 
-        if (alertDialog.getWindow() != null){
+        if (alertDialog.getWindow() != null) {
             alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
         }
 
         alertDialog.show();
     }
 
-    public void onClickReturn(View v){
-        Button Btn = findViewById(R.id.btnReturn);
+    public void onClickReturn(View v) {
         startActivity(new Intent(this, WelcomePage.class));
         finish();
     }
 
-    public void onClickSignIn1(View v){
-        Button Btn = findViewById(R.id.btnSignIn1);
+    public void onClickSignIn1(View v) {
         startActivity(new Intent(this, LoginPage.class));
         finish();
     }
