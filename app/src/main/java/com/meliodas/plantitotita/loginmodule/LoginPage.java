@@ -1,5 +1,7 @@
-package com.meliodas.plantitotita;
+package com.meliodas.plantitotita.loginmodule;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,7 +13,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.meliodas.plantitotita.R;
+import com.meliodas.plantitotita.mainmodule.HomePage;
 
 public class LoginPage extends AppCompatActivity {
 
@@ -41,6 +44,7 @@ public class LoginPage extends AppCompatActivity {
 
         if(editTextPasswordLogin.getText() == null || editTextPasswordLogin.getText().toString().isEmpty()){
             editTextPasswordLogin.setError("Password can't be blank.");
+            return;
         }
 
         mAuth.signInWithEmailAndPassword(email, password)
@@ -49,41 +53,45 @@ public class LoginPage extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            startActivity(new Intent(LoginPage.this, HomePage.class));
+                            startActivity(new Intent(getApplicationContext(), HomePage.class));
                             finish();
 
                         } else {
                             // If sign in fails, display a message to the user.
-                            showDialog("Error", "Incorrect Email or Password","OK", () -> dialog.dismiss());
+                            showDialog();
 
                         }
                     }
                 });
     }
 
-    private void showDialog(String title, String message, String positiveButtonText, Runnable onClickRunnable) {
+    private void showDialog() {
+        View view = LayoutInflater.from(this).inflate(R.layout.custom_alert_dialog_incorrect_user_or_pass, null);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(title);
-        builder.setMessage(message);
-        builder.setPositiveButton(positiveButtonText, (dialog, which) -> {
-            if (onClickRunnable != null) {
-                onClickRunnable.run();
-            }
+        builder.setView(view);
+
+        final AlertDialog alertDialog = builder.create();
+
+        Button continueButton = view.findViewById(R.id.dialogContinueButton2);
+
+        continueButton.setOnClickListener(view1 -> {
+            alertDialog.dismiss();
         });
 
-        dialog = builder.create();
-        dialog.show();
+        if (alertDialog.getWindow() != null) {
+            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+
+        alertDialog.show();
     }
 
     public void onClickReturn1(View v){
-        Button Btn = findViewById(R.id.btnReturn1);
         startActivity(new Intent(this, WelcomePage.class));
         finish();
     }
 
     public void onClickRegister(View v){
-        Button Btn = findViewById(R.id.btnRegister);
         startActivity(new Intent(this, RegistrationPage.class));
         finish();
     }

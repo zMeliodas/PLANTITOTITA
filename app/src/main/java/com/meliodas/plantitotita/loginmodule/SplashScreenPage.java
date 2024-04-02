@@ -1,10 +1,10 @@
-package com.meliodas.plantitotita;
+package com.meliodas.plantitotita.loginmodule;
 
 import android.content.Intent;
 import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import com.google.firebase.FirebaseApp;
+import com.meliodas.plantitotita.R;
 
 
 public class SplashScreenPage extends AppCompatActivity {

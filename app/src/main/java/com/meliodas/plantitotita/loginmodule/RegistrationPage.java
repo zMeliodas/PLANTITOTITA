@@ -1,4 +1,4 @@
-package com.meliodas.plantitotita;
+package com.meliodas.plantitotita.loginmodule;
 
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -7,12 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import androidx.annotation.IdRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.meliodas.plantitotita.R;
+import com.meliodas.plantitotita.mainmodule.HomePage;
 
 public class RegistrationPage extends AppCompatActivity {
 
@@ -113,18 +112,15 @@ public class RegistrationPage extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         // Sign in success, update UI with the signed-in user's information
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        System.out.println("Success!");
-                        showDialog(Layout.SUCCESS);
+                        showDialog(EnumLayout.SUCCESS);
                     } else {
                         // If sign in fails, display a message to the user.
-                        System.out.println("Failed!");
-                        showDialog(Layout.ERROR);
+                        showDialog(EnumLayout.ERROR);
                     }
                 });
     }
 
-    private void showDialog(Layout layout) {
+    private void showDialog(EnumLayout layout) {
         View view = LayoutInflater.from(this).inflate(
         switch (layout) {
             case SUCCESS -> R.layout.custom_alert_dialog_success;
@@ -139,8 +135,11 @@ public class RegistrationPage extends AppCompatActivity {
         Button continueButton = view.findViewById(R.id.dialogContinueButton);
 
         continueButton.setOnClickListener(view1 -> {
-            switch(layout) {
-                case SUCCESS -> startActivity(new Intent(getApplicationContext(), HomePage.class));
+            switch (layout) {
+                case SUCCESS -> {
+                    startActivity(new Intent(getApplicationContext(), HomePage.class));
+                    finish();
+                }
                 case ERROR -> alertDialog.dismiss();
             }
         });
@@ -160,10 +159,5 @@ public class RegistrationPage extends AppCompatActivity {
     public void onClickSignIn1(View v) {
         startActivity(new Intent(this, LoginPage.class));
         finish();
-    }
-
-    enum Layout {
-        SUCCESS,
-        ERROR,
     }
 }

@@ -13,7 +13,7 @@
             android:theme="@style/Theme.PLANTITOTITA"
             tools:targetApi="31">
         <activity
-                android:name=".HomePage"
+                android:name=".mainmodule.HomePage"
                 android:exported="false"
                 android:screenOrientation="portrait">
             <meta-data
@@ -21,7 +21,7 @@
                     android:value=""/>
         </activity>
         <activity
-                android:name=".RegistrationPage"
+                android:name=".loginmodule.RegistrationPage"
                 android:exported="false"
                 android:screenOrientation="portrait">
             <meta-data
@@ -29,7 +29,7 @@
                     android:value=""/>
         </activity>
         <activity
-                android:name=".WelcomePage"
+                android:name=".loginmodule.WelcomePage"
                 android:exported="false"
                 android:screenOrientation="portrait">
             <meta-data
@@ -37,7 +37,7 @@
                     android:value=""/>
         </activity>
         <activity
-                android:name=".LoginPage"
+                android:name=".loginmodule.LoginPage"
                 android:exported="false"
                 android:screenOrientation="portrait">
             <meta-data
@@ -45,7 +45,7 @@
                     android:value=""/>
         </activity>
         <activity
-                android:name=".SplashScreenPage"
+                android:name=".loginmodule.SplashScreenPage"
                 android:exported="true"
                 android:screenOrientation="portrait">
             <intent-filter>

@@ -5,17 +5,32 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".HomePage">
-
+        android:background="@color/purple_500"
+        tools:context=".mainmodule.HomePage">
+    
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:textSize="30sp"
+            android:textColor="@color/white"
+            android:text="Welcome!"/>
 
     <Button
             android:text="Log Out"
             android:layout_width="161dp"
             android:layout_height="68dp"
-            android:id="@+id/btnLogout" android:background="@drawable/custom_button_yellow"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="110dp"
+            android:id="@+id/btnLogin1" android:background="@drawable/custom_button_yellow"
             android:onClick="onClickLogout"
             android:fontFamily="@font/mada_black" android:textAllCaps="false" android:textSize="16sp"
-            android:textColor="@color/PLANTITOblack"
-            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toBottomOf="parent"/>
+            android:textColor="@color/PLANTITOblack"/>
+    
 </androidx.constraintlayout.widget.ConstraintLayout>
