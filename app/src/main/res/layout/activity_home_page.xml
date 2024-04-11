@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintHeight_percent="0.2"
+            app:layout_constraintHeight_percent="0.16"
             android:id="@+id/navBar"
             android:background="@drawable/custom_shape_nav_bar"
             app:layout_constraintStart_toStartOf="parent"
@@ -54,7 +54,4 @@
             app:layout_constraintBottom_toTopOf="@id/navBar"
             app:layout_constraintTop_toTopOf="@id/navBar" android:clickable="false">
     </ImageButton>
-
-
-    
 </androidx.constraintlayout.widget.ConstraintLayout>
