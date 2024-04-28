@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="NavigationDrawerStyle">
+        <item name="android:textSize">20sp</item> <!-- Set the text size for menu items -->
+        <item name="android:layout_marginBottom">-5dp</item> <!-- Set the margin of the divider for menu items -->
+    </style>
+</resources>

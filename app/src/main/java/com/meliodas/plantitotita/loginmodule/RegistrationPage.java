@@ -7,9 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.SignInMethodQueryResult;
 import com.meliodas.plantitotita.R;
 import com.meliodas.plantitotita.mainmodule.HomePage;
 
@@ -73,6 +79,19 @@ public class RegistrationPage extends AppCompatActivity {
             editTextEmailAddress.requestFocus();
             return;
         }
+
+        /*mAuth.fetchSignInMethodsForEmail(email)
+                .addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+                        boolean isNewUser = task.getResult().getSignInMethods().isEmpty();
+                        if (isNewUser) {
+                            // return true
+                        } else {
+                            // return false
+                        }
+                    }
+                });*/
 
         if (editTextMobileNumber.length() > 11 || editTextMobileNumber.length() < 11){
             editTextMobileNumber.setError("You can only enter 11 numbers");

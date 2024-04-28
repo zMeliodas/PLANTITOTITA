@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:background="@color/PLANTITOgreen"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="110dp">
+
+    <androidx.cardview.widget.CardView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            app:cardCornerRadius="40dp"
+            app:cardElevation="0dp"
+            android:backgroundTint="#2B913D">
+
+        <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_profile_drawer"/>
+        
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Meliodas"
+            android:fontFamily="@font/mada_medium"
+            android:textSize="24sp"
+            android:textColor="@color/PLANTITOyellow"
+            android:layout_marginStart="105dp"
+            android:layout_marginTop="-55dp">
+    </TextView>
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="View profile"
+            android:fontFamily="@font/mada_medium"
+            android:onClick="onClickViewProfile"
+            android:textSize="16sp"
+            android:textColor="#D6CE71"
+            android:layout_marginStart="106dp"
+            android:layout_marginTop="0dp">
+    </TextView>
+</LinearLayout>
