@@ -18,7 +18,7 @@
         <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/dialogMessage1"
+                android:id="@+id/dialogMessage"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="50dp"
                 android:layout_marginEnd="40dp"
@@ -40,7 +40,7 @@
                 android:layout_marginTop="-5dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/dialogMessage1">
+                app:layout_constraintTop_toBottomOf="@id/dialogMessage">
         </Button>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

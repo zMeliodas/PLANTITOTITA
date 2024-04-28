@@ -3,16 +3,23 @@ package com.meliodas.plantitotita.loginmodule;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.meliodas.plantitotita.R;
 import com.meliodas.plantitotita.mainmodule.HomePage;
+
+import javax.annotation.Nullable;
 
 public class RegistrationPage extends AppCompatActivity {
 
@@ -111,16 +118,24 @@ public class RegistrationPage extends AppCompatActivity {
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful()) {
+                    if (task.getException() == null || task.isSuccessful()) {
                         // Sign in success, update UI with the signed-in user's information
                         showDialog(EnumLayout.SUCCESS);
+                        return;
                     }
-                }).addOnFailureListener(task -> {
-                    showDialog(EnumLayout.ERROR);
+
+                    if (task.getException() instanceof FirebaseAuthUserCollisionException e) {
+                        editTextEmailAddress.setError("");
+                        showDialog(EnumLayout.ERROR);
+                    }
                 });
     }
 
     private void showDialog(EnumLayout layout) {
+        showDialog(layout, null);
+    }
+
+    private void showDialog(EnumLayout layout, String message) {
         View view = LayoutInflater.from(this).inflate(
         switch (layout) {
             case SUCCESS -> R.layout.custom_alert_dialog_success;
@@ -133,6 +148,12 @@ public class RegistrationPage extends AppCompatActivity {
         final AlertDialog alertDialog = builder.create();
 
         Button continueButton = view.findViewById(R.id.dialogContinueButton);
+
+        TextView textView = view.findViewById(R.id.dialogMessage);
+
+        if (textView != null) {
+            textView.setText(message);
+        }
 
         continueButton.setOnClickListener(view1 -> {
             switch (layout) {
