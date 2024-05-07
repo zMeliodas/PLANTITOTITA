@@ -24,6 +24,18 @@
 
     </com.google.android.material.navigation.NavigationView>
 
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ASDADADADA"
+            android:id="@+id/sampleTxt"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:fontFamily="@font/mada_black"
+            android:textSize="32sp">
+
+    </TextView>
+
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">

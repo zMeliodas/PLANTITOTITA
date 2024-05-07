@@ -11,16 +11,23 @@ import android.widget.EditText;
 import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.meliodas.plantitotita.R;
 import com.meliodas.plantitotita.mainmodule.HomePage;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RegistrationPage extends AppCompatActivity {
 
     private EditText editTextName, editTextEmailAddress, editTextMobileNumber, editTextPassword, editTextConfirmPassword;
-    private TextView textViewName, textViewEmailAddress, textViewMobileNumber, textViewPassword, textViewConfirmPassword;
     private FirebaseAuth mAuth;
+    private FirebaseFirestore fStore;
+    private String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,17 +35,18 @@ public class RegistrationPage extends AppCompatActivity {
         setContentView(R.layout.activity_registration_page);
 
         mAuth = FirebaseAuth.getInstance();
+        fStore = FirebaseFirestore.getInstance();
         editTextName = findViewById(R.id.editTxtName);
         editTextEmailAddress = findViewById(R.id.editTxtEmailAddress);
         editTextMobileNumber = findViewById(R.id.editTxtMobileNumber);
         editTextPassword = findViewById(R.id.editTxtPassword);
         editTextConfirmPassword = findViewById(R.id.editTxtConfirmPassword);
 
-        textViewName = findViewById(R.id.regNameTxtView);
-        textViewEmailAddress = findViewById(R.id.regEmailTxtView);
-        textViewMobileNumber = findViewById(R.id.regMobileNumTxtView);
-        textViewPassword = findViewById(R.id.regPasswordTxtView);
-        textViewConfirmPassword = findViewById(R.id.regConfirmPasswordTxtView);
+        TextView textViewName = findViewById(R.id.regNameTxtView);
+        TextView textViewEmailAddress = findViewById(R.id.regEmailTxtView);
+        TextView textViewMobileNumber = findViewById(R.id.regMobileNumTxtView);
+        TextView textViewPassword = findViewById(R.id.regPasswordTxtView);
+        TextView textViewConfirmPassword = findViewById(R.id.regConfirmPasswordTxtView);
 
         updateAsterisk(editTextName, textViewName, "Name", R.string.NameTxtView);
         updateAsterisk(editTextEmailAddress, textViewEmailAddress, "Email Address", R.string.EmailTxtView);
@@ -126,15 +134,28 @@ public class RegistrationPage extends AppCompatActivity {
             return;
         }
 
+        String name = editTextName.getText().toString();
         String email = editTextEmailAddress.getText().toString();
+        String mobileNumber = editTextMobileNumber.getText().toString();
         String password = editTextPassword.getText().toString();
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.getException() == null || task.isSuccessful()) {
                         // Sign in success, update UI with the signed-in user's information
-                        showDialog(EnumLayout.SUCCESS);
-                        return;
+                        userID = mAuth.getCurrentUser().getUid();
+                        DocumentReference documentReference = fStore.collection("users").document(userID);
+                        Map<String, Object> user = new HashMap<>();
+                        user.put("user_name", name);
+                        user.put("email_address", email);
+                        user.put("mobile_number", mobileNumber);
+                        user.put("password", password);
+                        documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                showDialog(EnumLayout.SUCCESS);
+                            }
+                        });
                     }
 
                     if (task.getException() instanceof FirebaseAuthUserCollisionException e) {
