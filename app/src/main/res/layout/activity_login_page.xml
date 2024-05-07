@@ -74,26 +74,40 @@
                 android:paddingStart="25dp" android:paddingEnd="15dp"
                 app:layout_constraintTop_toTopOf="parent"/>
 
-        <EditText
-                android:layout_width="320dp"
-                android:layout_height="70dp"
-                android:id="@+id/editTxtPasswordLogin"
+
+
+        <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/editTxtPasswordLayout"
+                app:passwordToggleEnabled="true"
+                app:passwordToggleTint="#A5A5A5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:hintEnabled="false"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:hint="Password"
-                android:textColorHint="#8B424443"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/custom_button_white"
-                android:layout_marginTop="150dp"
-                android:textSize="20sp" android:textColor="@color/black" android:fontFamily="@font/mada_medium"
-                android:paddingStart="25dp" android:paddingEnd="15dp"
-                app:layout_constraintTop_toTopOf="parent" android:inputType="textPassword"/>
+                android:layout_marginTop="150dp">
+
+            <EditText
+                    android:layout_width="320dp"
+                    android:layout_height="70dp"
+                    android:id="@+id/editTxtPasswordLogin"
+                    android:hint="Password"
+                    android:textColorHint="#8B424443"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/custom_button_white"
+                    android:layout_marginTop="150dp"
+                    android:textSize="20sp" android:textColor="@color/black" android:fontFamily="@font/mada_medium"
+                    android:paddingStart="25dp" android:paddingEnd="15dp"
+                    app:layout_constraintTop_toTopOf="parent" android:inputType="textPassword"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
                 android:text="Log In"
                 android:layout_width="161dp"
                 android:layout_height="68dp"
-                app:layout_constraintTop_toBottomOf="@+id/editTxtPasswordLogin" app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editTxtPasswordLayout" app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginBottom="85dp"
                 android:id="@+id/btnLogin1" android:background="@drawable/custom_button_yellow"

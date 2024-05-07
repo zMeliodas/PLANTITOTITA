@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">PLANTITOTITA</string>
+
+    <string name="NameTxtView">Name <font color='#FF0000'>*</font></string>
+    <string name="EmailTxtView">Email Address <font color='#FF0000'>*</font></string>
+    <string name="MobileNumTxtView">Mobile Number <font color='#FF0000'>*</font></string>
+    <string name="PasswordTxtView">Password <font color='#FF0000'>*</font></string>
+    <string name="ConfirmPasswordTxtView">Confirm Password <font color='#FF0000'>*</font></string>
 </resources>

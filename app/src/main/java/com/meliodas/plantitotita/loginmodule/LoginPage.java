@@ -20,7 +20,6 @@ public class LoginPage extends AppCompatActivity {
 
     private EditText editTextEmailAddressLogin, editTextPasswordLogin;
     private FirebaseAuth mAuth;
-    AlertDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +31,6 @@ public class LoginPage extends AppCompatActivity {
     }
 
     public void onClickLogin(View v){
-        Button Btn = findViewById(R.id.btnLogin1);
         String email, password;
         email = editTextEmailAddressLogin.getText().toString();
         password = editTextPasswordLogin.getText().toString();

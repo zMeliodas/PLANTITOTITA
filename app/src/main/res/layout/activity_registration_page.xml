@@ -73,9 +73,9 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent">
                 <TextView
-                        android:text="Name"
+                        android:text="@string/NameTxtView"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:id="@+id/textView12"
+                        android:layout_height="wrap_content" android:id="@+id/regNameTxtView"
                         android:fontFamily="@font/mada_medium" android:textSize="20sp"
                         android:textColor="@color/white" app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="30dp"
@@ -92,12 +92,12 @@
                         android:layout_marginTop="1dp"
                         android:textSize="20sp" android:textColor="@color/black" android:fontFamily="@font/mada_medium"
                         android:paddingStart="25dp" android:paddingEnd="15dp"
-                        app:layout_constraintTop_toBottomOf="@+id/textView12"/>
+                        app:layout_constraintTop_toBottomOf="@+id/regNameTxtView"/>
 
                 <TextView
-                        android:text="Email Address"
+                        android:text="@string/EmailTxtView"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:id="@+id/textView13"
+                        android:layout_height="wrap_content" android:id="@+id/regEmailTxtView"
                         android:fontFamily="@font/mada_medium" android:textSize="20sp"
                         android:textColor="@color/white" app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="135dp"
@@ -115,12 +115,12 @@
                         android:layout_marginTop="1dp"
                         android:textSize="20sp" android:textColor="@color/black" android:fontFamily="@font/mada_medium"
                         android:paddingStart="25dp" android:paddingEnd="15dp"
-                        app:layout_constraintTop_toBottomOf="@+id/textView13"/>
+                        app:layout_constraintTop_toBottomOf="@+id/regEmailTxtView"/>
 
                 <TextView
-                        android:text="Mobile Number"
+                        android:text="@string/MobileNumTxtView"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:id="@+id/textView14"
+                        android:layout_height="wrap_content" android:id="@+id/regMobileNumTxtView"
                         android:fontFamily="@font/mada_medium" android:textSize="20sp"
                         android:textColor="@color/white" app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="240dp"
@@ -138,11 +138,11 @@
                         android:layout_marginTop="1dp"
                         android:textSize="20sp" android:textColor="@color/black" android:fontFamily="@font/mada_medium"
                         android:paddingStart="25dp" android:paddingEnd="15dp"
-                        app:layout_constraintTop_toBottomOf="@+id/textView14"/>
+                        app:layout_constraintTop_toBottomOf="@+id/regMobileNumTxtView"/>
                 <TextView
-                        android:text="Password"
+                        android:text="@string/PasswordTxtView"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:id="@+id/textView15"
+                        android:layout_height="wrap_content" android:id="@+id/regPasswordTxtView"
                         android:fontFamily="@font/mada_medium" android:textSize="20sp"
                         android:textColor="@color/white" app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="345dp"
@@ -153,7 +153,7 @@
                         app:passwordToggleTint="#A5A5A5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@+id/textView15"
+                        app:layout_constraintTop_toBottomOf="@+id/regPasswordTxtView"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:layout_marginTop="-8dp">
@@ -169,9 +169,9 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
-                        android:text="Confirm Password"
+                        android:text="@string/ConfirmPasswordTxtView"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:id="@+id/textView16"
+                        android:layout_height="wrap_content" android:id="@+id/regConfirmPasswordTxtView"
                         android:fontFamily="@font/mada_medium" android:textSize="20sp"
                         android:textColor="@color/white" app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="450dp"
@@ -183,7 +183,7 @@
                         app:passwordToggleTint="#A5A5A5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@+id/textView16"
+                        app:layout_constraintTop_toBottomOf="@+id/regConfirmPasswordTxtView"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:layout_marginTop="-8dp">

@@ -2,6 +2,7 @@ package com.meliodas.plantitotita.mainmodule;
 import android.content.Intent;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,7 +15,9 @@ import com.meliodas.plantitotita.loginmodule.WelcomePage;
 public class HomePage extends AppCompatActivity {
     DrawerLayout drawerLayout;
     NavigationView navigationView;
-
+    TextView displayName;
+    String name;
+    View inflatedView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,6 +25,9 @@ public class HomePage extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.navView);
         navigationView.bringToFront();
+        inflatedView = getLayoutInflater().inflate(R.layout.drawer_header, null);
+        displayName = inflatedView.findViewById(R.id.navDrawerDisplayName);
+        displayName.setText(name);
     }
 
     public void onClickNavBurger(View v){

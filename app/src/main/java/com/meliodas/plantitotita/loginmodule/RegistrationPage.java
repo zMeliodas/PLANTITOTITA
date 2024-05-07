@@ -1,29 +1,25 @@
 package com.meliodas.plantitotita.loginmodule;
-
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.meliodas.plantitotita.R;
 import com.meliodas.plantitotita.mainmodule.HomePage;
-
-import javax.annotation.Nullable;
 
 public class RegistrationPage extends AppCompatActivity {
 
     private EditText editTextName, editTextEmailAddress, editTextMobileNumber, editTextPassword, editTextConfirmPassword;
+    private TextView textViewName, textViewEmailAddress, textViewMobileNumber, textViewPassword, textViewConfirmPassword;
     private FirebaseAuth mAuth;
 
     @Override
@@ -37,11 +33,29 @@ public class RegistrationPage extends AppCompatActivity {
         editTextMobileNumber = findViewById(R.id.editTxtMobileNumber);
         editTextPassword = findViewById(R.id.editTxtPassword);
         editTextConfirmPassword = findViewById(R.id.editTxtConfirmPassword);
+
+        textViewName = findViewById(R.id.regNameTxtView);
+        textViewEmailAddress = findViewById(R.id.regEmailTxtView);
+        textViewMobileNumber = findViewById(R.id.regMobileNumTxtView);
+        textViewPassword = findViewById(R.id.regPasswordTxtView);
+        textViewConfirmPassword = findViewById(R.id.regConfirmPasswordTxtView);
+
+        updateAsterisk(editTextName, textViewName, "Name", R.string.NameTxtView);
+        updateAsterisk(editTextEmailAddress, textViewEmailAddress, "Email Address", R.string.EmailTxtView);
+        updateAsterisk(editTextMobileNumber, textViewMobileNumber, "Mobile Number", R.string.MobileNumTxtView);
+        updateAsterisk(editTextPassword, textViewPassword, "Password", R.string.PasswordTxtView);
+        updateAsterisk(editTextConfirmPassword, textViewConfirmPassword, "Confirm Password", R.string.ConfirmPasswordTxtView);
     }
 
     public void onClickCreateAccount(View v) {
         if (editTextName.getText() == null || editTextName.getText().toString().isEmpty()){
             editTextName.setError("Name can't be blank.");
+            editTextName.requestFocus();
+            return;
+        }
+
+        if (!editTextName.getText().toString().matches("[A-Za-z]+")){
+            editTextName.setError("You may only enter letters.");
             editTextName.requestFocus();
             return;
         }
@@ -112,7 +126,6 @@ public class RegistrationPage extends AppCompatActivity {
             return;
         }
 
-        String name = editTextName.getText().toString();
         String email = editTextEmailAddress.getText().toString();
         String password = editTextPassword.getText().toString();
 
@@ -125,17 +138,13 @@ public class RegistrationPage extends AppCompatActivity {
                     }
 
                     if (task.getException() instanceof FirebaseAuthUserCollisionException e) {
-                        editTextEmailAddress.setError("");
-                        showDialog(EnumLayout.ERROR);
+                        editTextEmailAddress.setError("Email already exists");
+                        editTextEmailAddress.requestFocus();
                     }
                 });
     }
 
     private void showDialog(EnumLayout layout) {
-        showDialog(layout, null);
-    }
-
-    private void showDialog(EnumLayout layout, String message) {
         View view = LayoutInflater.from(this).inflate(
         switch (layout) {
             case SUCCESS -> R.layout.custom_alert_dialog_success;
@@ -148,12 +157,6 @@ public class RegistrationPage extends AppCompatActivity {
         final AlertDialog alertDialog = builder.create();
 
         Button continueButton = view.findViewById(R.id.dialogContinueButton);
-
-        TextView textView = view.findViewById(R.id.dialogMessage);
-
-        if (textView != null) {
-            textView.setText(message);
-        }
 
         continueButton.setOnClickListener(view1 -> {
             switch (layout) {
@@ -170,6 +173,28 @@ public class RegistrationPage extends AppCompatActivity {
         }
 
         alertDialog.show();
+    }
+
+    public void updateAsterisk(EditText editTxt, TextView txtView, String newText, int resourceID){
+        editTxt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (!charSequence.toString().isEmpty()) {
+                    txtView.setText(newText);
+                }
+
+                if (charSequence.toString().isEmpty()) {
+                    txtView.setText(resourceID);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {}
+
+        });
     }
 
     public void onClickReturn(View v) {
