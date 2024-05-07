@@ -6,7 +6,8 @@
         android:id="@+id/drawerLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".mainmodule.HomePage">
+        tools:context=".mainmodule.HomePage"
+        tools:openDrawer="start">
 
     <com.google.android.material.navigation.NavigationView
             app:theme="@style/NavigationDrawerStyle"
@@ -14,7 +15,6 @@
             android:layout_height="match_parent"
             android:id="@+id/navView"
             app:menu="@menu/drawer_items"
-            app:headerLayout="@layout/drawer_header"
             app:itemTextColor="@color/PLANTITOyellow"
             app:itemIconTint="@color/PLANTITOyellow"
             app:itemBackground="@color/PLANTITOdarkgreen"
