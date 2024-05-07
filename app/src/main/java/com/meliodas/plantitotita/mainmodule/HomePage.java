@@ -1,12 +1,14 @@
 package com.meliodas.plantitotita.mainmodule;
+
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
 import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,6 +26,7 @@ public class HomePage extends AppCompatActivity {
     private TextView displayName, sample;
     private String name, userID;
     private View inflatedView;
+    private ViewGroup parent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +40,7 @@ public class HomePage extends AppCompatActivity {
         fStore = FirebaseFirestore.getInstance();
         user = mAuth.getCurrentUser();
         userID = mAuth.getCurrentUser().getUid();
+        navigationView.addHeaderView(inflatedView);
 
         if (user == null){
             startActivity(new Intent(getApplicationContext(), WelcomePage.class));
@@ -44,14 +48,11 @@ public class HomePage extends AppCompatActivity {
         }
 
         DocumentReference documentReference = fStore.collection("users").document(userID);
-        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable @org.jetbrains.annotations.Nullable DocumentSnapshot value, @Nullable @org.jetbrains.annotations.Nullable FirebaseFirestoreException error) {
-                name = value.getString("user_name");
-                sample.setText(name);
-                displayName.setText(name);
-                Toast.makeText(getApplicationContext(), displayName.getText(), Toast.LENGTH_SHORT).show();
-            }
+        documentReference.addSnapshotListener(this, (value, error) -> {
+            name = value.getString("user_name");
+            sample.setText(name);
+            displayName.setText(name);
+            Toast.makeText(HomePage.this.getApplicationContext(), displayName.getText(), Toast.LENGTH_SHORT).show();
         });
     }
 
