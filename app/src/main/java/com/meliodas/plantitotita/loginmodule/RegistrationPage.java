@@ -69,12 +69,6 @@ public class RegistrationPage extends AppCompatActivity {
             return;
         }
 
-        if (!editTextFirstName.getText().toString().matches("^[A-Z][a-z ,.'-]+$")){
-            editTextFirstName.setError("Please enter a valid last name. It should start with an uppercase letter and may include letters, spaces, commas, apostrophes, or hyphens.");
-            editTextFirstName.requestFocus();
-            return;
-        }
-
         if (editTextLastName.getText() == null || editTextFirstName.getText().toString().isEmpty()){
             editTextLastName.setError("Last Name can't be blank.");
             editTextLastName.requestFocus();
