@@ -130,8 +130,6 @@ public class EditProfilePage extends AppCompatActivity {
             }
         });
 
-
-
         /*if (value == null || !value.exists()) {
             return;
         }
@@ -139,10 +137,6 @@ public class EditProfilePage extends AppCompatActivity {
         if (error != null) {
             return;
         }*/
-
-
-
-
     }
 
     public void selectImage(){
