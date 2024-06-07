@@ -11,20 +11,18 @@ import android.widget.EditText;
 import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.meliodas.plantitotita.R;
 import com.meliodas.plantitotita.mainmodule.HomePage;
-
 import java.util.HashMap;
 import java.util.Map;
 
 public class RegistrationPage extends AppCompatActivity {
 
-    private EditText editTextName, editTextEmailAddress, editTextMobileNumber, editTextPassword, editTextConfirmPassword;
+    private EditText editTextFirstName,editTextLastName, editTextEmailAddress, editTextMobileNumber, editTextPassword, editTextConfirmPassword;
     private FirebaseAuth mAuth;
     private FirebaseFirestore fStore;
     private String userID;
@@ -36,19 +34,22 @@ public class RegistrationPage extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
-        editTextName = findViewById(R.id.editTxtName);
+        editTextFirstName = findViewById(R.id.editTxtName);
+        editTextLastName = findViewById(R.id.editTxtLastName);
         editTextEmailAddress = findViewById(R.id.editTxtEmailAddress);
         editTextMobileNumber = findViewById(R.id.editTxtMobileNumber);
         editTextPassword = findViewById(R.id.editTxtPassword);
         editTextConfirmPassword = findViewById(R.id.editTxtConfirmPassword);
 
         TextView textViewName = findViewById(R.id.regNameTxtView);
+        TextView textViewLastName = findViewById(R.id.regLastNameTxtView);
         TextView textViewEmailAddress = findViewById(R.id.regEmailTxtView);
         TextView textViewMobileNumber = findViewById(R.id.regMobileNumTxtView);
         TextView textViewPassword = findViewById(R.id.regPasswordTxtView);
         TextView textViewConfirmPassword = findViewById(R.id.regConfirmPasswordTxtView);
 
-        updateAsterisk(editTextName, textViewName, "Name", R.string.NameTxtView);
+        updateAsterisk(editTextFirstName, textViewName, "First Name", R.string.NameTxtView);
+        updateAsterisk(editTextLastName, textViewLastName, "Last Name", R.string.LastNameTxtView);
         updateAsterisk(editTextEmailAddress, textViewEmailAddress, "Email Address", R.string.EmailTxtView);
         updateAsterisk(editTextMobileNumber, textViewMobileNumber, "Mobile Number", R.string.MobileNumTxtView);
         updateAsterisk(editTextPassword, textViewPassword, "Password", R.string.PasswordTxtView);
@@ -56,15 +57,39 @@ public class RegistrationPage extends AppCompatActivity {
     }
 
     public void onClickCreateAccount(View v) {
-        if (editTextName.getText() == null || editTextName.getText().toString().isEmpty()){
-            editTextName.setError("Name can't be blank.");
-            editTextName.requestFocus();
+        if (editTextFirstName.getText() == null || editTextFirstName.getText().toString().isEmpty()){
+            editTextFirstName.setError("First Name can't be blank.");
+            editTextFirstName.requestFocus();
             return;
         }
 
-        if (!editTextName.getText().toString().matches("[A-Za-z]+")){
-            editTextName.setError("You may only enter letters.");
-            editTextName.requestFocus();
+        if (editTextFirstName.getText().length() < 2){
+            editTextFirstName.setError("First Name should be at least 2 characters.");
+            editTextFirstName.requestFocus();
+            return;
+        }
+
+        if (!editTextFirstName.getText().toString().matches("^[A-Z][a-z ,.'-]+$")){
+            editTextFirstName.setError("Please enter a valid last name. It should start with an uppercase letter and may include letters, spaces, commas, apostrophes, or hyphens.");
+            editTextFirstName.requestFocus();
+            return;
+        }
+
+        if (editTextLastName.getText() == null || editTextFirstName.getText().toString().isEmpty()){
+            editTextLastName.setError("Last Name can't be blank.");
+            editTextLastName.requestFocus();
+            return;
+        }
+
+        if (editTextLastName.getText().length() < 2){
+            editTextLastName.setError("Last Name should be at least 2 characters.");
+            editTextLastName.requestFocus();
+            return;
+        }
+
+        if (!editTextLastName.getText().toString().matches("^[A-Z][a-z ,.'-]+$")){
+            editTextLastName.setError("Please enter a valid last name. It should start with an uppercase letter and may include letters, spaces, commas, apostrophes, or hyphens.");
+            editTextLastName.requestFocus();
             return;
         }
 
@@ -89,12 +114,6 @@ public class RegistrationPage extends AppCompatActivity {
         if (editTextConfirmPassword.getText() == null || editTextConfirmPassword.getText().toString().isEmpty()){
             editTextConfirmPassword.setError("Confirm Password can't be blank.");
             editTextConfirmPassword.requestFocus();
-            return;
-        }
-
-        if (editTextName.getText().length() < 2){
-            editTextName.setError("Name should be at least 2 characters.");
-            editTextName.requestFocus();
             return;
         }
 
@@ -134,7 +153,8 @@ public class RegistrationPage extends AppCompatActivity {
             return;
         }
 
-        String name = editTextName.getText().toString();
+        String name = editTextFirstName.getText().toString();
+        String lastName = editTextLastName.getText().toString();
         String email = editTextEmailAddress.getText().toString();
         String mobileNumber = editTextMobileNumber.getText().toString();
         String password = editTextPassword.getText().toString();
@@ -143,19 +163,19 @@ public class RegistrationPage extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if (task.getException() == null || task.isSuccessful()) {
                         // Sign in success, update UI with the signed-in user's information
-                        userID = mAuth.getCurrentUser().getUid();
+
+                        if (mAuth.getCurrentUser() != null){
+                            userID = mAuth.getCurrentUser().getUid();
+                        }
+
                         DocumentReference documentReference = fStore.collection("users").document(userID);
                         Map<String, Object> user = new HashMap<>();
                         user.put("user_name", name);
+                        user.put("last_name", lastName);
                         user.put("email_address", email);
                         user.put("mobile_number", mobileNumber);
                         user.put("password", password);
-                        documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                showDialog(EnumLayout.SUCCESS);
-                            }
-                        });
+                        documentReference.set(user).addOnSuccessListener(unused -> showDialog(EnumLayout.SUCCESS));
                     }
 
                     if (task.getException() instanceof FirebaseAuthUserCollisionException e) {

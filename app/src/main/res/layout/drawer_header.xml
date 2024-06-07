@@ -6,21 +6,17 @@
               android:layout_width="match_parent"
               android:layout_height="110dp">
 
-    <androidx.cardview.widget.CardView
+    <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/navDrawerImageView"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
-            app:cardCornerRadius="40dp"
-            app:cardElevation="0dp"
-            android:backgroundTint="#2B913D">
-
-        <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_profile_drawer"/>
-        
-    </androidx.cardview.widget.CardView>
+            android:background="@drawable/white_circle"
+            app:civ_border_color="@color/PLANTITOdarkgreen"
+            app:civ_border_width="2dp"
+            android:backgroundTint="@color/PLANTITOdarkgreen">
+    </de.hdodenhof.circleimageview.CircleImageView>
 
     <TextView
             android:id="@+id/navDrawerDisplayName"

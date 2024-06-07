@@ -60,6 +60,7 @@
         
         <ScrollView android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:scrollbars="none"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -86,7 +87,7 @@
                         android:id="@+id/editTxtName"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        android:inputType="text"
+                        android:inputType="textCapSentences"
                         android:layout_gravity="center_horizontal"
                         android:background="@drawable/custom_button_white"
                         android:layout_marginTop="1dp"
@@ -95,12 +96,35 @@
                         app:layout_constraintTop_toBottomOf="@+id/regNameTxtView"/>
 
                 <TextView
+                        android:text="@string/LastNameTxtView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/regLastNameTxtView"
+                        android:fontFamily="@font/mada_medium" android:textSize="20sp"
+                        android:textColor="@color/white" app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="135dp"
+                        android:layout_marginStart="40dp"/>
+
+                <EditText
+                        android:layout_width="320dp"
+                        android:layout_height="70dp"
+                        android:id="@+id/editTxtLastName"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:inputType="textCapSentences"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/custom_button_white"
+                        android:layout_marginTop="1dp"
+                        android:textSize="20sp" android:textColor="@color/black" android:fontFamily="@font/mada_medium"
+                        android:paddingStart="25dp" android:paddingEnd="15dp"
+                        app:layout_constraintTop_toBottomOf="@+id/regLastNameTxtView"/>
+
+                <TextView
                         android:text="@string/EmailTxtView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" android:id="@+id/regEmailTxtView"
                         android:fontFamily="@font/mada_medium" android:textSize="20sp"
                         android:textColor="@color/white" app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="135dp"
+                        app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="240dp"
                         android:layout_marginStart="40dp"/>
 
                 <EditText
@@ -110,6 +134,8 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:inputType="text|textEmailAddress"
+                        android:hint="example23@gmail.com"
+                        android:textColorHint="#8B424443"
                         android:layout_gravity="center_horizontal"
                         android:background="@drawable/custom_button_white"
                         android:layout_marginTop="1dp"
@@ -123,7 +149,7 @@
                         android:layout_height="wrap_content" android:id="@+id/regMobileNumTxtView"
                         android:fontFamily="@font/mada_medium" android:textSize="20sp"
                         android:textColor="@color/white" app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="240dp"
+                        app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="345dp"
                         android:layout_marginStart="40dp"/>
                 <EditText
                         android:layout_width="320dp"
@@ -132,6 +158,8 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:inputType="text|phone|number"
+                        android:hint="+63"
+                        android:textColorHint="#8B424443"
                         android:maxLength="11"
                         android:layout_gravity="center_horizontal"
                         android:background="@drawable/custom_button_white"
@@ -145,7 +173,7 @@
                         android:layout_height="wrap_content" android:id="@+id/regPasswordTxtView"
                         android:fontFamily="@font/mada_medium" android:textSize="20sp"
                         android:textColor="@color/white" app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="345dp"
+                        app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="450dp"
                         android:layout_marginStart="40dp"/>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -174,7 +202,7 @@
                         android:layout_height="wrap_content" android:id="@+id/regConfirmPasswordTxtView"
                         android:fontFamily="@font/mada_medium" android:textSize="20sp"
                         android:textColor="@color/white" app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="450dp"
+                        app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="555dp"
                         android:layout_marginStart="40dp"/>
 
                 <com.google.android.material.textfield.TextInputLayout
