@@ -2,13 +2,18 @@ package com.meliodas.plantitotita.mainmodule;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import com.bumptech.glide.Glide;
@@ -23,6 +28,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.meliodas.plantitotita.R;
+import com.meliodas.plantitotita.loginmodule.EnumLayout;
 import com.squareup.picasso.Picasso;
 import com.yalantis.ucrop.UCrop;
 import java.io.File;
@@ -41,6 +47,7 @@ public class EditProfilePage extends AppCompatActivity {
     private String imageViewPhoto, firstName, lastName, eMail, mobileNum;
     private EditText editTextFirstName, editTextLastName, editTextEmail, editTextMobileNum;
     private ImageView imageView;
+    private boolean imageChanged = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,28 +72,7 @@ public class EditProfilePage extends AppCompatActivity {
     }
 
     public void onClickSaveChanges(View v){
-        if (editTextFirstName.getText() == null || editTextFirstName.getText().toString().isEmpty()){
-            editTextFirstName.setError("First name cannot be empty");
-            return;
-        }
-
-        if (editTextLastName.getText() == null || editTextLastName.getText().toString().isEmpty()){
-            editTextLastName.setError("Last name cannot be empty");
-            return;
-        }
-
-        if (editTextEmail.getText() == null || editTextEmail.getText().toString().isEmpty()){
-            editTextEmail.setError("Email cannot be empty");
-            return;
-        }
-
-        if (editTextMobileNum.getText() == null || editTextMobileNum.getText().toString().isEmpty()){
-            editTextMobileNum.setError("Mobile number cannot be empty");
-            return;
-        }
-
-        //uploadImage(firebaseUser.getEmail());
-        editInformation();
+        showDialog();
     }
 
     public void insertInitialValue(){
@@ -98,6 +84,8 @@ public class EditProfilePage extends AppCompatActivity {
 
         DocumentReference documentReference = fStore.collection("users").document(firebaseUser.getUid());
         documentReference.addSnapshotListener(this, (value, error) -> {
+            Picasso.get().load(R.mipmap.default_profile).into(imageView);
+
             if (value != null) {
                 imageViewPhoto = value.getString("profile_picture");
                 firstName = value.getString("user_name");
@@ -109,34 +97,27 @@ public class EditProfilePage extends AppCompatActivity {
                 editTextLastName.setText(lastName);
                 editTextEmail.setText(eMail);
                 editTextMobileNum.setText(mobileNum);
+
+                if (imageViewPhoto == null || imageViewPhoto.isEmpty()) {
+                    return;
+                }
+
                 Picasso.get().load(imageViewPhoto).into(imageView);
             }
         });
     }
 
-    // di ko alam kung tama
     public void editInformation(){
         Map<String, Object> userInfo = new HashMap<>();
         userInfo.put("user_name", editTextFirstName.getText().toString());
         userInfo.put("last_name", editTextLastName.getText().toString());
         userInfo.put("email_address", editTextEmail.getText().toString());
         userInfo.put("mobile_number", editTextMobileNum.getText().toString());
-        uploadImage(firebaseUser.getEmail());
+        if(imageChanged) uploadImage(firebaseUser.getEmail());
 
-        fStore.collection("users").document(firebaseUser.getUid()).set(userInfo, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-    
-            }
+        fStore.collection("users").document(firebaseUser.getUid()).set(userInfo, SetOptions.merge()).addOnSuccessListener(unused -> {
+            Toast.makeText(this, "Information updated!", Toast.LENGTH_SHORT).show();
         });
-
-        /*if (value == null || !value.exists()) {
-            return;
-        }
-
-        if (error != null) {
-            return;
-        }*/
     }
 
     public void selectImage(){
@@ -164,6 +145,7 @@ public class EditProfilePage extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 imageUri = resultUri;
+                imageChanged = true;
             }
         }
     }
@@ -202,5 +184,77 @@ public class EditProfilePage extends AppCompatActivity {
                 }, SetOptions.merge());
             });
         }).addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Upload Failed", Toast.LENGTH_SHORT).show());
+    }
+
+    private void showDialog() {
+        View view = LayoutInflater.from(this).inflate(R.layout.custom_alert_dialog_save_profile, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(view);
+
+        final AlertDialog alertDialog = builder.create();
+
+        Button continueButton = view.findViewById(R.id.dialogContinueButton);
+        Button continueButton1 = view.findViewById(R.id.dialogContinueButton1);
+
+        continueButton.setOnClickListener(view1 -> {
+            if (editTextFirstName.getText() == null || editTextFirstName.getText().toString().isEmpty()){
+                alertDialog.dismiss();
+                editTextFirstName.setError("First name can't be blank");
+                return;
+            }
+
+            if (editTextLastName.getText() == null || editTextLastName.getText().toString().isEmpty()){
+                alertDialog.dismiss();
+                editTextLastName.setError("Last name can't be blank");
+                return;
+            }
+
+            if (editTextEmail.getText() == null || editTextEmail.getText().toString().isEmpty()){
+                alertDialog.dismiss();
+                editTextEmail.setError("Email can't be blank");
+                return;
+            }
+
+            if (editTextMobileNum.getText() == null || editTextMobileNum.getText().toString().isEmpty()){
+                alertDialog.dismiss();
+                editTextMobileNum.setError("Mobile number can't be blank");
+                return;
+            }
+
+            if (!editTextEmail.getText().toString().matches("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+")) {
+                alertDialog.dismiss();
+                editTextEmail.setError("Invalid email address Ex.abcdefg123@gmail.com");
+                editTextEmail.requestFocus();
+                return;
+            }
+
+            if (editTextMobileNum.length() > 11 || editTextMobileNum.length() < 11){
+                alertDialog.dismiss();
+                editTextMobileNum.setError("You can only enter 11 numbers");
+                editTextMobileNum.requestFocus();
+                return;
+            }
+
+            if (!editTextMobileNum.getText().toString().matches("^(09)\\d{9}")){
+                alertDialog.dismiss();
+                editTextMobileNum.setError("Invalid mobile number format");
+                editTextMobileNum.requestFocus();
+                return;
+            }
+
+            editInformation();
+            alertDialog.dismiss();
+        });
+
+        continueButton1.setOnClickListener(view1 -> {
+            alertDialog.dismiss();
+        });
+
+        if (alertDialog.getWindow() != null) {
+            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+
+        alertDialog.show();
     }
 }

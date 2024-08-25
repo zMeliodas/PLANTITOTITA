@@ -160,7 +160,7 @@
                         android:inputType="text|phone|number"
                         android:hint="+63"
                         android:textColorHint="#8B424443"
-                        android:maxLength="11"
+                        android:maxLength="10"
                         android:layout_gravity="center_horizontal"
                         android:background="@drawable/custom_button_white"
                         android:layout_marginTop="1dp"

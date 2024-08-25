@@ -1,12 +1,16 @@
 package com.meliodas.plantitotita.mainmodule;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -55,14 +59,27 @@ public class HomePage extends AppCompatActivity {
 
         userID = mAuth.getCurrentUser().getUid();
 
+        insertInitialValue();
+    }
+
+
+
+    public void insertInitialValue(){
         DocumentReference documentReference = fStore.collection("users").document(userID);
         documentReference.addSnapshotListener(this, (value, error) -> {
+            Picasso.get().load(R.mipmap.default_profile).into(imageView);
+
             if (value != null) {
                 name = value.getString("user_name");
                 imageViewPhoto = value.getString("profile_picture");
+                displayName.setText(name);
+
+                if (imageViewPhoto == null || imageViewPhoto.isEmpty()) {
+                    return;
+                }
+
                 Picasso.get().load(imageViewPhoto).into(imageView);
             }
-            displayName.setText(name);
         });
 
         replaceFragment(new HomePageFragment());
@@ -73,7 +90,8 @@ public class HomePage extends AppCompatActivity {
     }
 
     public void onClickCamera(View v){
-        Toast.makeText(this, "CLICK!", Toast.LENGTH_SHORT).show();
+
+        startActivity(new Intent(getApplicationContext(), ArSceneActivity.class));
     }
 
     public void onClickHome(View view) {
@@ -92,9 +110,8 @@ public class HomePage extends AppCompatActivity {
     }
 
     public void onClickLogout(MenuItem item) {
-        FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent(this, WelcomePage.class));
-        finish();
+        showDialog();
+        drawerLayout.close();
     }
 
     private void replaceFragment(Fragment fragment){
@@ -102,5 +119,33 @@ public class HomePage extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frameLayout, fragment);
         fragmentTransaction.commit();
+    }
+
+    private void showDialog() {
+        View view = LayoutInflater.from(this).inflate(R.layout.custom_alert_dialog_log_out, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(view);
+
+        final AlertDialog alertDialog = builder.create();
+
+        Button continueButton = view.findViewById(R.id.dialogContinueButton);
+        Button continueButton1 = view.findViewById(R.id.dialogContinueButton1);
+
+        continueButton.setOnClickListener(view1 -> {
+            FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(this, WelcomePage.class));
+            finish();
+        });
+
+        continueButton1.setOnClickListener(view1 -> {
+            alertDialog.dismiss();
+        });
+
+        if (alertDialog.getWindow() != null) {
+            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+
+        alertDialog.show();
     }
 }

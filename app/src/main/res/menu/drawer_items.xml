@@ -3,20 +3,48 @@
       xmlns:tools="http://schemas.android.com/tools" xmlns:app="http://schemas.android.com/apk/res-auto"
       tools:showIn="navigation_view">
 
-    <group>
-        <item
-                android:icon="@drawable/ic_settings_drawer"
-                android:id="@+id/settingsNavMenu"
-                android:onClick="onClickSettings"
-                android:title="Settings"/>
-    </group>
 
-    <group
-        android:id="@+id/divider1">
-        <item
-                android:icon="@drawable/ic_logout_drawer"
-                android:id="@+id/logoutNavMenu"
-                android:onClick="onClickLogout"
-                android:title="Log Out"/>
-    </group>
+    <item
+            android:title="Dashboard">
+        <menu>
+            <item
+                    android:id="@+id/settingsNavMenu"
+                    android:icon="@drawable/ic_settings_drawer"
+                    android:onClick="onClickSettings"
+                    android:title="Settings"/>
+
+            <item
+                    android:id="@+id/plantGalleryNavMenu"
+                    android:icon="@drawable/book_svgrepo_com"
+                    android:onClick="onClickSettings"
+                    android:title="Plant Gallery"/>
+        </menu>
+    </item>
+
+    <item
+            android:title="Feedback &amp; About Us">
+        <menu>
+            <item
+                    android:id="@+id/feedBackNavMenu"
+                    android:icon="@drawable/feedback_review"
+                    android:title="Feedback"/>
+
+            <item
+                    android:id="@+id/aboutUsNavMenu"
+                    android:icon="@drawable/aaboutus"
+                    android:title="About Us"/>
+        </menu>
+
+    </item>
+
+    <item
+            android:title="Exit">
+        <menu>
+            <item
+                    android:icon="@drawable/ic_logout_drawer"
+                    android:id="@+id/logoutNavMenu"
+                    android:onClick="onClickLogout"
+                    android:title="Log Out"/>
+        </menu>
+    </item>
 </menu>

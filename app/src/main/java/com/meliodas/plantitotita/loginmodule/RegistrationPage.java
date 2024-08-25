@@ -117,13 +117,13 @@ public class RegistrationPage extends AppCompatActivity {
             return;
         }
 
-        if (editTextMobileNumber.length() > 11 || editTextMobileNumber.length() < 11){
-            editTextMobileNumber.setError("You can only enter 11 numbers");
+        if (editTextMobileNumber.length() > 10 || editTextMobileNumber.length() < 10){
+            editTextMobileNumber.setError("You can only enter 10 numbers");
             editTextMobileNumber.requestFocus();
             return;
         }
 
-        if (!editTextMobileNumber.getText().toString().matches("^(09)\\d{9}")){
+        if (!editTextMobileNumber.getText().toString().matches("^\\d{10}$")){
             editTextMobileNumber.setError("Invalid mobile number format");
             editTextMobileNumber.requestFocus();
             return;
@@ -135,8 +135,8 @@ public class RegistrationPage extends AppCompatActivity {
             return;
         }
 
-        if (!editTextPassword.getText().toString().matches("[A-Za-z0-9]+")){
-            editTextPassword.setError("You may only enter Alphanumeric Characters");
+        if (!editTextPassword.getText().toString().matches("^(?=.*[A-Z])(?=.*[0-9]).{8,}$")){
+            editTextPassword.setError("Your Password must contain at least one uppercase letter and one digit.");
             editTextPassword.requestFocus();
             return;
         }
@@ -167,7 +167,7 @@ public class RegistrationPage extends AppCompatActivity {
                         user.put("user_name", name);
                         user.put("last_name", lastName);
                         user.put("email_address", email);
-                        user.put("mobile_number", mobileNumber);
+                        user.put("mobile_number", "0" + mobileNumber);
                         user.put("password", password);
                         documentReference.set(user).addOnSuccessListener(unused -> showDialog(EnumLayout.SUCCESS));
                     }
@@ -228,7 +228,6 @@ public class RegistrationPage extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {}
-
         });
     }
 

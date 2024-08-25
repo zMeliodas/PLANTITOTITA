@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,7 +25,12 @@ public class ViewProfilePage extends AppCompatActivity {
     FirebaseUser firebaseUser;
     StorageReference storageReference;
     FirebaseFirestore fStore;
-    private String imageViewPhoto;
+    private static String imageViewPhoto;
+    private String firstName;
+    private String lastName;
+    private String eMail;
+    private String mobileNum;
+    private TextView viewProfileFirstName, viewProfileLastName, viewProfileEmail, viewProfileMobileNum;
     private ImageView imageView;
 
     @Override
@@ -42,10 +48,31 @@ public class ViewProfilePage extends AppCompatActivity {
 
     public void insertInitialValue(){
         imageView = findViewById(R.id.viewProfileImageView);
+        viewProfileFirstName = findViewById(R.id.viewProfileFirstName);
+        viewProfileLastName = findViewById(R.id.viewProfileLastName);
+        viewProfileEmail = findViewById(R.id.viewProfileEmail);
+        viewProfileMobileNum = findViewById(R.id.viewProfileContactNumber);
+
         DocumentReference documentReference = fStore.collection("users").document(firebaseUser.getUid());
         documentReference.addSnapshotListener(this, (value, error) -> {
+            Picasso.get().load(R.mipmap.default_profile).into(imageView);
+
             if (value != null) {
                 imageViewPhoto = value.getString("profile_picture");
+                firstName = value.getString("user_name");
+                lastName = value.getString("last_name");
+                eMail = value.getString("email_address");
+                mobileNum = value.getString("mobile_number");
+
+                viewProfileFirstName.setText(firstName);
+                viewProfileLastName.setText(lastName);
+                viewProfileEmail.setText(eMail);
+                viewProfileMobileNum.setText(mobileNum);
+
+                if (imageViewPhoto == null || imageViewPhoto.isEmpty()) {
+                    return;
+                }
+
                 Picasso.get().load(imageViewPhoto).into(imageView);
             }
         });
@@ -57,6 +84,11 @@ public class ViewProfilePage extends AppCompatActivity {
         ImageView popupImageView = popupView.findViewById(R.id.imageView88);
         Picasso.get().load(imageResource).into(popupImageView);
         AlertDialog dialog = adb.create();
+
+        if (imageViewPhoto == null || imageViewPhoto.isEmpty()) {
+            return;
+        }
+
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setView(popupView);
         dialog.show();

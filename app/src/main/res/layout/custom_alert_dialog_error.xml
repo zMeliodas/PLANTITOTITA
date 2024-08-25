@@ -32,11 +32,15 @@
         </TextView>
 
         <Button
-                android:layout_width="40dp"
+                android:layout_width="100dp"
                 android:layout_height="40dp"
                 android:id="@+id/dialogContinueButton"
-                android:background="@drawable/arrow_left_svgrepo_com"
-                android:layout_marginStart="230dp"
+                android:text="BACK"
+                android:textSize="15sp"
+                android:background="#00000000"
+                android:textColor="#FF0000"
+                android:fontFamily="@font/mada_black"
+                android:layout_marginStart="220dp"
                 android:layout_marginTop="-5dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

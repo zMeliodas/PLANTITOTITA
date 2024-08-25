@@ -26,40 +26,53 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:text="Your account has been successfully created."
+                android:text="Are you sure you want to log out?"
                 android:fontFamily="@font/mada_black"
-                android:textSize="20sp" android:textColor="@color/PLANTITOblack">
+                android:textSize="18sp" android:textColor="@color/PLANTITOblack">
         </TextView>
 
         <Button
-                android:layout_width="100dp"
+                android:layout_width="60dp"
                 android:layout_height="40dp"
                 android:id="@+id/dialogContinueButton"
-                android:text="CONTINUE"
-                android:textSize="15sp"
-                android:background="#00000000"
+                android:text="Yes"
+                android:textSize="18sp"
                 android:textColor="@color/PLANTITOgreen"
                 android:fontFamily="@font/mada_black"
-                android:layout_marginStart="190dp"
-                android:layout_marginTop="0dp"
+                android:layout_marginStart="230dp"
+                android:layout_marginTop="-10dp"
+                android:background="#00000000"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/dialogMessage">
         </Button>
 
+        <Button
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/dialogContinueButton1"
+                android:text="No"
+                android:textSize="18sp"
+                android:textColor="@color/PLANTITOgreen"
+                android:fontFamily="@font/mada_black"
+                android:layout_marginStart="130dp"
+                android:layout_marginTop="-10dp"
+                android:background="#00000000"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/dialogMessage">
+        </Button>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageButton
             android:layout_width="90dp"
             android:layout_height="90dp"
             android:id="@+id/dialogIcon"
-            android:background="@drawable/custom_dialog_layout_success_icon"
-            android:src="@drawable/icon_check"
+            android:background="@drawable/custom_dialog_layout_save_icon"
+            android:src="@drawable/question_mark_outline_svgrepo_com__1_"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@id/layoutDialog"
             app:layout_constraintTop_toTopOf="@id/layoutDialog" android:clickable="false">
     </ImageButton>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
