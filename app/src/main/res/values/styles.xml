@@ -4,4 +4,9 @@
         <item name="android:textSize">20sp</item> <!-- Set the text size for menu items -->
         <item name="android:layout_marginBottom">-5dp</item> <!-- Set the margin of the divider for menu items -->
     </style>
+
+    <style name="roundedCorners" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">20dp</item>
+    </style>
 </resources>

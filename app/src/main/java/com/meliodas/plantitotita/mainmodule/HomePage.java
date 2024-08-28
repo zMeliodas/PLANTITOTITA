@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.*;
 import com.meliodas.plantitotita.R;
 import com.meliodas.plantitotita.fragments.HomePageFragment;
+import com.meliodas.plantitotita.fragments.PlantGalleryFragment;
 import com.meliodas.plantitotita.loginmodule.WelcomePage;
 import com.squareup.picasso.Picasso;
 
@@ -61,8 +62,6 @@ public class HomePage extends AppCompatActivity {
 
         insertInitialValue();
     }
-
-
 
     public void insertInitialValue(){
         DocumentReference documentReference = fStore.collection("users").document(userID);
@@ -106,6 +105,11 @@ public class HomePage extends AppCompatActivity {
 
     public void onClickSettings(MenuItem item) {
         Toast.makeText(this, "CLICK!", Toast.LENGTH_SHORT).show();
+        drawerLayout.close();
+    }
+
+    public void onClickPlantGallery(MenuItem item) {
+        replaceFragment(new PlantGalleryFragment());
         drawerLayout.close();
     }
 

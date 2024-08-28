@@ -16,7 +16,7 @@
             <item
                     android:id="@+id/plantGalleryNavMenu"
                     android:icon="@drawable/book_svgrepo_com"
-                    android:onClick="onClickSettings"
+                    android:onClick="onClickPlantGallery"
                     android:title="Plant Gallery"/>
         </menu>
     </item>
