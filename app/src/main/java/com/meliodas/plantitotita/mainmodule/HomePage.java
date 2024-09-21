@@ -89,7 +89,6 @@ public class HomePage extends AppCompatActivity {
     }
 
     public void onClickCamera(View v){
-
         startActivity(new Intent(getApplicationContext(), ArSceneActivity.class));
     }
 
@@ -104,8 +103,15 @@ public class HomePage extends AppCompatActivity {
     }
 
     public void onClickSettings(MenuItem item) {
-        Toast.makeText(this, "CLICK!", Toast.LENGTH_SHORT).show();
-        drawerLayout.close();
+        startActivity(new Intent(getApplicationContext(), SettingsPage.class));
+    }
+
+    public void onClickFeedback(MenuItem item) {
+        startActivity(new Intent(getApplicationContext(), FeedbackPage.class));
+    }
+
+    public void onClickAboutUs(MenuItem item) {
+        startActivity(new Intent(getApplicationContext(), AboutUsPage.class));
     }
 
     public void onClickPlantGallery(MenuItem item) {
@@ -115,12 +121,12 @@ public class HomePage extends AppCompatActivity {
 
     public void onClickLogout(MenuItem item) {
         showDialog();
-        drawerLayout.close();
     }
 
     private void replaceFragment(Fragment fragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.addToBackStack("my_fragment");
         fragmentTransaction.replace(R.id.frameLayout, fragment);
         fragmentTransaction.commit();
     }
@@ -144,6 +150,7 @@ public class HomePage extends AppCompatActivity {
 
         continueButton1.setOnClickListener(view1 -> {
             alertDialog.dismiss();
+            drawerLayout.close();
         });
 
         if (alertDialog.getWindow() != null) {

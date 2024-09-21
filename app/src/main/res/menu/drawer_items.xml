@@ -3,7 +3,6 @@
       xmlns:tools="http://schemas.android.com/tools" xmlns:app="http://schemas.android.com/apk/res-auto"
       tools:showIn="navigation_view">
 
-
     <item
             android:title="Dashboard">
         <menu>
@@ -27,14 +26,15 @@
             <item
                     android:id="@+id/feedBackNavMenu"
                     android:icon="@drawable/feedback_review"
+                    android:onClick="onClickFeedback"
                     android:title="Feedback"/>
 
             <item
                     android:id="@+id/aboutUsNavMenu"
                     android:icon="@drawable/aaboutus"
+                    android:onClick="onClickAboutUs"
                     android:title="About Us"/>
         </menu>
-
     </item>
 
     <item
