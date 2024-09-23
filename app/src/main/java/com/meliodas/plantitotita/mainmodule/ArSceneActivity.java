@@ -1,30 +1,27 @@
 package com.meliodas.plantitotita.mainmodule;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.Image;
-import android.media.ImageReader;
+import android.graphics.Point;
 import android.net.Uri;
-import android.os.Bundle;
-import android.os.Environment;
-import android.os.Handler;
+import android.os.*;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.PixelCopy;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.FileProvider;
 import com.google.ar.core.Anchor;
 import com.google.ar.core.Frame;
 import com.google.ar.core.HitResult;
 import com.google.ar.core.Plane;
 import com.google.ar.core.Pose;
 import com.google.ar.core.TrackingState;
-import com.google.ar.core.exceptions.CameraNotAvailableException;
-import com.google.ar.core.exceptions.NotYetAvailableException;
 import com.google.ar.sceneform.AnchorNode;
+import com.google.ar.sceneform.ArSceneView;
 import com.google.ar.sceneform.FrameTime;
 import com.google.ar.sceneform.math.Quaternion;
 import com.google.ar.sceneform.math.Vector3;
@@ -32,14 +29,11 @@ import com.google.ar.sceneform.rendering.FixedHeightViewSizer;
 import com.google.ar.sceneform.rendering.ViewRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
+import com.google.firebase.auth.FirebaseAuth;
 import com.meliodas.plantitotita.R;
+import kotlin.io.ByteStreamsKt;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.URI;
-import java.nio.ByteBuffer;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -56,29 +50,40 @@ public class ArSceneActivity extends AppCompatActivity {
     private final Handler handler = new Handler();
     private static final long UPDATE_INTERVAL_MS = 3000;
 
+    private PlantIdApi plantIdApi;
+    private DatabaseManager databaseManager;
+
+    private String plantName = "Plant Name";
+    private Plant plant;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_arscene);
 
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
+        plantIdApi = new PlantIdApi();
+        databaseManager = new DatabaseManager();
 
         if (arFragment == null) {
             throw new IllegalStateException("Cannot find AR fragment");
         }
 
+        plant = new Plant("", "", "", "", "", "", "", "", List.of());
         arFragment.getPlaneDiscoveryController().hide();
 
         ViewRenderable.builder()
-                .setView(this, createView("PLANTITOTITA"))
+                .setView(this, createView(plantName))
                 .setSizer(new FixedHeightViewSizer(0.15f))
                 .build()
                 .thenAccept(renderable -> {
                     textRenderable = renderable;
+                    textRenderable.setShadowCaster(false);
+                    textRenderable.setShadowReceiver(false);
                     startUpdatingTextPosition();
                 })
                 .exceptionally(throwable -> {
-                    Log.e("ArSceneActivity", "Unable to load text renderable", throwable);
+                    Log.e(TAG, "Unable to load text renderable", throwable);
                     return null;
                 });
 
@@ -87,14 +92,15 @@ public class ArSceneActivity extends AppCompatActivity {
 
     private View createView(String text) {
         View view = getLayoutInflater().inflate(R.layout.aadisplay, null);
-
         TextView textView = view.findViewById(R.id.plantName);
         textView.setText(text);
-
         view.setOnClickListener(v -> {
-            Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, PlantInformationActivity.class);
+            intent.putExtra("plantName", plantName);
+            intent.putExtra("identification", plant.identification() != null ? plant.identification() : "");
+            intent.putExtra("description", plant.description() != null ? plant.description() : "");
+            startActivity(intent);
         });
-
         return view;
     }
 
@@ -112,7 +118,7 @@ public class ArSceneActivity extends AppCompatActivity {
         Frame frame = arFragment.getArSceneView().getArFrame();
         if (frame == null || textRenderable == null) return;
 
-        android.graphics.Point center = new android.graphics.Point(
+        Point center = new Point(
                 arFragment.getView().getWidth() / 2,
                 arFragment.getView().getHeight() / 2
         );
@@ -189,66 +195,114 @@ public class ArSceneActivity extends AppCompatActivity {
         handler.removeCallbacksAndMessages(null);
     }
 
-    private static final int MAX_RETRIES = 5;
-    private static final long RETRY_DELAY_MS = 200;
-
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void onClickCamera(View view) {
-        if (arFragment.getArSceneView().getArFrame() == null) {
-            return;
-        }
+        ArSceneView sceneView = arFragment.getArSceneView();
 
-        captureImageWithRetry(0);
-    }
+        Bitmap bitmap = Bitmap.createBitmap(sceneView.getWidth(), sceneView.getHeight(), Bitmap.Config.ARGB_8888);
 
-    private void captureImageWithRetry(int retryCount) {
-        if (retryCount >= MAX_RETRIES) {
-            Log.e(TAG, "Failed to capture image after " + MAX_RETRIES + " attempts");
-            Toast.makeText(this, "Failed to capture image. Please try again.", Toast.LENGTH_SHORT).show();
-            try {
-                arFragment.getArSceneView().resume();
-            } catch (CameraNotAvailableException e) {
-                throw new RuntimeException(e);
+        HandlerThread handlerThread = new HandlerThread("PixelCopier");
+        handlerThread.start();
+
+        PixelCopy.request(sceneView, bitmap, (copyResult) -> {
+            if (copyResult == PixelCopy.SUCCESS) {
+                try {
+                    // Save the bitmap and get the URI
+                    Uri imageUri = saveBitmapToDisk(bitmap);
+                    runOnUiThread(() ->
+                            Toast.makeText(ArSceneActivity.this, "Screenshot saved successfully", Toast.LENGTH_SHORT).show()
+                    );
+
+                    // Process the image with PlantID API using the saved URI
+                    processImageWithPlantId(imageUri);
+
+                } catch (IOException e) {
+                    runOnUiThread(() ->
+                            Toast.makeText(ArSceneActivity.this, "Failed to save screenshot", Toast.LENGTH_SHORT).show()
+                    );
+                    Log.e(TAG, "Failed to save bitmap", e);
+                }
+            } else {
+                runOnUiThread(() ->
+                        Toast.makeText(ArSceneActivity.this, "Failed to capture screenshot", Toast.LENGTH_SHORT).show()
+                );
+                Log.e(TAG, "Failed to copyPixels: " + copyResult);
             }
-            return;
-        }
-
-        try {
-            Image image = arFragment.getArSceneView().getArFrame().acquireCameraImage();
-            processAndSaveImage(image);
-        } catch (NotYetAvailableException e) {
-            Log.w(TAG, "Image not yet available, retrying...");
-            new Handler().postDelayed(() -> captureImageWithRetry(retryCount + 1), RETRY_DELAY_MS);
-        }
+            handlerThread.quitSafely();
+        }, new Handler(handlerThread.getLooper()));
     }
 
-    private void processAndSaveImage(Image image) {
-        try (image) {
-            ByteBuffer buffer = image.getPlanes()[0].getBuffer();
-            byte[] bytes = new byte[buffer.capacity()];
-            buffer.get(bytes);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, null);
+    private Uri saveBitmapToDisk(Bitmap bitmap) throws IOException {
+        String fileName = "AR_SCREENSHOT_" + new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date()) + ".jpg";
 
-            File imageFile = createImageFile();
-            FileOutputStream fileOutputStream = new FileOutputStream(imageFile);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
-            fileOutputStream.flush();
-            fileOutputStream.close();
-
-            Toast.makeText(this, "Image saved successfully", Toast.LENGTH_SHORT).show();
-        } catch (IOException e) {
-            Log.e(TAG, "Error saving image", e);
-            Toast.makeText(this, "Error saving image", Toast.LENGTH_SHORT).show();
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, fileName);
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            values.put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES);
         }
+
+        // Insert the image into MediaStore and get the Uri
+        Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        if (uri != null) {
+            try (OutputStream outputStream = getContentResolver().openOutputStream(uri)) {
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+                Toast.makeText(this, "Screenshot saved to gallery", Toast.LENGTH_SHORT).show();
+                return uri; // Return the URI of the saved image
+            }
+        }
+
+        throw new IOException("Failed to save bitmap.");
     }
 
-    private File createImageFile() {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        try {
-            return File.createTempFile(imageFileName, ".jpg", storageDir);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void processImageWithPlantId(Uri imageUri) {
+        new Thread(() -> {
+            try {
+                InputStream inputStream = getContentResolver().openInputStream(imageUri);
+                if (inputStream == null) {
+                    throw new IOException("Failed to open InputStream from Uri.");
+                }
+
+                byte[] imageBytes = ByteStreamsKt.readBytes(inputStream);
+                Plant plant = plantIdApi.identifyAndGetDetails(imageBytes, 0, 0);
+
+                // Store plant identification data in the database
+                databaseManager.addIdentification(plant, FirebaseAuth.getInstance().getUid());
+
+                // Update the plant name and refresh the AR text
+                plantName = plant.name();
+                this.plant = plant;
+                runOnUiThread(() -> {
+                    updateArText(plantName);
+                    Toast.makeText(ArSceneActivity.this, plant.toString(), Toast.LENGTH_SHORT).show();
+                });
+            } catch (Exception e) {
+                Log.e(TAG, "Error processing image with PlantID API", e);
+                runOnUiThread(() -> Toast.makeText(ArSceneActivity.this, "Failed to identify plant", Toast.LENGTH_SHORT).show());
+            }
+        }).start();
     }
+
+    private void updateArText(String newText) {
+        ViewRenderable.builder()
+                .setView(this, createView(newText))
+                .setSizer(new FixedHeightViewSizer(0.15f))
+                .build()
+                .thenAccept(renderable -> {
+                    textRenderable = renderable;
+                    textRenderable.setShadowCaster(false);
+                    textRenderable.setShadowReceiver(false);
+                    if (textNode != null) {
+                        textNode.setRenderable(textRenderable);
+                    }
+                    arFragment.getArSceneView().invalidate();
+                })
+                .exceptionally(throwable -> {
+                    Log.e(TAG, "Unable to update text renderable", throwable);
+                    return null;
+                });
+    }
+
+
 }

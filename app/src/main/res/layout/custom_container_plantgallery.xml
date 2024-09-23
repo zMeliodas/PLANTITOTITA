@@ -13,20 +13,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="5dp">
 
         <com.google.android.material.imageview.ShapeableImageView
-                   app:shapeAppearanceOverlay="@style/roundedCorners"
-                   android:layout_width="100dp"
-                   android:layout_height="100dp"
-                   android:layout_marginTop="20dp"
-                   android:layout_marginStart="20dp"
-                   android:id="@+id/plantGalleryContainerImgView"
-                   android:adjustViewBounds="true"
-                   android:src="@drawable/sad"
-                   android:scaleType="centerCrop"
-                   app:layout_constraintStart_toStartOf="parent"
-                   app:layout_constraintTop_toTopOf="parent">
+                app:shapeAppearanceOverlay="@style/roundedCorners"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="20dp"
+                android:id="@+id/plantGalleryContainerImgView"
+                android:adjustViewBounds="true"
+                android:src="@drawable/sad"
+                android:scaleType="centerCrop"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
         </com.google.android.material.imageview.ShapeableImageView>
 
         <TextView

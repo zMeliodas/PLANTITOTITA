@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#E6E6E6"
         tools:context=".fragments.PlantInformationFragment">
 
     <Button
+            android:id="@+id/btnReturnPlantInfo"
             android:layout_width="44dp"
-            android:layout_height="39dp" android:id="@+id/btnReturn2"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
-            android:background="@drawable/resource_return" android:layout_marginTop="13dp"
-            android:layout_marginStart="16dp"/>
-
+            android:layout_height="39dp"
+            android:background="@drawable/resource_return"
+            android:layout_marginTop="13dp"
+            android:layout_marginStart="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -28,109 +30,88 @@
             android:layout_marginTop="150dp">
 
         <TextView
-                android:layout_width="400dp"
-                android:layout_height="wrap_content"
                 android:id="@+id/plantInformationName"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/plantInformationScientificName"
-                android:text="Anahaw"
-                android:textAlignment="center"
-                android:fontFamily="@font/mada_medium"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="120dp"
                 android:layout_marginBottom="-10dp"
-                android:textSize="42sp" android:textColor="@color/PLANTITOyellow"
-                app:layout_constraintEnd_toEndOf="parent">
-        </TextView>
+                android:fontFamily="@font/mada_medium"
+                android:text="Plant Name"
+                android:textAlignment="center"
+                android:textColor="@color/PLANTITOyellow"
+                android:textSize="42sp"
+                app:layout_constraintBottom_toTopOf="@id/plantInformationScientificName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-                android:layout_width="400dp"
-                android:layout_height="wrap_content"
                 android:id="@+id/plantInformationScientificName"
-                app:layout_constraintTop_toBottomOf="@id/plantInformationName"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/plantInformationContainer"
-                android:text="Livistona rotundifolia"
-                android:textAlignment="center"
-                android:fontFamily="@font/mada"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:textSize="20sp" android:textColor="@color/PLANTITOyellow"
-                app:layout_constraintEnd_toEndOf="parent">
-        </TextView>
+                android:fontFamily="@font/mada"
+                android:text="Scientific Name"
+                android:textAlignment="center"
+                android:textColor="@color/PLANTITOyellow"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toTopOf="@+id/plantInformationContainer"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/plantInformationName" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
                 android:id="@+id/plantInformationContainer"
-                android:background="@drawable/plant_info_container_shape"
-                android:layout_marginBottom="70dp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                app:layout_constraintTop_toBottomOf="@id/plantInformationScientificName"
-                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginBottom="70dp"
+                android:background="@drawable/plant_info_container_shape"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/plantInformationScientificName">
 
-            <ScrollView android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scrollbars="none"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent">
+            <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scrollbars="none"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <TextView
+                        android:id="@+id/plantInformationDescription"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        android:layout_marginTop="5dp">
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/mada"
+                        android:paddingStart="15dp"
+                        android:paddingTop="10dp"
+                        android:paddingEnd="10dp"
+                        android:paddingBottom="10dp"
+                        android:text="Plant description goes here"
+                        android:textColor="@color/PLANTITOblack"
+                        android:textSize="18sp" />
 
-                    <TextView android:layout_width="match_parent"
-                              android:layout_height="wrap_content"
-                              app:layout_constraintTop_toTopOf="parent"
-                              app:layout_constraintBottom_toBottomOf="parent"
-                              app:layout_constraintEnd_toEndOf="parent"
-                              app:layout_constraintStart_toStartOf="parent"
-                              android:paddingTop="10dp"
-                              android:paddingStart="15dp"
-                              android:paddingEnd="10dp"
-                              android:paddingBottom="10dp"
-                              android:textSize="18sp"
-                              android:textColor="@color/PLANTITOblack"
-                              android:text="Anahaw (Livistona rotundifolia) is a native palm with smooth leaves or a tree of wood and with leaves bent on the edges of branches.
-
-It is considered the National Leaves of the Philippines.
-
-The leaves of Anahaw are broad, round, and green. The leaves stalk are thorny and grow around its own body. The leaves reach a height of 20 meters when it grows naturally on a range of terrain forest. But if it is in the garden or other artificial areas, it seems the growth in height and size of this palm are prevented.
-
-The leaves of this palm tree can be used as a material for the roofing of huts.
-
-Due to the shine and shape of its leaves, it also used as a decoration during a special occasion or celebration.
-
-Its fruit is cooked like a vegetable and eaten. Its trunk or body is used as a floor of marine vessels or serves as the foundation of a house."
-                              android:fontFamily="@font/mada">
-                    </TextView>
-                </androidx.constraintlayout.widget.ConstraintLayout>
             </ScrollView>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/plantInfoImage"
             android:layout_width="200dp"
             android:layout_height="200dp"
-            app:shapeAppearanceOverlay="@style/roundedCorners1"
-            android:id="@+id/plantInfoImage"
             android:background="@drawable/custom_button_nav_bar"
-            android:src="@drawable/sad"
             android:scaleType="centerCrop"
-            android:layout_marginBottom="350dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:src="@drawable/sad"
             app:layout_constraintBottom_toTopOf="@id/plantInformationConstraint"
-            app:layout_constraintTop_toTopOf="@id/plantInformationConstraint" android:clickable="false">
-    </com.google.android.material.imageview.ShapeableImageView>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/plantInformationConstraint"
+            app:layout_constraintVertical_bias="0.3"
+            app:shapeAppearanceOverlay="@style/roundedCorners1" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,6 +2,7 @@ package com.meliodas.plantitotita.mainmodule;
 
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -10,6 +11,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.window.OnBackInvokedCallback;
+import android.window.OnBackInvokedDispatcher;
+import androidx.activity.OnBackPressedCallback;
+import androidx.activity.OnBackPressedDispatcher;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -37,6 +44,7 @@ public class HomePage extends AppCompatActivity {
     private View inflatedView;
     private ImageView imageView;
 
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +60,7 @@ public class HomePage extends AppCompatActivity {
         fStore = FirebaseFirestore.getInstance();
         user = mAuth.getCurrentUser();
 
-        if (user == null){
+        if (user == null) {
             startActivity(new Intent(getApplicationContext(), WelcomePage.class));
             finish();
             return;
@@ -60,10 +68,33 @@ public class HomePage extends AppCompatActivity {
 
         userID = mAuth.getCurrentUser().getUid();
 
+        OnBackPressedDispatcher onBackPressedDispatcher = getOnBackPressedDispatcher();
+        onBackPressedDispatcher.addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                onBackPress();
+            }
+        });
+
         insertInitialValue();
     }
 
-    public void insertInitialValue(){
+    public void onBackPress() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (fragmentManager.getBackStackEntryCount() > 1) {
+            fragmentManager.popBackStack();
+            return;
+        }
+
+        new AlertDialog.Builder(this)
+                .setMessage("Are you sure you want to exit?")
+                .setPositiveButton("Yes", (dialog, which) -> finish())
+                .setNegativeButton("No", null)
+                .show();
+
+    }
+
+    public void insertInitialValue() {
         DocumentReference documentReference = fStore.collection("users").document(userID);
         documentReference.addSnapshotListener(this, (value, error) -> {
             Picasso.get().load(R.mipmap.default_profile).into(imageView);
@@ -84,11 +115,11 @@ public class HomePage extends AppCompatActivity {
         replaceFragment(new HomePageFragment());
     }
 
-    public void onClickNavBurger(View v){
+    public void onClickNavBurger(View v) {
         drawerLayout.open();
     }
 
-    public void onClickCamera(View v){
+    public void onClickCamera(View v) {
         startActivity(new Intent(getApplicationContext(), ArSceneActivity.class));
     }
 
@@ -97,7 +128,7 @@ public class HomePage extends AppCompatActivity {
         drawerLayout.close();
     }
 
-    public void onClickViewProfile(View v){
+    public void onClickViewProfile(View v) {
         startActivity(new Intent(getApplicationContext(), ViewProfilePage.class));
         drawerLayout.close();
     }
@@ -114,6 +145,7 @@ public class HomePage extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(), AboutUsPage.class));
     }
 
+
     public void onClickPlantGallery(MenuItem item) {
         replaceFragment(new PlantGalleryFragment());
         drawerLayout.close();
@@ -123,7 +155,7 @@ public class HomePage extends AppCompatActivity {
         showDialog();
     }
 
-    private void replaceFragment(Fragment fragment){
+    private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.addToBackStack("my_fragment");
