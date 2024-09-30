@@ -64,17 +64,44 @@ public class PlantGalleryFragment extends Fragment {
 
                 // Loop through the list of identifications and create Plant objects
                 for (Map<String, Object> plantData : identifications) {
-                    String identification = (String) plantData.get("identification");
-                    String plantName = (String) plantData.get("name");
-                    String plantImage = (String) plantData.get("image");
-                    String plantScientificName = (String) plantData.get("scientificName");
-                    String description = (String) plantData.get("description");
-                    String family = (String) plantData.get("family");
-                    String genus = (String) plantData.get("genus");
-                    String wikiUrl = (String) plantData.get("wikiUrl");
-                    String edibleParts = (String) plantData.get("edibleParts");
 
-                    Plant plant = new Plant(identification, plantName, plantScientificName, family, genus, plantImage, description, wikiUrl, edibleParts);
+                    String identification = (String) plantData.getOrDefault("identification", "");
+                    String plantName = (String) plantData.getOrDefault("name", "");
+                    String plantImage = (String) plantData.getOrDefault("image", "");
+                    String plantScientificName = (String) plantData.getOrDefault("scientificName", "");
+                    String description = (String) plantData.getOrDefault("description", "");
+                    String family = (String) plantData.getOrDefault("family", "");
+                    String genus = (String) plantData.getOrDefault("genus", "");
+                    String wikiUrl = (String) plantData.getOrDefault("wikiUrl", "");
+                    String bestLightCondition = (String) plantData.getOrDefault("bestLightCondition", "");
+                    String bestSoilType = (String) plantData.getOrDefault("bestSoilType", "");
+                    String bestWatering = (String) plantData.getOrDefault("bestWatering", "");
+                    String toxicity = (String) plantData.getOrDefault("toxicity", "");
+                    String culturalSignificance = (String) plantData.getOrDefault("culturalSignificance", "");
+                    String commonUses = (String) plantData.getOrDefault("commonUses", "");
+
+                    ArrayList<String> edibleParts = (ArrayList<String>) plantData.getOrDefault("edibleParts", new ArrayList<>());
+                    ArrayList<String> propagationMethods = (ArrayList<String>) plantData.getOrDefault("propagationMethods", new ArrayList<>());
+
+                    Plant plant = new Plant.Builder()
+                            .identification(identification)
+                            .name(plantName)
+                            .scientificName(plantScientificName)
+                            .family(family)
+                            .genus(genus)
+                            .image(plantImage)
+                            .description(description)
+                            .wikiUrl(wikiUrl)
+                            .edibleParts(edibleParts)
+                            .propagationMethods(propagationMethods)
+                            .bestLightCondition(bestLightCondition)
+                            .bestSoilType(bestSoilType)
+                            .bestWatering(bestWatering)
+                            .toxicity(toxicity)
+                            .culturalSignificance(culturalSignificance)
+                            .commonUses(commonUses)
+                            .build();
+
                     plantList.add(plant);
                 }
 
@@ -143,13 +170,20 @@ public class PlantGalleryFragment extends Fragment {
                     Bundle args = new Bundle();
                     args.putString("plantName", capitalizedPlantName);
                     args.putString("image", plant.image());
-                    args.putString("description", StringUtils.capitalize(plant.description()));
+                    args.putString("description", plant.description());
                     args.putString("wikiUrl", plant.wikiUrl());
                     args.putString("scientificName", capitalizedScientificName);
                     args.putString("family", StringUtils.capitalize(plant.family()));
                     args.putString("genus", StringUtils.capitalize(plant.genus()));
                     args.putString("wikiUrl", plant.wikiUrl());
-                    args.putString("edibleParts", StringUtils.capitalize(plant.edibleParts()));
+                    args.putStringArrayList("edibleParts", plant.edibleParts());
+                    args.putStringArrayList("propagationMethods", plant.propagationMethods());
+                    args.putString("commonUses", plant.commonUses());
+                    args.putString("culturalSignificance", plant.culturalSignificance());
+                    args.putString("toxicity", plant.toxicity());
+                    args.putString("bestLightCondition", plant.bestLightCondition());
+                    args.putString("bestSoilType", plant.bestSoilType());
+                    args.putString("bestWatering", plant.bestWatering());
 
                     Fragment targetFragment = new PlantInformationFragment();
                     targetFragment.setArguments(args);

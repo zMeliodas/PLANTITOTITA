@@ -1,4 +1,6 @@
 package com.meliodas.plantitotita.mainmodule;
+import android.util.Log;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -38,5 +40,15 @@ public class StringUtils {
             return word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase();
         }
         return word.toUpperCase();
+    }
+
+    public static void largeLog(String tag, String content) {
+        Log.i(tag, "Content length: " + content.length());
+        if (content.length() > 4000) {
+            Log.d(tag, content.substring(0, 4000));
+            largeLog(tag, content.substring(4000));
+        } else {
+            Log.d(tag, content);
+        }
     }
 }

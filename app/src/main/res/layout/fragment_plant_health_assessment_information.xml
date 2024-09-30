@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#E6E6E6"
+        tools:context=".fragments.PlantHealthAssessmentInformationFragment">
+
+    <Button
+            android:id="@+id/btnReturnPlantInfo"
+            android:layout_width="44dp"
+            android:layout_height="39dp"
+            android:background="@drawable/resource_return"
+            android:layout_marginTop="13dp"
+            android:layout_marginStart="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/plantInformationConstraint"
+            android:background="@drawable/custom_shape"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="150dp">
+
+        <TextView
+                android:id="@+id/plantInformationName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
+                android:layout_marginBottom="-10dp"
+                android:fontFamily="@font/mada_medium"
+                android:text="Plant Name"
+                android:textAlignment="center"
+                android:textColor="@color/PLANTITOyellow"
+                android:textSize="42sp"
+                android:clickable="false"
+                android:longClickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                app:layout_constraintBottom_toTopOf="@id/plantInformationScientificName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+                android:id="@+id/plantInformationScientificName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/mada"
+                android:text="Scientific Name"
+                android:textAlignment="center"
+                android:textColor="@color/PLANTITOyellow"
+                android:textSize="20sp"
+                android:clickable="false"
+                android:longClickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                app:layout_constraintBottom_toTopOf="@+id/plantInformationContainer"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/plantInformationName" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/plantInformationContainer"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="70dp"
+                android:background="@drawable/plant_info_container_shape"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/plantInformationScientificName">
+
+            <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scrollbars="none"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintVertical_bias="0.0">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                    <TextView
+                            android:id="@+id/disease"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/mada_black"
+                            android:paddingStart="15dp"
+                            android:paddingTop="10dp"
+                            android:paddingEnd="10dp"
+                            android:paddingBottom="10dp"
+                            android:text="Disease"
+                            android:textColor="@color/PLANTITOblack"
+                            android:textSize="24sp"/>
+                    <TextView
+                            android:id="@+id/diseaseDescription"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/disease"
+                            android:gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/mada"
+                            android:paddingStart="15dp"
+                            android:paddingTop="10dp"
+                            android:paddingEnd="10dp"
+                            android:paddingBottom="10dp"
+                            android:text="Plant disease description goes here"
+                            android:textColor="@color/PLANTITOblack"
+                            android:textSize="18sp"/>
+
+                    <TextView
+                            android:id="@+id/biologicalTreatmentTitle"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/diseaseDescription"
+                            android:gravity="start"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/mada_black"
+                            android:paddingStart="15dp"
+                            android:paddingTop="10dp"
+                            android:paddingEnd="10dp"
+                            android:paddingBottom="10dp"
+                            android:text="Biological Treatment"
+                            android:textColor="@color/PLANTITOblack"
+                            android:textSize="24sp"/>
+                    <TextView
+                            android:id="@+id/biologicalTreatment"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/biologicalTreatmentTitle"
+                            android:gravity="start"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/mada"
+                            android:paddingStart="15dp"
+                            android:paddingTop="10dp"
+                            android:paddingEnd="10dp"
+                            android:paddingBottom="10dp"
+                            android:text="There is no biological treatment for this disease"
+                            android:textColor="@color/PLANTITOblack"
+                            android:textSize="18sp"/>
+
+                    <TextView
+                            android:id="@+id/chemicalTreatmentTitle"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/biologicalTreatment"
+                            android:gravity="start"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/mada_black"
+                            android:paddingStart="15dp"
+                            android:paddingTop="10dp"
+                            android:paddingEnd="10dp"
+                            android:paddingBottom="10dp"
+                            android:text="Chemical Treatment"
+                            android:textColor="@color/PLANTITOblack"
+                            android:textSize="24sp"/>
+                    <TextView
+                            android:id="@+id/chemicalTreatment"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/chemicalTreatmentTitle"
+                            android:gravity="start"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/mada"
+                            android:paddingStart="15dp"
+                            android:paddingTop="10dp"
+                            android:paddingEnd="10dp"
+                            android:paddingBottom="10dp"
+                            android:text="There is no chemical treatment for this disease"
+                            android:textColor="@color/PLANTITOblack"
+                            android:textSize="18sp"/>
+
+                    <TextView
+                            android:id="@+id/preventionTitle"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/chemicalTreatment"
+                            android:gravity="start"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/mada_black"
+                            android:paddingStart="15dp"
+                            android:paddingTop="10dp"
+                            android:paddingEnd="10dp"
+                            android:paddingBottom="10dp"
+                            android:text="Prevention"
+                            android:textColor="@color/PLANTITOblack"
+                            android:textSize="24sp"/>
+                    <TextView
+                            android:id="@+id/prevention"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/preventionTitle"
+                            android:gravity="start"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/mada"
+                            android:paddingStart="15dp"
+                            android:paddingTop="10dp"
+                            android:paddingEnd="10dp"
+                            android:paddingBottom="10dp"
+                            android:text="There is no prevention for this disease"
+                            android:textColor="@color/PLANTITOblack"
+                            android:textSize="18sp"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </ScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.cardview.widget.CardView
+            app:layout_constraintBottom_toTopOf="@id/plantInformationConstraint"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/plantInformationConstraint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="100dp"
+            app:cardElevation="20dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:id="@+id/plantInfoImage"
+                android:src="@drawable/sad"
+                app:shapeAppearanceOverlay="@style/roundedCorners1" />
+
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -22,6 +22,7 @@ import com.meliodas.plantitotita.R;
 import com.meliodas.plantitotita.mainmodule.*;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -93,17 +94,24 @@ public class HomePageFragment extends Fragment {
 
         for (int i = 0; i < limit; i++) {
             Map<String, Object> scan = recentScans.get(i);
-            Plant plant = new Plant(
-                    (String) scan.get("identification"),
-                    (String) scan.getOrDefault("name", "Unknown Plant"),
-                    (String) scan.get("scientificName"),
-                    (String) scan.get("family"),
-                    (String) scan.get("genus"),
-                    (String) scan.get("image"),
-                    (String) scan.get("description"),
-                    (String) scan.get("wikiUrl"),
-                    (String) scan.get("edibleParts")
-            );
+            Plant plant = new Plant.Builder()
+                    .identification((String) scan.getOrDefault("identification", "Unknown Identification"))
+                    .name((String) scan.getOrDefault("name", "Unknown Plant"))
+                    .scientificName((String) scan.getOrDefault("scientificName", "Unknown Scientific Name"))
+                    .family((String) scan.getOrDefault("family", "Unknown Family"))
+                    .genus((String) scan.getOrDefault("genus", "Unknown Genus"))
+                    .image((String) scan.getOrDefault("image", ""))
+                    .description((String) scan.getOrDefault("description", "No Description"))
+                    .wikiUrl((String) scan.getOrDefault("wikiUrl", ""))
+                    .edibleParts((ArrayList<String>) scan.getOrDefault("edibleParts", new ArrayList<>()))
+                    .bestLightCondition((String) scan.getOrDefault("bestLightCondition", "Unknown Light Condition"))
+                    .bestSoilType((String) scan.getOrDefault("bestSoilType", "Unknown Soil Type"))
+                    .bestWatering((String) scan.getOrDefault("bestWatering", "Unknown Watering"))
+                    .toxicity((String) scan.getOrDefault("toxicity", "Unknown Toxicity"))
+                    .culturalSignificance((String) scan.getOrDefault("culturalSignificance", "Unknown Cultural Significance"))
+                    .commonUses((String) scan.getOrDefault("commonUses", "Unknown Uses"))
+                    .build();
+
             View scanView = createScanView(plant);
             recentScansContainer.addView(scanView);
             TextView textView = new TextView(getContext());
@@ -149,7 +157,14 @@ public class HomePageFragment extends Fragment {
             args.putString("scientificName", StringUtils.capitalize(plant.scientificName()));
             args.putString("description", StringUtils.capitalize(plant.description()));
             args.putString("image", plant.image());
-            args.putString("edibleParts", StringUtils.capitalize(plant.edibleParts()));
+            args.putStringArrayList("edibleParts", plant.edibleParts());
+            args.putStringArrayList("propagationMethods", plant.propagationMethods());
+            args.putString("commonUses", StringUtils.capitalize(plant.commonUses()));
+            args.putString("culturalSignificance", StringUtils.capitalize(plant.culturalSignificance()));
+            args.putString("toxicity", StringUtils.capitalize(plant.toxicity()));
+            args.putString("bestLightCondition", StringUtils.capitalize(plant.bestLightCondition()));
+            args.putString("bestSoilType", StringUtils.capitalize(plant.bestSoilType()));
+            args.putString("bestWatering", StringUtils.capitalize(plant.bestWatering()));
             plantInfoFragment.setArguments(args);
 
             getParentFragmentManager().beginTransaction()

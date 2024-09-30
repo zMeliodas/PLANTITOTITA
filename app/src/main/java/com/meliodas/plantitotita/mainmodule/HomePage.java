@@ -10,12 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.window.OnBackInvokedCallback;
-import android.window.OnBackInvokedDispatcher;
 import androidx.activity.OnBackPressedCallback;
 import androidx.activity.OnBackPressedDispatcher;
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,7 +26,8 @@ import com.google.firebase.firestore.*;
 import com.meliodas.plantitotita.R;
 import com.meliodas.plantitotita.fragments.HomePageFragment;
 import com.meliodas.plantitotita.fragments.PlantGalleryFragment;
-import com.meliodas.plantitotita.fragments.PlantHealthAssessmentFragment;
+import com.meliodas.plantitotita.fragments.PlantHealthAssessmentGalleryFragment;
+import com.meliodas.plantitotita.fragments.PlantHealthAssessmentInformationFragment;
 import com.meliodas.plantitotita.loginmodule.WelcomePage;
 import com.squareup.picasso.Picasso;
 
@@ -150,7 +147,7 @@ public class HomePage extends AppCompatActivity {
     }
 
     public void onClickPlantHealthAssessment(MenuItem item) {
-        replaceFragment(new PlantHealthAssessmentFragment());
+        replaceFragment(new PlantHealthAssessmentGalleryFragment());
         drawerLayout.close();
     }
 

@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import okhttp3.*;
 
@@ -55,7 +56,9 @@ public class PlantIdApi {
 
             // Read the body once and process it
             String responseBody = response.body().string();
-            Log.i("API Response", "Response Body: " + responseBody);
+
+            StringUtils.largeLog("API Response", responseBody);
+
             JSONObject jsonResponse = new JSONObject(responseBody);
             JSONObject result = jsonResponse.getJSONObject("result");
 
@@ -68,50 +71,6 @@ public class PlantIdApi {
         } catch (IOException e) {
             Log.e("API Error", "Error occurred while making API request", e);
             throw e;
-        }
-    }
-
-    public Plant getPlantDetailFromIdentification(String plantId) throws IOException, JSONException {
-        plantIdApiUrl = "https://plant.id/api/v3/kb/plants/" + plantId +
-                "?details=common_names,url,description,taxonomy,rank,gbif_id,inaturalist_id,image,synonyms,edible_parts,watering,propagation_methods&language=en";
-
-        Request request = new Request.Builder()
-                .url(plantIdApiUrl)
-                .get()
-                .addHeader("Api-Key", apiKey)
-                .addHeader("Content-Type", "application/json")
-                .build();
-
-        try (Response response = client.newCall(request).execute()) {
-            if (!response.isSuccessful()) {
-                String responseBody = response.body().string();
-                Log.e("API Error", "Unexpected code " + response + " Response Body: " + responseBody);
-                throw new IOException("Unexpected code " + response + " Response Body: " + responseBody);
-            }
-
-            // Read the body once and process it
-            String responseBody = response.body().string();
-            JSONObject jsonResponse = new JSONObject(responseBody);
-            JSONObject plantData = jsonResponse.getJSONObject("result");
-
-            String name = plantData.getString("name");
-            String scientificName = plantData.getString("scientific_name");
-            String family = plantData.getJSONObject("taxonomy").getString("family");
-            String genus = plantData.getJSONObject("taxonomy").getString("genus");
-            String image = plantData.getJSONObject("image").getString("value");
-            String description = plantData.getJSONObject("description").getString("value");
-            String wikiUrl = plantData.getJSONObject("url").getString("value");
-            String edibleParts = plantData.getJSONObject("edible_parts").getString("value");
-
-            List<String> commonNames = new ArrayList<>();
-            JSONArray commonNamesArray = plantData.getJSONObject("common_names").getJSONArray("value");
-            for (int i = 0; i < commonNamesArray.length(); i++) {
-                commonNames.add(commonNamesArray.getString(i));
-            }
-
-            String commonName = commonNames.isEmpty() ? "No Common Name" : commonNames.get(0);
-
-            return new Plant(plantId, commonName, scientificName, family, genus, image, description, wikiUrl, commonNames, edibleParts);
         }
     }
 
@@ -158,7 +117,7 @@ public class PlantIdApi {
     // Method to fetch plant details using the access token
     public Plant getPlantDetailFromAccessToken(String accessToken) throws IOException, JSONException {
         plantIdApiUrl = "https://plant.id/api/v3/kb/plants/" + accessToken +
-                "?details=common_names,url,description,taxonomy,rank,gbif_id,inaturalist_id,image,synonyms,edible_parts,watering,propagation_methods&language=en";
+                "?details=common_names,url,description,taxonomy,rank,gbif_id,inaturalist_id,image,synonyms,edible_parts,watering,toxicity,cultural_significance,propagation_methods,best_watering,best_light_condition,best_soil_type,common_uses&language=en";
 
         Request request = new Request.Builder()
                 .url(plantIdApiUrl)
@@ -177,36 +136,79 @@ public class PlantIdApi {
             // Read the body once and process it
             String responseBody = response.body().string();
 
-            Log.i("API Response", "Response Body: " + responseBody);
+            StringUtils.largeLog("API Response", responseBody);
 
-            JSONObject jsonResponse = new JSONObject(responseBody);
+            JSONObject plantData = new JSONObject(responseBody);
 
-            String scientificName = jsonResponse.getString("name");
-            String family = jsonResponse.getJSONObject("taxonomy").getString("family");
-            String genus = jsonResponse.getJSONObject("taxonomy").getString("genus");
-            String image = jsonResponse.getJSONObject("image").getString("value");
+            String scientificName = plantData.getString("name");
+            String family = plantData.getJSONObject("taxonomy").getString("family");
+            String genus = plantData.getJSONObject("taxonomy").getString("genus");
+            String image = plantData.getJSONObject("image").getString("value");
+            String bestLightCondition = plantData.getString("best_light_condition");
+            String bestWatering = plantData.getString("best_watering");
+            String bestSoilType = plantData.getString("best_soil_type");
+            String commonUses = plantData.getString("common_uses");
+            String toxicity = plantData.getString("toxicity");
+            String culturalSignificance = plantData.getString("cultural_significance");
+
 
             String description;
-            if (jsonResponse.isNull("description")) {
+            if (plantData.isNull("description")) {
                 description = "No description available";
             } else {
-                JSONObject descriptionObject = jsonResponse.getJSONObject("description");
+                JSONObject descriptionObject = plantData.getJSONObject("description");
                 description = descriptionObject.isNull("value") ? "No description available" : descriptionObject.getString("value");
             }
 
-            String wikiUrl = jsonResponse.getString("url");
+            String wikiUrl = plantData.getString("url");
 
             List<String> commonNames = new ArrayList<>();
-            JSONArray commonNamesArray = jsonResponse.getJSONArray("common_names");
+            JSONArray commonNamesArray = plantData.getJSONArray("common_names");
             for (int i = 0; i < commonNamesArray.length(); i++) {
                 commonNames.add(commonNamesArray.getString(i));
             }
 
             String commonName = commonNames.isEmpty() ? "No Common Name" : commonNames.get(0);
 
-            String edibleParts = jsonResponse.getJSONObject("edible_parts").getString("value");
+            ArrayList<String> edibleParts = new ArrayList<>();
+            if (plantData.isNull("edible_parts")) {
+                edibleParts.add("No edible parts available");
+            } else {
+                JSONArray ediblePartsJson = plantData.getJSONArray("edible_parts");
+                for (int i = 0; i < ediblePartsJson.length(); i++) {
+                    edibleParts.add(ediblePartsJson.getString(i));
+                }
+            }
 
-            return new Plant(accessToken, commonName, scientificName, family, genus, image, description, wikiUrl, commonNames,edibleParts);
+            ArrayList<String> propagationMethods = new ArrayList<>();
+            if (plantData.isNull("propagation_methods")) {
+                propagationMethods.add("No propagation methods available");
+            } else {
+                JSONArray propagationMethodsJson = plantData.getJSONArray("propagation_methods");
+                for (int i = 0; i < propagationMethodsJson.length(); i++) {
+                    propagationMethods.add(propagationMethodsJson.getString(i));
+                }
+            }
+
+            return new Plant.Builder()
+                    .identification(accessToken)
+                    .name(commonName)
+                    .scientificName(scientificName)
+                    .family(family)
+                    .genus(genus)
+                    .image(image)
+                    .description(description)
+                    .wikiUrl(wikiUrl)
+                    .commonNames(commonNames)
+                    .edibleParts(edibleParts)
+                    .propagationMethods(propagationMethods)
+                    .bestLightCondition(bestLightCondition)
+                    .bestSoilType(bestSoilType)
+                    .bestWatering(bestWatering)
+                    .toxicity(toxicity)
+                    .culturalSignificance(culturalSignificance)
+                    .commonUses(commonUses)
+                    .build();
         }
     }
 
@@ -225,4 +227,54 @@ public class PlantIdApi {
 
         return getPlantDetailFromAccessToken(accessToken);
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public HealthIdentification identifyHealth(byte[] imageData, double longitude, double latitude) throws IOException, JSONException {
+        plantIdApiUrl = "https://plant.id/api/v3/health_assessment?details=local_name,description,url,treatment,classification,common_names,cause";
+        String base64Image = "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(imageData);
+
+        JSONObject jsonBody = new JSONObject()
+                .put("images", new JSONArray().put(base64Image))
+                .put("longitude", longitude)
+                .put("similar_images", true);
+
+        RequestBody body = RequestBody.create(MediaType.parse("application/json"), jsonBody.toString());
+
+        Request request = new Request.Builder()
+                .url(plantIdApiUrl)
+                .post(body)
+                .addHeader("Api-Key", apiKey)  // Use API key for the first request
+                .addHeader("Content-Type", "application/json")
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                String responseBody = response.body().string();
+                Log.e("API Error", "Unexpected code " + response + " Response Body: " + responseBody);
+                throw new IOException("Unexpected code " + response + " Response Body: " + responseBody);
+            }
+
+            // Read the body once and process it
+            String responseBody = response.body().string();
+
+            StringUtils.largeLog("API Response", responseBody);
+
+            Plant plant = identifyAndGetDetails(imageData, latitude, longitude);
+
+            JSONObject jsonResponse = new JSONObject(responseBody);
+            return new HealthIdentification.Builder()
+                    .result(HealthIdentificationParser.parseHealthIdentification(jsonResponse).getResult())
+                    .plant(plant)
+                    .build();
+
+        } catch (Exception e) {
+            Log.e("API Error", "Error occurred while parsing JSON response", e);
+            try {
+                throw e;
+            } catch (ExecutionException | InterruptedException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+    }
 }
+

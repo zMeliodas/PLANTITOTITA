@@ -2,6 +2,7 @@ package com.meliodas.plantitotita.mainmodule;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -23,71 +24,194 @@ public final class Plant {
     private final String rank;
     private final List<String> synonyms;
     private final Map<String, String> imageDetails;
-    private final String edibleParts;
+    private final ArrayList<String> edibleParts;
+    private final ArrayList<String> propagationMethods;
+    private final String bestLightCondition;
+    private final String bestWatering;
+    private final String bestSoilType;
+    private final String commonUses;
+    private final String toxicity;
+    private final String culturalSignificance;
 
-    public Plant(String identification, String name, String scientificName, String family, String genus,
-                 String image, String description, String wikiUrl, List<String> commonNames,
-                 Map<String, String> taxonomy, String url, int gbifId, int inaturalistId, String rank,
-                 List<String> synonyms, Map<String, String> imageDetails, String edibleParts) {
-        this.identification = identification;
-        this.name = name;
-        this.scientificName = scientificName;
-        this.family = family;
-        this.genus = genus;
-        this.image = image;
-        this.description = description;
-        this.wikiUrl = wikiUrl;
-        this.commonNames = commonNames;
-        this.taxonomy = taxonomy;
-        this.url = url;
-        this.gbifId = gbifId;
-        this.inaturalistId = inaturalistId;
-        this.rank = rank;
-        this.synonyms = synonyms;
-        this.imageDetails = imageDetails;
-        this.edibleParts = edibleParts;
+    private Plant(Builder builder) {
+        this.identification = builder.identification;
+        this.name = builder.name;
+        this.scientificName = builder.scientificName;
+        this.family = builder.family;
+        this.genus = builder.genus;
+        this.image = builder.image;
+        this.description = builder.description;
+        this.wikiUrl = builder.wikiUrl;
+        this.commonNames = builder.commonNames;
+        this.taxonomy = builder.taxonomy;
+        this.url = builder.url;
+        this.gbifId = builder.gbifId;
+        this.inaturalistId = builder.inaturalistId;
+        this.rank = builder.rank;
+        this.synonyms = builder.synonyms;
+        this.imageDetails = builder.imageDetails;
+        this.edibleParts = builder.edibleParts;
+        this.propagationMethods = builder.propagationMethods;
+        this.bestLightCondition = builder.bestLightCondition;
+        this.bestWatering = builder.bestWatering;
+        this.bestSoilType = builder.bestSoilType;
+        this.commonUses = builder.commonUses;
+        this.toxicity = builder.toxicity;
+        this.culturalSignificance = builder.culturalSignificance;
     }
 
-    public Plant(String identification, String name, String scientificName, String family, String genus, String image, String description, String wikiUrl, List<String> commonNames, String edibleParts) {
-        this.identification = identification;
-        this.name = name;
-        this.scientificName = scientificName;
-        this.family = family;
-        this.genus = genus;
-        this.image = image;
-        this.description = description;
-        this.wikiUrl = wikiUrl;
-        this.commonNames = commonNames;
-        this.edibleParts = edibleParts;
-        this.taxonomy = Map.of();
-        this.url = "";
-        this.gbifId = 0;
-        this.inaturalistId = 0;
-        this.rank = "";
-        this.synonyms = List.of();
-        this.imageDetails = Map.of();
+    public static class Builder {
+        private String identification;
+        private String name;
+        private String scientificName;
+        private String family;
+        private String genus;
+        private String image;
+        private String description;
+        private String wikiUrl;
+        private List<String> commonNames = List.of();
+        private Map<String, String> taxonomy = Map.of();
+        private String url = "";
+        private int gbifId = 0;
+        private int inaturalistId = 0;
+        private String rank = "";
+        private List<String> synonyms = List.of();
+        private Map<String, String> imageDetails = Map.of();
+        private ArrayList<String> edibleParts = new ArrayList<>();
+        private ArrayList<String> propagationMethods = new ArrayList<>();
+        private String bestLightCondition;
+        private String bestWatering;
+        private String bestSoilType;
+        private String commonUses;
+        private String toxicity;
+        private String culturalSignificance;
+
+        public Builder identification(String identification) {
+            this.identification = identification;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder scientificName(String scientificName) {
+            this.scientificName = scientificName;
+            return this;
+        }
+
+        public Builder family(String family) {
+            this.family = family;
+            return this;
+        }
+
+        public Builder genus(String genus) {
+            this.genus = genus;
+            return this;
+        }
+
+        public Builder image(String image) {
+            this.image = image;
+            return this;
+        }
+
+        public Builder description(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder wikiUrl(String wikiUrl) {
+            this.wikiUrl = wikiUrl;
+            return this;
+        }
+
+        public Builder commonNames(List<String> commonNames) {
+            this.commonNames = commonNames;
+            return this;
+        }
+
+        public Builder taxonomy(Map<String, String> taxonomy) {
+            this.taxonomy = taxonomy;
+            return this;
+        }
+
+        public Builder url(String url) {
+            this.url = url;
+            return this;
+        }
+
+        public Builder gbifId(int gbifId) {
+            this.gbifId = gbifId;
+            return this;
+        }
+
+        public Builder inaturalistId(int inaturalistId) {
+            this.inaturalistId = inaturalistId;
+            return this;
+        }
+
+        public Builder rank(String rank) {
+            this.rank = rank;
+            return this;
+        }
+
+        public Builder synonyms(List<String> synonyms) {
+            this.synonyms = synonyms;
+            return this;
+        }
+
+        public Builder imageDetails(Map<String, String> imageDetails) {
+            this.imageDetails = imageDetails;
+            return this;
+        }
+
+        public Builder edibleParts(ArrayList<String> edibleParts) {
+            this.edibleParts = edibleParts;
+            return this;
+        }
+
+        public Builder propagationMethods(ArrayList<String> propagationMethods) {
+            this.propagationMethods = propagationMethods;
+            return this;
+        }
+
+        public Builder bestLightCondition(String bestLightCondition) {
+            this.bestLightCondition = bestLightCondition;
+            return this;
+        }
+
+        public Builder bestWatering(String bestWatering) {
+            this.bestWatering = bestWatering;
+            return this;
+        }
+
+        public Builder bestSoilType(String bestSoilType) {
+            this.bestSoilType = bestSoilType;
+            return this;
+        }
+
+        public Builder commonUses(String commonUses) {
+            this.commonUses = commonUses;
+            return this;
+        }
+
+        public Builder toxicity(String toxicity) {
+            this.toxicity = toxicity;
+            return this;
+        }
+
+        public Builder culturalSignificance(String culturalSignificance) {
+            this.culturalSignificance = culturalSignificance;
+            return this;
+        }
+
+        public Plant build() {
+            return new Plant(this);
+        }
     }
 
-    public Plant(String identification, String plantName, String plantScientificName, String family, String genus, String plantImage, String description, String wikiUrl, String edibleParts) {
-        this.identification = identification;
-        this.name = plantName;
-        this.scientificName = plantScientificName;
-        this.family = family;
-        this.genus = genus;
-        this.image = plantImage;
-        this.description = description;
-        this.wikiUrl = wikiUrl;
-        this.edibleParts = edibleParts;
-        this.commonNames = List.of();
-        this.taxonomy = Map.of();
-        this.url = "";
-        this.gbifId = 0;
-        this.inaturalistId = 0;
-        this.rank = "";
-        this.synonyms = List.of();
-        this.imageDetails = Map.of();
-    }
-
+    // Getters for all fields
     public String identification() {
         return identification;
     }
@@ -152,59 +276,64 @@ public final class Plant {
         return imageDetails;
     }
 
-    public String edibleParts() {
+    public ArrayList<String> edibleParts() {
         return edibleParts;
     }
+    public ArrayList<String> propagationMethods() {
+        return propagationMethods;
+    }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this) return true;
-        if (obj == null || obj.getClass() != this.getClass()) return false;
-        var that = (Plant) obj;
-        return Objects.equals(this.identification, that.identification) &&
-                Objects.equals(this.name, that.name) &&
-                Objects.equals(this.scientificName, that.scientificName) &&
-                Objects.equals(this.family, that.family) &&
-                Objects.equals(this.genus, that.genus) &&
-                Objects.equals(this.image, that.image) &&
-                Objects.equals(this.description, that.description) &&
-                Objects.equals(this.wikiUrl, that.wikiUrl) &&
-                Objects.equals(this.commonNames, that.commonNames) &&
-                Objects.equals(this.taxonomy, that.taxonomy) &&
-                Objects.equals(this.url, that.url) &&
-                this.gbifId == that.gbifId &&
-                this.inaturalistId == that.inaturalistId &&
-                Objects.equals(this.rank, that.rank) &&
-                Objects.equals(this.synonyms, that.synonyms) &&
-                Objects.equals(this.imageDetails, that.imageDetails) &&
-                Objects.equals(this.edibleParts, that.edibleParts);
+    public String bestLightCondition() {
+        return bestLightCondition;
+    }
+
+    public String bestWatering() {
+        return bestWatering;
+    }
+
+    public String bestSoilType() {
+        return bestSoilType;
+    }
+
+    public String commonUses() {
+        return commonUses;
+    }
+
+    public String toxicity() {
+        return toxicity;
+    }
+
+    public String culturalSignificance() {
+        return culturalSignificance;
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(identification, name, scientificName, family, genus, image, description, wikiUrl,
-                commonNames, taxonomy, url, gbifId, inaturalistId, rank, synonyms, imageDetails, edibleParts);
-    }
-
-    @Override
-    public @NotNull String toString() {
-        return "Plant[" +
-                "identification=" + identification + ", " +
-                "name=" + name + ", " +
-                "scientificName=" + scientificName + ", " +
-                "family=" + family + ", " +
-                "genus=" + genus + ", " +
-                "image=" + image + ", " +
-                "description=" + description + ", " +
-                "wikiUrl=" + wikiUrl + ", " +
-                "commonNames=" + commonNames + ", " +
-                "taxonomy=" + taxonomy + ", " +
-                "url=" + url + ", " +
-                "gbifId=" + gbifId + ", " +
-                "inaturalistId=" + inaturalistId + ", " +
-                "rank=" + rank + ", " +
-                "synonyms=" + synonyms + ", " +
-                "imageDetails=" + imageDetails + "," +
-                "edibleParts=" + edibleParts + "]";
+    public String toString() {
+        return "Plant{" +
+                "identification='" + identification + '\'' +
+                ", name='" + name + '\'' +
+                ", scientificName='" + scientificName + '\'' +
+                ", family='" + family + '\'' +
+                ", genus='" + genus + '\'' +
+                ", image='" + image + '\'' +
+                ", description='" + description + '\'' +
+                ", wikiUrl='" + wikiUrl + '\'' +
+                ", commonNames=" + commonNames +
+                ", taxonomy=" + taxonomy +
+                ", url='" + url + '\'' +
+                ", gbifId=" + gbifId +
+                ", inaturalistId=" + inaturalistId +
+                ", rank='" + rank + '\'' +
+                ", synonyms=" + synonyms +
+                ", imageDetails=" + imageDetails +
+                ", edibleParts=" + edibleParts +
+                ", propagationMethods=" + propagationMethods +
+                ", bestLightCondition='" + bestLightCondition + '\'' +
+                ", bestWatering='" + bestWatering + '\'' +
+                ", bestSoilType='" + bestSoilType + '\'' +
+                ", commonUses='" + commonUses + '\'' +
+                ", toxicity='" + toxicity + '\'' +
+                ", culturalSignificance='" + culturalSignificance + '\'' +
+                '}';
     }
 }

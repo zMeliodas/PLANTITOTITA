@@ -41,6 +41,7 @@ import kotlin.io.ByteStreamsKt;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -88,7 +89,7 @@ public class ArSceneActivity extends AppCompatActivity {
             throw new IllegalStateException("Cannot find AR fragment");
         }
 
-        plant = new Plant("", "", "", "", "", "", "", "", List.of(),"");
+        plant = new Plant.Builder().build();
         arFragment.getPlaneDiscoveryController().hide();
 
         ViewRenderable.builder()
@@ -138,8 +139,8 @@ public class ArSceneActivity extends AppCompatActivity {
         View view = getLayoutInflater().inflate(R.layout.aadisplay, null);
         TextView plantNameText = view.findViewById(R.id.plantName);
         TextView scientificNameText = view.findViewById(R.id.plantScientificName);
-        plantNameText.setText(plantName);
-        scientificNameText.setText(scientificName);
+        plantNameText.setText(StringUtils.capitalize(plantName));
+        scientificNameText.setText(StringUtils.capitalize(scientificName));
         view.setOnClickListener(v -> {
             // TODO: change from start activity to adding a fragment to the stack
             Intent intent = new Intent(this, PlantInformationActivity.class);
@@ -147,7 +148,17 @@ public class ArSceneActivity extends AppCompatActivity {
             intent.putExtra("plantScientificName", plant.scientificName() != null ? plant.scientificName() : "");
             intent.putExtra("identification", plant.identification() != null ? plant.identification() : "");
             intent.putExtra("description", plant.description() != null ? plant.description() : "");
-            intent.putExtra("edibleParts", plant.edibleParts() != null ? plant.edibleParts() : "");
+            intent.putExtra("edibleParts", plant.edibleParts() != null ? plant.edibleParts() : new ArrayList<>());
+            intent.putExtra("propagationMethods", plant.propagationMethods() != null ? plant.propagationMethods() : new ArrayList<>());
+            intent.putExtra("commonUses", plant.commonUses() != null ? plant.commonUses() : "");
+            intent.putExtra("toxicity", plant.toxicity() != null ? plant.toxicity() : "");
+            intent.putExtra("culturalSignificance", plant.culturalSignificance() != null ? plant.culturalSignificance() : "");
+            intent.putExtra("bestLightCondition", plant.bestLightCondition() != null ? plant.bestLightCondition() : "");
+            intent.putExtra("bestSoilType", plant.bestSoilType() != null ? plant.bestSoilType() : "");
+            intent.putExtra("bestWatering", plant.bestWatering() != null ? plant.bestWatering() : "");
+
+            Log.d("ArSceneActivity", "createView: " + plant.toString());
+
             startActivity(intent);
         });
         return view;
