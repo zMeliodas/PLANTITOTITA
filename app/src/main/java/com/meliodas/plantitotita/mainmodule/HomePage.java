@@ -30,6 +30,7 @@ import com.google.firebase.firestore.*;
 import com.meliodas.plantitotita.R;
 import com.meliodas.plantitotita.fragments.HomePageFragment;
 import com.meliodas.plantitotita.fragments.PlantGalleryFragment;
+import com.meliodas.plantitotita.fragments.PlantHealthAssessmentFragment;
 import com.meliodas.plantitotita.loginmodule.WelcomePage;
 import com.squareup.picasso.Picasso;
 
@@ -86,12 +87,10 @@ public class HomePage extends AppCompatActivity {
             return;
         }
 
-        new AlertDialog.Builder(this)
-                .setMessage("Are you sure you want to exit?")
-                .setPositiveButton("Yes", (dialog, which) -> finish())
-                .setNegativeButton("No", null)
-                .show();
-
+        showDialog("Are you sure you want to exit the app?",
+                "Yes",
+                "No",
+                this::finish);
     }
 
     public void insertInitialValue() {
@@ -145,14 +144,25 @@ public class HomePage extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(), AboutUsPage.class));
     }
 
-
     public void onClickPlantGallery(MenuItem item) {
         replaceFragment(new PlantGalleryFragment());
         drawerLayout.close();
     }
 
+    public void onClickPlantHealthAssessment(MenuItem item) {
+        replaceFragment(new PlantHealthAssessmentFragment());
+        drawerLayout.close();
+    }
+
     public void onClickLogout(MenuItem item) {
-        showDialog();
+        showDialog("Are you sure you want to log out? You will need to log in again to access your account.",
+                "Yes",
+                "No",
+                () -> {
+                    FirebaseAuth.getInstance().signOut();
+                    startActivity(new Intent(this, WelcomePage.class));
+                    finish();
+                });
     }
 
     private void replaceFragment(Fragment fragment) {
@@ -163,7 +173,7 @@ public class HomePage extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    private void showDialog() {
+    private void showDialog(String message, String positiveButtonText, String negativeButtonText, Runnable positiveAction) {
         View view = LayoutInflater.from(this).inflate(R.layout.custom_alert_dialog_log_out, null);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -171,15 +181,22 @@ public class HomePage extends AppCompatActivity {
 
         final AlertDialog alertDialog = builder.create();
 
+        TextView dialogMessage = view.findViewById(R.id.dialogMessage);
         Button continueButton = view.findViewById(R.id.dialogContinueButton);
         Button continueButton1 = view.findViewById(R.id.dialogContinueButton1);
 
+        // Set the message
+        dialogMessage.setText(message);
+
+        // Set the positive button action
+        continueButton.setText(positiveButtonText);
         continueButton.setOnClickListener(view1 -> {
-            FirebaseAuth.getInstance().signOut();
-            startActivity(new Intent(this, WelcomePage.class));
-            finish();
+            positiveAction.run();
+            alertDialog.dismiss();
         });
 
+        // Set the negative button action
+        continueButton1.setText(negativeButtonText);
         continueButton1.setOnClickListener(view1 -> {
             alertDialog.dismiss();
             drawerLayout.close();

@@ -17,6 +17,12 @@
                     android:icon="@drawable/book_svgrepo_com"
                     android:onClick="onClickPlantGallery"
                     android:title="Plant Gallery"/>
+
+            <item
+                    android:id="@+id/plantHealthAssessmentNavMenu"
+                    android:icon="@mipmap/health_icon"
+                    android:onClick="onClickPlantHealthAssessment"
+                    android:title="Plant Health Assessment"/>
         </menu>
     </item>
 

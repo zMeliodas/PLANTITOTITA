@@ -83,49 +83,122 @@
                 app:layout_constraintStart_toStartOf="parent"
                 android:scrollbars="none">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <!-- LinearLayout to hold multiple scrollable items -->
+            <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent">
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:orientation="horizontal">
 
-                <Button
-                        android:id="@+id/gettingStartedButton"
+                <!-- First Scrollable Item -->
+                <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="135dp"
                         android:layout_height="120dp"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        android:layout_marginTop="45dp"
-                        android:layout_marginStart="10dp"
-                        android:background="@drawable/custom_container_green">
-                </Button>
+                        android:id="@+id/getStartedLayout1"
+                        android:background="@drawable/custom_container_green"
+                        android:layout_marginEnd="8dp"> <!-- Space between items -->
 
-                <Button
-                        android:id="@+id/exploringPlantInfoButton"
+                    <Button
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:id="@+id/getStartedContainerIcon1"
+                            android:layout_marginTop="20dp"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:background="@mipmap/get_started_ar_icon" />
+
+                    <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="5dp"
+                            android:id="@+id/plantIDName1"
+                            app:layout_constraintTop_toBottomOf="@id/getStartedContainerIcon1"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:text="Getting Started: Scan a Plant"
+                            android:textAlignment="center"
+                            android:fontFamily="@font/mada_medium"
+                            android:textSize="12sp"
+                            android:textColor="@color/PLANTITOyellow"
+                            app:layout_constraintEnd_toEndOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- Second Scrollable Item -->
+                <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="135dp"
                         android:layout_height="120dp"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/gettingStartedButton"
-                        android:layout_marginTop="45dp"
-                        android:layout_marginStart="10dp"
-                        android:background="@drawable/custom_container_green">
-                </Button>
+                        android:id="@+id/getStartedLayout2"
+                        android:background="@drawable/custom_container_green"
+                        android:layout_marginEnd="8dp">
 
-                <Button
-                        android:id="@+id/profileSetupButton"
+                    <Button
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:id="@+id/getStartedContainerIcon2"
+                            android:layout_marginTop="20dp"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:background="@mipmap/get_started_plant_gallery_icon" />
+
+                    <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="5dp"
+                            android:id="@+id/plantIDName2"
+                            app:layout_constraintTop_toBottomOf="@id/getStartedContainerIcon2"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:text="Plant Gallery: Explore Plants"
+                            android:textAlignment="center"
+                            android:fontFamily="@font/mada_medium"
+                            android:textSize="12sp"
+                            android:textColor="@color/PLANTITOyellow"
+                            app:layout_constraintEnd_toEndOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- Additional scrollable items can be added here -->
+
+                <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="135dp"
                         android:layout_height="120dp"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/exploringPlantInfoButton"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginTop="45dp"
-                        android:layout_marginStart="10dp"
-                        android:background="@drawable/custom_container_green">
-                </Button>
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                        android:id="@+id/getStartedLayout3"
+                        android:background="@drawable/custom_container_green"
+                        android:layout_marginEnd="8dp">
+
+                    <Button
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:id="@+id/getStartedContainerIcon3"
+                            android:layout_marginTop="20dp"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:background="@mipmap/get_started_profile_icon" />
+
+                    <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="5dp"
+                            android:id="@+id/plantIDName3"
+                            app:layout_constraintTop_toBottomOf="@id/getStartedContainerIcon3"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:text="Profile Setup: Personalize Your Experience"
+                            android:textAlignment="center"
+                            android:fontFamily="@font/mada_medium"
+                            android:textSize="12sp"
+                            android:textColor="@color/PLANTITOyellow"
+                            app:layout_constraintEnd_toEndOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
         </HorizontalScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -180,11 +253,8 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginTop="40dp"
+                    >
 
-                    android:padding="10dp">
-                <TextView android:layout_width="match_parent" android:layout_height="match_parent" android:text="huh">
-
-                </TextView>
             </LinearLayout>
         </ScrollView>
 

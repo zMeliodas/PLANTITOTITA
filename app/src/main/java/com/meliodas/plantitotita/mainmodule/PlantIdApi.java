@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
+import java.io.Console;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.ArrayList;
@@ -100,6 +101,7 @@ public class PlantIdApi {
             String image = plantData.getJSONObject("image").getString("value");
             String description = plantData.getJSONObject("description").getString("value");
             String wikiUrl = plantData.getJSONObject("url").getString("value");
+            String edibleParts = plantData.getJSONObject("edible_parts").getString("value");
 
             List<String> commonNames = new ArrayList<>();
             JSONArray commonNamesArray = plantData.getJSONObject("common_names").getJSONArray("value");
@@ -109,7 +111,7 @@ public class PlantIdApi {
 
             String commonName = commonNames.isEmpty() ? "No Common Name" : commonNames.get(0);
 
-            return new Plant(plantId, commonName, scientificName, family, genus, image, description, wikiUrl, commonNames);
+            return new Plant(plantId, commonName, scientificName, family, genus, image, description, wikiUrl, commonNames, edibleParts);
         }
     }
 
@@ -202,7 +204,9 @@ public class PlantIdApi {
 
             String commonName = commonNames.isEmpty() ? "No Common Name" : commonNames.get(0);
 
-            return new Plant(accessToken, commonName, scientificName, family, genus, image, description, wikiUrl, commonNames);
+            String edibleParts = jsonResponse.getJSONObject("edible_parts").getString("value");
+
+            return new Plant(accessToken, commonName, scientificName, family, genus, image, description, wikiUrl, commonNames,edibleParts);
         }
     }
 

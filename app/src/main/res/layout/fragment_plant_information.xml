@@ -33,13 +33,17 @@
                 android:id="@+id/plantInformationName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="120dp"
+                android:layout_marginTop="100dp"
                 android:layout_marginBottom="-10dp"
                 android:fontFamily="@font/mada_medium"
                 android:text="Plant Name"
                 android:textAlignment="center"
                 android:textColor="@color/PLANTITOyellow"
                 android:textSize="42sp"
+                android:clickable="false"
+                android:longClickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
                 app:layout_constraintBottom_toTopOf="@id/plantInformationScientificName"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -55,6 +59,10 @@
                 android:textAlignment="center"
                 android:textColor="@color/PLANTITOyellow"
                 android:textSize="20sp"
+                android:clickable="false"
+                android:longClickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
                 app:layout_constraintBottom_toTopOf="@+id/plantInformationContainer"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -80,38 +88,65 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent" app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintVertical_bias="0.0">
 
-                <TextView
-                        android:id="@+id/plantInformationDescription"
+                <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/mada"
-                        android:paddingStart="15dp"
-                        android:paddingTop="10dp"
-                        android:paddingEnd="10dp"
-                        android:paddingBottom="10dp"
-                        android:text="Plant description goes here"
-                        android:textColor="@color/PLANTITOblack"
-                        android:textSize="18sp" />
+                        android:layout_height="match_parent">
+                    <TextView
+                            android:id="@+id/plantInformationDescription"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/mada"
+                            android:paddingStart="15dp"
+                            android:paddingTop="10dp"
+                            android:paddingEnd="10dp"
+                            android:paddingBottom="10dp"
+                            android:text="Plant description goes here"
+                            android:textColor="@color/PLANTITOblack"
+                            android:textSize="18sp"/>
 
+                    <TextView
+                            android:id="@+id/edibleParts"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/plantInformationDescription"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/mada_black"
+                            android:paddingStart="15dp"
+                            android:paddingTop="10dp"
+                            android:paddingEnd="10dp"
+                            android:paddingBottom="10dp"
+                            android:text="Edible parts goes here"
+                            android:textColor="@color/PLANTITOblack"
+                            android:textSize="24sp"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </ScrollView>
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/plantInfoImage"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:background="@drawable/custom_button_nav_bar"
-            android:scaleType="centerCrop"
-            android:src="@drawable/sad"
+    <androidx.cardview.widget.CardView
             app:layout_constraintBottom_toTopOf="@id/plantInformationConstraint"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/plantInformationConstraint"
-            app:layout_constraintVertical_bias="0.3"
-            app:shapeAppearanceOverlay="@style/roundedCorners1" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="100dp"
+            app:cardElevation="20dp">
 
+        <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:id="@+id/plantInfoImage"
+                android:src="@drawable/sad"
+                app:shapeAppearanceOverlay="@style/roundedCorners1" />
+
+    </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

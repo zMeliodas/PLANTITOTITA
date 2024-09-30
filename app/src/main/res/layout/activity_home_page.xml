@@ -32,14 +32,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_constraintBottom_toTopOf="@id/navBar"
-                android:layout_marginBottom="50dp"
+                android:layout_marginBottom="35dp"
                 android:id="@+id/frameLayout">
         </FrameLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                app:layout_constraintHeight_percent="0.13"
+                app:layout_constraintHeight_percent="0.11"
                 android:id="@+id/navBar"
                 android:background="@drawable/custom_shape_nav_bar"
                 app:layout_constraintStart_toStartOf="parent"
@@ -47,8 +47,8 @@
                 app:layout_constraintBottom_toBottomOf="parent">
 
             <Button
-                    android:layout_width="55dp"
-                    android:layout_height="55dp"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
                     android:id="@+id/navBarBurger"
                     android:onClick="onClickNavBurger"
                     android:layout_marginStart="24dp"
@@ -59,8 +59,8 @@
             </Button>
 
             <Button
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:id="@+id/navBarHome"
                     android:onClick="onClickHome"
                     android:layout_marginEnd="24dp"
@@ -72,8 +72,8 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageButton
-                android:layout_width="90dp"
-                android:layout_height="90dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:id="@+id/navBarCamButton"
                 android:background="@drawable/custom_button_nav_bar"
                 android:src="@drawable/camera_icon_nav_bar"

@@ -1,12 +1,19 @@
 package com.meliodas.plantitotita.mainmodule;
 
+import android.Manifest;
+import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Point;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.*;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.PixelCopy;
 import android.view.View;
@@ -14,12 +21,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import com.google.ar.core.Anchor;
-import com.google.ar.core.Frame;
-import com.google.ar.core.HitResult;
-import com.google.ar.core.Plane;
-import com.google.ar.core.Pose;
-import com.google.ar.core.TrackingState;
+import androidx.core.app.ActivityCompat;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.ar.core.*;
 import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.ArSceneView;
 import com.google.ar.sceneform.FrameTime;
@@ -54,7 +60,13 @@ public class ArSceneActivity extends AppCompatActivity {
     private DatabaseManager databaseManager;
 
     private String plantName = "Plant Name";
+    private String plantScientificName = "Plant Scientific Name";
     private Plant plant;
+
+    private FusedLocationProviderClient fusedLocationClient;
+    private AlertDialog locationDialog;
+    private double latitude = 0.0;
+    private double longitude = 0.0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,15 +77,22 @@ public class ArSceneActivity extends AppCompatActivity {
         plantIdApi = new PlantIdApi();
         databaseManager = new DatabaseManager();
 
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        checkIfLocationIsEnabled();
+
+        // Request location updates and permissions
+        requestLocation();
+
         if (arFragment == null) {
             throw new IllegalStateException("Cannot find AR fragment");
         }
 
-        plant = new Plant("", "", "", "", "", "", "", "", List.of());
+        plant = new Plant("", "", "", "", "", "", "", "", List.of(),"");
         arFragment.getPlaneDiscoveryController().hide();
 
         ViewRenderable.builder()
-                .setView(this, createView(plantName))
+                .setView(this, createView(plantName, plantScientificName))
                 .setSizer(new FixedHeightViewSizer(0.15f))
                 .build()
                 .thenAccept(renderable -> {
@@ -90,15 +109,45 @@ public class ArSceneActivity extends AppCompatActivity {
         arFragment.getArSceneView().getScene().addOnUpdateListener(this::onSceneUpdate);
     }
 
-    private View createView(String text) {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Re-check if location is enabled when the user comes back from the settings screen
+        checkIfLocationIsEnabled();
+
+        // Re-check if location is enabled when the user comes back from the settings screen
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        boolean isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+        if (isGpsEnabled || isNetworkEnabled) {
+            // Location is enabled, dismiss the dialog if it's showing
+            if (locationDialog != null && locationDialog.isShowing()) {
+                locationDialog.dismiss();
+            }
+            // Continue with the app's functionality
+            requestLocation();
+        } else {
+            // Location is still disabled, show the dialog again
+            showLocationAlertDialog();
+        }
+    }
+
+
+    private View createView(String plantName, String scientificName) {
         View view = getLayoutInflater().inflate(R.layout.aadisplay, null);
-        TextView textView = view.findViewById(R.id.plantName);
-        textView.setText(text);
+        TextView plantNameText = view.findViewById(R.id.plantName);
+        TextView scientificNameText = view.findViewById(R.id.plantScientificName);
+        plantNameText.setText(plantName);
+        scientificNameText.setText(scientificName);
         view.setOnClickListener(v -> {
+            // TODO: change from start activity to adding a fragment to the stack
             Intent intent = new Intent(this, PlantInformationActivity.class);
-            intent.putExtra("plantName", plantName);
+            intent.putExtra("plantName", this.plantName);
+            intent.putExtra("plantScientificName", plant.scientificName() != null ? plant.scientificName() : "");
             intent.putExtra("identification", plant.identification() != null ? plant.identification() : "");
             intent.putExtra("description", plant.description() != null ? plant.description() : "");
+            intent.putExtra("edibleParts", plant.edibleParts() != null ? plant.edibleParts() : "");
             startActivity(intent);
         });
         return view;
@@ -110,6 +159,12 @@ public class ArSceneActivity extends AppCompatActivity {
             public void run() {
                 updateTextPosition();
                 handler.postDelayed(this, UPDATE_INTERVAL_MS);
+
+                Session session = arFragment.getArSceneView().getSession();
+                Config config = session.getConfig();
+                config.setFocusMode(Config.FocusMode.AUTO);
+
+                session.configure(config);
             }
         }, UPDATE_INTERVAL_MS);
     }
@@ -265,16 +320,17 @@ public class ArSceneActivity extends AppCompatActivity {
                 }
 
                 byte[] imageBytes = ByteStreamsKt.readBytes(inputStream);
-                Plant plant = plantIdApi.identifyAndGetDetails(imageBytes, 0, 0);
+                Plant plant = plantIdApi.identifyAndGetDetails(imageBytes, latitude, longitude);
 
                 // Store plant identification data in the database
                 databaseManager.addIdentification(plant, FirebaseAuth.getInstance().getUid());
 
                 // Update the plant name and refresh the AR text
                 plantName = plant.name();
+                plantScientificName = plant.scientificName();
                 this.plant = plant;
                 runOnUiThread(() -> {
-                    updateArText(plantName);
+                    updateArText(plantName, plantScientificName);
                     Toast.makeText(ArSceneActivity.this, plant.toString(), Toast.LENGTH_SHORT).show();
                 });
             } catch (Exception e) {
@@ -284,9 +340,9 @@ public class ArSceneActivity extends AppCompatActivity {
         }).start();
     }
 
-    private void updateArText(String newText) {
+    private void updateArText(String plantName, String plantScientificName) {
         ViewRenderable.builder()
-                .setView(this, createView(newText))
+                .setView(this, createView(plantName, plantScientificName))
                 .setSizer(new FixedHeightViewSizer(0.15f))
                 .build()
                 .thenAccept(renderable -> {
@@ -304,5 +360,75 @@ public class ArSceneActivity extends AppCompatActivity {
                 });
     }
 
+    private void requestLocation() {
+        // Check if the location permission is granted
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // Request the location permissions if not granted
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            return;
+        }
+
+        // Get the last known location
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this, location -> {
+                    if (location != null) {
+                        latitude = location.getLatitude();
+                        longitude = location.getLongitude();
+                        Log.d(TAG, "Current Location: Latitude = " + latitude + ", Longitude = " + longitude);
+                    } else {
+                        Log.e(TAG, "Location is null");
+                    }
+                });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            requestLocation();
+        }
+    }
+
+    private void checkIfLocationIsEnabled() {
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+        boolean isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+        if (!isGpsEnabled && !isNetworkEnabled) {
+            showLocationAlertDialog();
+        } else {
+            requestLocation();
+        }
+    }
+
+    private void showLocationAlertDialog() {
+        if (locationDialog != null && locationDialog.isShowing()) {
+            return; // Don't create a new dialog if one is already showing
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Enable Location")
+                .setMessage("Location services are required for this feature. Please enable location services.")
+                .setPositiveButton("Go to Settings", (dialog, which) -> {
+                    // Launch the location settings
+                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(intent);
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> {
+                    // Dismiss the dialog and redirect to the HomePage activity
+                    dialog.dismiss();
+                    Toast.makeText(ArSceneActivity.this, "Location services are disabled", Toast.LENGTH_SHORT).show();
+                    // Redirect user to HomePage activity
+                    Intent intent = new Intent(ArSceneActivity.this, HomePage.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish(); // Finish ArSceneActivity so the user cannot go back to it without enabling location
+                })
+                .setCancelable(false);
+
+        locationDialog = builder.create();
+        locationDialog.show();
+    }
 
 }

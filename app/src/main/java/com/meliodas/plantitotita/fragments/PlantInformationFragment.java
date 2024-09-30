@@ -25,8 +25,10 @@ public class PlantInformationFragment extends Fragment {
 
         View backButton = view.findViewById(R.id.btnReturnPlantInfo);
         backButton.setOnClickListener(v -> {
+            PlantGalleryFragment plantGalleryFragment = new PlantGalleryFragment();
             FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-            transaction.remove(this);
+            transaction.replace(R.id.frameLayout, plantGalleryFragment);
+            transaction.addToBackStack(null);
             transaction.commit();
         });
 
@@ -41,6 +43,7 @@ public class PlantInformationFragment extends Fragment {
             String sciName = args.getString("scientificName", "");
             String desc = args.getString("description", "");
             String imageUrl = args.getString("image", "");
+            String edibleParts = args.getString("edibleParts", "");
 
             plantName.setText(name);
             scientificName.setText(sciName);

@@ -23,11 +23,12 @@ public final class Plant {
     private final String rank;
     private final List<String> synonyms;
     private final Map<String, String> imageDetails;
+    private final String edibleParts;
 
     public Plant(String identification, String name, String scientificName, String family, String genus,
                  String image, String description, String wikiUrl, List<String> commonNames,
                  Map<String, String> taxonomy, String url, int gbifId, int inaturalistId, String rank,
-                 List<String> synonyms, Map<String, String> imageDetails) {
+                 List<String> synonyms, Map<String, String> imageDetails, String edibleParts) {
         this.identification = identification;
         this.name = name;
         this.scientificName = scientificName;
@@ -44,9 +45,10 @@ public final class Plant {
         this.rank = rank;
         this.synonyms = synonyms;
         this.imageDetails = imageDetails;
+        this.edibleParts = edibleParts;
     }
 
-    public Plant(String identification, String name, String scientificName, String family, String genus, String image, String description, String wikiUrl, List<String> commonNames) {
+    public Plant(String identification, String name, String scientificName, String family, String genus, String image, String description, String wikiUrl, List<String> commonNames, String edibleParts) {
         this.identification = identification;
         this.name = name;
         this.scientificName = scientificName;
@@ -56,6 +58,7 @@ public final class Plant {
         this.description = description;
         this.wikiUrl = wikiUrl;
         this.commonNames = commonNames;
+        this.edibleParts = edibleParts;
         this.taxonomy = Map.of();
         this.url = "";
         this.gbifId = 0;
@@ -65,7 +68,7 @@ public final class Plant {
         this.imageDetails = Map.of();
     }
 
-    public Plant(String identification, String plantName, String plantScientificName, String family, String genus, String plantImage, String description, String wikiUrl) {
+    public Plant(String identification, String plantName, String plantScientificName, String family, String genus, String plantImage, String description, String wikiUrl, String edibleParts) {
         this.identification = identification;
         this.name = plantName;
         this.scientificName = plantScientificName;
@@ -74,6 +77,7 @@ public final class Plant {
         this.image = plantImage;
         this.description = description;
         this.wikiUrl = wikiUrl;
+        this.edibleParts = edibleParts;
         this.commonNames = List.of();
         this.taxonomy = Map.of();
         this.url = "";
@@ -148,6 +152,10 @@ public final class Plant {
         return imageDetails;
     }
 
+    public String edibleParts() {
+        return edibleParts;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == this) return true;
@@ -168,13 +176,14 @@ public final class Plant {
                 this.inaturalistId == that.inaturalistId &&
                 Objects.equals(this.rank, that.rank) &&
                 Objects.equals(this.synonyms, that.synonyms) &&
-                Objects.equals(this.imageDetails, that.imageDetails);
+                Objects.equals(this.imageDetails, that.imageDetails) &&
+                Objects.equals(this.edibleParts, that.edibleParts);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(identification, name, scientificName, family, genus, image, description, wikiUrl,
-                commonNames, taxonomy, url, gbifId, inaturalistId, rank, synonyms, imageDetails);
+                commonNames, taxonomy, url, gbifId, inaturalistId, rank, synonyms, imageDetails, edibleParts);
     }
 
     @Override
@@ -195,6 +204,7 @@ public final class Plant {
                 "inaturalistId=" + inaturalistId + ", " +
                 "rank=" + rank + ", " +
                 "synonyms=" + synonyms + ", " +
-                "imageDetails=" + imageDetails + ']';
+                "imageDetails=" + imageDetails + "," +
+                "edibleParts=" + edibleParts + "]";
     }
 }
