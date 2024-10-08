@@ -41,10 +41,7 @@ import kotlin.io.ByteStreamsKt;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 import static android.content.ContentValues.TAG;
 
@@ -134,7 +131,6 @@ public class ArSceneActivity extends AppCompatActivity {
         }
     }
 
-
     private View createView(String plantName, String scientificName) {
         View view = getLayoutInflater().inflate(R.layout.aadisplay, null);
         TextView plantNameText = view.findViewById(R.id.plantName);
@@ -146,6 +142,7 @@ public class ArSceneActivity extends AppCompatActivity {
             Intent intent = new Intent(this, PlantInformationActivity.class);
             intent.putExtra("plantName", this.plantName);
             intent.putExtra("plantScientificName", plant.scientificName() != null ? plant.scientificName() : "");
+            intent.putExtra("image", plant.image() != null ? plant.image() : "");
             intent.putExtra("identification", plant.identification() != null ? plant.identification() : "");
             intent.putExtra("description", plant.description() != null ? plant.description() : "");
             intent.putExtra("edibleParts", plant.edibleParts() != null ? plant.edibleParts() : new ArrayList<>());
@@ -156,6 +153,7 @@ public class ArSceneActivity extends AppCompatActivity {
             intent.putExtra("bestLightCondition", plant.bestLightCondition() != null ? plant.bestLightCondition() : "");
             intent.putExtra("bestSoilType", plant.bestSoilType() != null ? plant.bestSoilType() : "");
             intent.putExtra("bestWatering", plant.bestWatering() != null ? plant.bestWatering() : "");
+            intent.putExtra("taxonomy", new HashMap<>(plant.taxonomy()));
 
             Log.d("ArSceneActivity", "createView: " + plant.toString());
 
@@ -440,6 +438,11 @@ public class ArSceneActivity extends AppCompatActivity {
 
         locationDialog = builder.create();
         locationDialog.show();
+    }
+
+    public void onClickReturnAR(View v) {
+        startActivity(new Intent(getApplicationContext(), HomePage.class));
+        finish();
     }
 
 }

@@ -22,10 +22,7 @@ import com.meliodas.plantitotita.R;
 import com.meliodas.plantitotita.mainmodule.*;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class HomePageFragment extends Fragment {
 
@@ -104,12 +101,14 @@ public class HomePageFragment extends Fragment {
                     .description((String) scan.getOrDefault("description", "No Description"))
                     .wikiUrl((String) scan.getOrDefault("wikiUrl", ""))
                     .edibleParts((ArrayList<String>) scan.getOrDefault("edibleParts", new ArrayList<>()))
+                    .propagationMethods((ArrayList<String>) scan.getOrDefault("propagationMethods", new ArrayList<>()))
                     .bestLightCondition((String) scan.getOrDefault("bestLightCondition", "Unknown Light Condition"))
                     .bestSoilType((String) scan.getOrDefault("bestSoilType", "Unknown Soil Type"))
                     .bestWatering((String) scan.getOrDefault("bestWatering", "Unknown Watering"))
                     .toxicity((String) scan.getOrDefault("toxicity", "Unknown Toxicity"))
                     .culturalSignificance((String) scan.getOrDefault("culturalSignificance", "Unknown Cultural Significance"))
                     .commonUses((String) scan.getOrDefault("commonUses", "Unknown Uses"))
+                    .taxonomy((HashMap<String, String>) scan.getOrDefault("taxonomy", new HashMap<>()))
                     .build();
 
             View scanView = createScanView(plant);
@@ -155,16 +154,17 @@ public class HomePageFragment extends Fragment {
             Bundle args = new Bundle();
             args.putString("plantName", capitalizedName);
             args.putString("scientificName", StringUtils.capitalize(plant.scientificName()));
-            args.putString("description", StringUtils.capitalize(plant.description()));
+            args.putString("description", plant.description());
             args.putString("image", plant.image());
             args.putStringArrayList("edibleParts", plant.edibleParts());
             args.putStringArrayList("propagationMethods", plant.propagationMethods());
-            args.putString("commonUses", StringUtils.capitalize(plant.commonUses()));
-            args.putString("culturalSignificance", StringUtils.capitalize(plant.culturalSignificance()));
-            args.putString("toxicity", StringUtils.capitalize(plant.toxicity()));
-            args.putString("bestLightCondition", StringUtils.capitalize(plant.bestLightCondition()));
-            args.putString("bestSoilType", StringUtils.capitalize(plant.bestSoilType()));
-            args.putString("bestWatering", StringUtils.capitalize(plant.bestWatering()));
+            args.putString("commonUses", plant.commonUses());
+            args.putString("culturalSignificance", plant.culturalSignificance());
+            args.putString("toxicity", plant.toxicity());
+            args.putString("bestLightCondition", plant.bestLightCondition());
+            args.putString("bestSoilType", plant.bestSoilType());
+            args.putString("bestWatering", plant.bestWatering());
+            args.putSerializable("taxonomy", new HashMap<>(plant.taxonomy()));
             plantInfoFragment.setArguments(args);
 
             getParentFragmentManager().beginTransaction()

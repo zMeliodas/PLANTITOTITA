@@ -29,6 +29,7 @@
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="150dp">
 
+
         <TextView
                 android:id="@+id/plantInformationName"
                 android:layout_width="0dp"
@@ -82,308 +83,504 @@
                 app:layout_constraintTop_toBottomOf="@id/plantInformationScientificName">
 
             <ScrollView
+                    android:id="@+id/scrollViewPlantInfo"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scrollbars="none"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintVertical_bias="0.0">
+                    app:layout_constraintTop_toTopOf="parent"
+
+                    android:paddingTop="1.7dp"
+                    android:paddingBottom="1.7dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                        android:animateLayoutChanges="true"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
-                    <TextView
-                            android:id="@+id/plantInformationDescriptionTitle"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
+
+                    <androidx.cardview.widget.CardView
+                            android:id="@+id/cardView1"
+                            android:backgroundTint="@color/PLANTITOyellow"
+                            android:animateLayoutChanges="true"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/mada_black"
-                            android:paddingStart="15dp"
-                            android:paddingTop="10dp"
-                            android:paddingEnd="10dp"
-                            android:paddingBottom="10dp"
-                            android:text="Description"
-                            android:textColor="@color/PLANTITOblack"
-                            android:textSize="24sp"/>
-                    <TextView
-                            android:id="@+id/plantInformationDescription"
+                            android:layout_margin="20dp"
+                            app:cardCornerRadius="20dp"
+                            app:cardElevation="10dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/plantInformationDescriptionTitle"
+                            app:layout_constraintTop_toTopOf="parent">
+                        
+                        <LinearLayout
+                                android:id="@+id/layout1"
+                                android:animateLayoutChanges="true"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                            <TextView
+                                    android:id="@+id/plantInformationDescriptionTitle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/mada_black"
+                                    android:paddingStart="15dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingEnd="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:text="Description"
+                                    android:textColor="@color/PLANTITOblack"
+                                    android:textSize="24sp"/>
+
+                            <TextView
+                                    android:id="@+id/plantInformationDescription"
+                                    android:visibility="gone"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/mada"
+                                    android:paddingStart="15dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingEnd="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:text="Plant description goes here"
+                                    android:textColor="@color/PLANTITOblack"
+                                    android:textSize="18sp"/>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                            android:id="@+id/cardView2"
+                            android:backgroundTint="@color/PLANTITOyellow"
+                            android:animateLayoutChanges="true"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/mada"
-                            android:paddingStart="15dp"
-                            android:paddingTop="10dp"
-                            android:paddingEnd="10dp"
-                            android:paddingBottom="10dp"
-                            android:text="Plant description goes here"
-                            android:textColor="@color/PLANTITOblack"
-                            android:textSize="18sp"/>
-
-                    <TextView
-                            android:id="@+id/commonUsesTitle"
+                            android:layout_margin="20dp"
+                            app:cardCornerRadius="20dp"
+                            app:cardElevation="10dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/plantInformationDescription"
+                            app:layout_constraintTop_toBottomOf="@id/cardView1">
+
+                        <LinearLayout
+                                android:id="@+id/layout2"
+                                android:animateLayoutChanges="true"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                            <TextView
+                                    android:id="@+id/plantTaxonomyTitle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/mada_black"
+                                    android:paddingStart="15dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingEnd="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:text="Plant Taxonomy"
+                                    android:textColor="@color/PLANTITOblack"
+                                    android:textSize="24sp"/>
+
+                            <TextView
+                                    android:id="@+id/plantTaxonomy"
+                                    android:visibility="gone"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/mada"
+                                    android:paddingStart="15dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingEnd="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:text="Plant Taxonomy"
+                                    android:textColor="@color/PLANTITOblack"
+                                    android:textSize="18sp"/>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                            android:id="@+id/cardView3"
+                            android:backgroundTint="@color/PLANTITOyellow"
+                            android:animateLayoutChanges="true"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/mada_black"
-                            android:paddingStart="15dp"
-                            android:paddingTop="10dp"
-                            android:paddingEnd="10dp"
-                            android:paddingBottom="10dp"
-                            android:text="Common Uses"
-                            android:textColor="@color/PLANTITOblack"
-                            android:textSize="24sp"/>
-
-                    <TextView
-                            android:id="@+id/commonUses"
+                            android:layout_margin="20dp"
+                            app:cardCornerRadius="20dp"
+                            app:cardElevation="10dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/commonUsesTitle"
+                            app:layout_constraintTop_toBottomOf="@id/cardView2">
+
+                        <LinearLayout
+                                android:id="@+id/layout3"
+                                android:animateLayoutChanges="true"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                            <TextView
+                                    android:id="@+id/commonUsesTitle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/mada_black"
+                                    android:paddingStart="15dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingEnd="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:text="Common Uses"
+                                    android:textColor="@color/PLANTITOblack"
+                                    android:textSize="24sp"/>
+
+                            <TextView
+                                    android:id="@+id/commonUses"
+                                    android:visibility="gone"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/mada"
+                                    android:paddingStart="15dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingEnd="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:text="Plant Taxonomy"
+                                    android:textColor="@color/PLANTITOblack"
+                                    android:textSize="18sp"/>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                            android:id="@+id/cardView4"
+                            android:backgroundTint="@color/PLANTITOyellow"
+                            android:animateLayoutChanges="true"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/mada"
-                            android:paddingStart="15dp"
-                            android:paddingTop="10dp"
-                            android:paddingEnd="10dp"
-                            android:paddingBottom="10dp"
-                            android:text="Common Uses"
-                            android:textColor="@color/PLANTITOblack"
-                            android:textSize="18sp"/>
-
-                    <TextView
-                            android:id="@+id/culturalSignificanceTitle"
+                            android:layout_margin="20dp"
+                            app:cardCornerRadius="20dp"
+                            app:cardElevation="10dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/commonUses"
+                            app:layout_constraintTop_toBottomOf="@id/cardView3">
+
+                        <LinearLayout
+                                android:id="@+id/layout4"
+                                android:animateLayoutChanges="true"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                            <TextView
+                                    android:id="@+id/plantCulturalSignificanceTitle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/mada_black"
+                                    android:paddingStart="15dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingEnd="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:text="Cultural Significance"
+                                    android:textColor="@color/PLANTITOblack"
+                                    android:textSize="24sp"/>
+
+                            <TextView
+                                    android:id="@+id/culturalSignificance"
+                                    android:visibility="gone"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/mada"
+                                    android:paddingStart="15dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingEnd="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:text="Cultural Significance"
+                                    android:textColor="@color/PLANTITOblack"
+                                    android:textSize="18sp"/>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                            android:id="@+id/cardView5"
+                            android:backgroundTint="@color/PLANTITOyellow"
+                            android:animateLayoutChanges="true"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/mada_black"
-                            android:paddingStart="15dp"
-                            android:paddingTop="10dp"
-                            android:paddingEnd="10dp"
-                            android:paddingBottom="10dp"
-                            android:text="Cultural Significance"
-                            android:textColor="@color/PLANTITOblack"
-                            android:textSize="24sp"/>
-
-                    <TextView
-                            android:id="@+id/culturalSignificance"
+                            android:layout_margin="20dp"
+                            app:cardCornerRadius="20dp"
+                            app:cardElevation="10dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/culturalSignificanceTitle"
+                            app:layout_constraintTop_toBottomOf="@id/cardView4">
+
+                        <LinearLayout
+                                android:id="@+id/layout5"
+                                android:animateLayoutChanges="true"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                            <TextView
+                                    android:id="@+id/toxicityTitle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/mada_black"
+                                    android:paddingStart="15dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingEnd="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:text="Toxicity"
+                                    android:textColor="@color/PLANTITOblack"
+                                    android:textSize="24sp"/>
+
+                            <TextView
+                                    android:id="@+id/toxicity"
+                                    android:visibility="gone"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/mada"
+                                    android:paddingStart="15dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingEnd="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:text="Toxicity"
+                                    android:textColor="@color/PLANTITOblack"
+                                    android:textSize="18sp"/>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                            android:id="@+id/cardView6"
+                            android:backgroundTint="@color/PLANTITOyellow"
+                            android:animateLayoutChanges="true"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/mada"
-                            android:paddingStart="15dp"
-                            android:paddingTop="10dp"
-                            android:paddingEnd="10dp"
-                            android:paddingBottom="10dp"
-                            android:text="Cultural Significance"
-                            android:textColor="@color/PLANTITOblack"
-                            android:textSize="18sp"/>
-
-                    <TextView
-                            android:id="@+id/toxicityTitle"
+                            android:layout_margin="20dp"
+                            app:cardCornerRadius="20dp"
+                            app:cardElevation="10dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/culturalSignificance"
+                            app:layout_constraintTop_toBottomOf="@id/cardView5">
+
+                        <LinearLayout
+                                android:id="@+id/layout6"
+                                android:animateLayoutChanges="true"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                            <TextView
+                                    android:id="@+id/propagationMethodsTitle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/mada_black"
+                                    android:paddingStart="15dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingEnd="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:text="Propagation Methods"
+                                    android:textColor="@color/PLANTITOblack"
+                                    android:textSize="24sp"/>
+
+                            <TextView
+                                    android:id="@+id/propagationMethods"
+                                    android:visibility="gone"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/mada"
+                                    android:paddingStart="15dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingEnd="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:text="Propagation Methods"
+                                    android:textColor="@color/PLANTITOblack"
+                                    android:textSize="18sp"/>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                            android:id="@+id/cardView7"
+                            android:backgroundTint="@color/PLANTITOyellow"
+                            android:animateLayoutChanges="true"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/mada_black"
-                            android:paddingStart="15dp"
-                            android:paddingTop="10dp"
-                            android:paddingEnd="10dp"
-                            android:paddingBottom="10dp"
-                            android:text="Toxicity"
-                            android:textColor="@color/PLANTITOblack"
-                            android:textSize="24sp"/>
-
-                    <TextView
-                            android:id="@+id/toxicity"
+                            android:layout_margin="20dp"
+                            app:cardCornerRadius="20dp"
+                            app:cardElevation="10dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/toxicityTitle"
+                            app:layout_constraintTop_toBottomOf="@id/cardView6">
+
+                        <LinearLayout
+                                android:id="@+id/layout7"
+                                android:animateLayoutChanges="true"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                            <TextView
+                                    android:id="@+id/ediblePartsTitle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/mada_black"
+                                    android:paddingStart="15dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingEnd="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:text="Edible Parts"
+                                    android:textColor="@color/PLANTITOblack"
+                                    android:textSize="24sp"/>
+
+                            <TextView
+                                    android:id="@+id/edibleParts"
+                                    android:visibility="gone"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/mada"
+                                    android:paddingStart="15dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingEnd="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:text="Edible Parts"
+                                    android:textColor="@color/PLANTITOblack"
+                                    android:textSize="18sp"/>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                            android:id="@+id/cardView8"
+                            android:backgroundTint="@color/PLANTITOyellow"
+                            android:animateLayoutChanges="true"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/mada"
-                            android:paddingStart="15dp"
-                            android:paddingTop="10dp"
-                            android:paddingEnd="10dp"
-                            android:paddingBottom="10dp"
-                            android:text="Toxicity"
-                            android:textColor="@color/PLANTITOblack"
-                            android:textSize="18sp"/>
-
-                    <TextView
-                            android:id="@+id/propagationMethodsTitle"
+                            android:layout_margin="20dp"
+                            app:cardCornerRadius="20dp"
+                            app:cardElevation="10dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/toxicity"
+                            app:layout_constraintTop_toBottomOf="@id/cardView7">
+
+                        <LinearLayout
+                                android:id="@+id/layout8"
+                                android:animateLayoutChanges="true"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                            <TextView
+                                    android:id="@+id/bestLightConditionTitle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/mada_black"
+                                    android:paddingStart="15dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingEnd="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:text="Best Light Condition"
+                                    android:textColor="@color/PLANTITOblack"
+                                    android:textSize="24sp"/>
+
+                            <TextView
+                                    android:id="@+id/bestLightCondition"
+                                    android:visibility="gone"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/mada"
+                                    android:paddingStart="15dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingEnd="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:text="Best Light Condition"
+                                    android:textColor="@color/PLANTITOblack"
+                                    android:textSize="18sp"/>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                            android:id="@+id/cardView9"
+                            android:backgroundTint="@color/PLANTITOyellow"
+                            android:animateLayoutChanges="true"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/mada_black"
-                            android:paddingStart="15dp"
-                            android:paddingTop="10dp"
-                            android:paddingEnd="10dp"
-                            android:paddingBottom="10dp"
-                            android:text="Propagation Methods"
-                            android:textColor="@color/PLANTITOblack"
-                            android:textSize="24sp"/>
-
-                    <TextView
-                            android:id="@+id/propagationMethods"
+                            android:layout_margin="20dp"
+                            app:cardCornerRadius="20dp"
+                            app:cardElevation="10dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/propagationMethodsTitle"
+                            app:layout_constraintTop_toBottomOf="@id/cardView8">
+
+                        <LinearLayout
+                                android:id="@+id/layout9"
+                                android:animateLayoutChanges="true"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                            <TextView
+                                    android:id="@+id/bestSoilTypeTitle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/mada_black"
+                                    android:paddingStart="15dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingEnd="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:text="Best Soil Type"
+                                    android:textColor="@color/PLANTITOblack"
+                                    android:textSize="24sp"/>
+
+                            <TextView
+                                    android:id="@+id/bestSoilType"
+                                    android:visibility="gone"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/mada"
+                                    android:paddingStart="15dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingEnd="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:text="Best Soil Type"
+                                    android:textColor="@color/PLANTITOblack"
+                                    android:textSize="18sp"/>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                            android:id="@+id/cardView10"
+                            android:backgroundTint="@color/PLANTITOyellow"
+                            android:animateLayoutChanges="true"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/mada"
-                            android:paddingStart="15dp"
-                            android:paddingTop="10dp"
-                            android:paddingEnd="10dp"
-                            android:paddingBottom="10dp"
-                            android:text="Propagation Methods"
-                            android:textColor="@color/PLANTITOblack"
-                            android:textSize="18sp"/>
-
-                    <TextView
-                            android:id="@+id/ediblePartsTitle"
+                            android:layout_margin="20dp"
+                            app:cardCornerRadius="20dp"
+                            app:cardElevation="10dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/propagationMethods"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/mada_black"
-                            android:paddingStart="15dp"
-                            android:paddingTop="10dp"
-                            android:paddingEnd="10dp"
-                            android:paddingBottom="10dp"
-                            android:text="Edible Parts"
-                            android:textColor="@color/PLANTITOblack"
-                            android:textSize="24sp"/>
+                            app:layout_constraintTop_toBottomOf="@id/cardView9"
+                            app:layout_constraintBottom_toBottomOf="parent">
 
-                    <TextView
-                            android:id="@+id/edibleParts"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/ediblePartsTitle"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/mada"
-                            android:paddingStart="15dp"
-                            android:paddingTop="10dp"
-                            android:paddingEnd="10dp"
-                            android:paddingBottom="10dp"
-                            android:text="There is no edible part of this plant"
-                            android:textColor="@color/PLANTITOblack"
-                            android:textSize="18sp"/>
+                        <LinearLayout
+                                android:id="@+id/layout10"
+                                android:animateLayoutChanges="true"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                            <TextView
+                                    android:id="@+id/bestWateringTitle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/mada_black"
+                                    android:paddingStart="15dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingEnd="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:text="Best Watering"
+                                    android:textColor="@color/PLANTITOblack"
+                                    android:textSize="24sp"/>
 
-                    <TextView
-                            android:id="@+id/bestLightConditionTitle"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/edibleParts"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/mada_black"
-                            android:paddingStart="15dp"
-                            android:paddingTop="10dp"
-                            android:paddingEnd="10dp"
-                            android:paddingBottom="10dp"
-                            android:text="Best Light Condition"
-                            android:textColor="@color/PLANTITOblack"
-                            android:textSize="24sp"/>
-
-                    <TextView
-                            android:id="@+id/bestLightCondition"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/bestLightConditionTitle"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/mada"
-                            android:paddingStart="15dp"
-                            android:paddingTop="10dp"
-                            android:paddingEnd="10dp"
-                            android:paddingBottom="10dp"
-                            android:text="Best Light Condition"
-                            android:textColor="@color/PLANTITOblack"
-                            android:textSize="18sp"/>
-
-                    <TextView
-                            android:id="@+id/bestSoilTypeTitle"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/bestLightCondition"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/mada_black"
-                            android:paddingStart="15dp"
-                            android:paddingTop="10dp"
-                            android:paddingEnd="10dp"
-                            android:paddingBottom="10dp"
-                            android:text="Best Soil Type"
-                            android:textColor="@color/PLANTITOblack"
-                            android:textSize="24sp"/>
-
-                    <TextView
-                            android:id="@+id/bestSoilType"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/bestSoilTypeTitle"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/mada"
-                            android:paddingStart="15dp"
-                            android:paddingTop="10dp"
-                            android:paddingEnd="10dp"
-                            android:paddingBottom="10dp"
-                            android:text="Best Soil Type"
-                            android:textColor="@color/PLANTITOblack"
-                            android:textSize="18sp"/>
-
-                    <TextView
-                            android:id="@+id/bestWateringTitle"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/bestSoilType"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/mada_black"
-                            android:paddingStart="15dp"
-                            android:paddingTop="10dp"
-                            android:paddingEnd="10dp"
-                            android:paddingBottom="10dp"
-                            android:text="Best Watering"
-                            android:textColor="@color/PLANTITOblack"
-                            android:textSize="24sp"/>
-
-                    <TextView
-                            android:id="@+id/bestWatering"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/bestWateringTitle"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/mada"
-                            android:paddingStart="15dp"
-                            android:paddingTop="10dp"
-                            android:paddingEnd="10dp"
-                            android:paddingBottom="10dp"
-                            android:text="Best Watering"
-                            android:textColor="@color/PLANTITOblack"
-                            android:textSize="18sp"/>
-
-
-
-
+                            <TextView
+                                    android:id="@+id/bestWatering"
+                                    android:visibility="gone"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/mada"
+                                    android:paddingStart="15dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingEnd="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:text="Best Watering"
+                                    android:textColor="@color/PLANTITOblack"
+                                    android:textSize="18sp"/>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </ScrollView>
         </androidx.constraintlayout.widget.ConstraintLayout>

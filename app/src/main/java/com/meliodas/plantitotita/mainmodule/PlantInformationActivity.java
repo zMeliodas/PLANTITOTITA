@@ -18,7 +18,7 @@ public class PlantInformationActivity extends AppCompatActivity {
             // Get all plant information from the intent
             Bundle args = new Bundle();
             args.putString("plantName", getIntent().getStringExtra("plantName"));
-            args.putString("plantScientificName", getIntent().getStringExtra("plantScientificName"));
+            args.putString("scientificName", getIntent().getStringExtra("plantScientificName"));
             args.putString("description", getIntent().getStringExtra("description"));
             args.putString("image", getIntent().getStringExtra("image"));
             args.putStringArrayList("edibleParts", getIntent().getStringArrayListExtra("edibleParts"));
@@ -29,6 +29,7 @@ public class PlantInformationActivity extends AppCompatActivity {
             args.putString("bestLightCondition", getIntent().getStringExtra("bestLightCondition"));
             args.putString("bestSoilType", getIntent().getStringExtra("bestSoilType"));
             args.putString("bestWatering", getIntent().getStringExtra("bestWatering"));
+            args.putString("taxonomy", getIntent().getStringExtra("taxonomy"));
 
             fragment.setArguments(args);
 

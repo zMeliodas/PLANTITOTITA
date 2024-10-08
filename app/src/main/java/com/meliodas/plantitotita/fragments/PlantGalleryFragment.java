@@ -4,6 +4,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,9 +21,7 @@ import com.meliodas.plantitotita.mainmodule.Plant;
 import com.bumptech.glide.Glide;
 import com.meliodas.plantitotita.mainmodule.StringUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class PlantGalleryFragment extends Fragment {
     private final DatabaseManager dbManager = new DatabaseManager();
@@ -80,6 +79,7 @@ public class PlantGalleryFragment extends Fragment {
                     String culturalSignificance = (String) plantData.getOrDefault("culturalSignificance", "");
                     String commonUses = (String) plantData.getOrDefault("commonUses", "");
 
+                    HashMap<String, String> taxonomy = (HashMap<String, String>) plantData.getOrDefault("taxonomy", new HashMap<String, String>());
                     ArrayList<String> edibleParts = (ArrayList<String>) plantData.getOrDefault("edibleParts", new ArrayList<>());
                     ArrayList<String> propagationMethods = (ArrayList<String>) plantData.getOrDefault("propagationMethods", new ArrayList<>());
 
@@ -100,6 +100,7 @@ public class PlantGalleryFragment extends Fragment {
                             .toxicity(toxicity)
                             .culturalSignificance(culturalSignificance)
                             .commonUses(commonUses)
+                            .taxonomy(taxonomy)
                             .build();
 
                     plantList.add(plant);
@@ -164,6 +165,15 @@ public class PlantGalleryFragment extends Fragment {
         // Load image from URL using Glide or another image loading library
         Glide.with(this).load(plant.image()).placeholder(R.drawable.sad).error(R.drawable.custom_dialog_layout_error_icon).into(plantImageView);
 
+        StringBuilder taxonomyBuilder = new StringBuilder();
+        for (Map.Entry<String, String> entry : plant.taxonomy().entrySet()) {
+            taxonomyBuilder.append(StringUtils.capitalize(entry.getKey()))
+                    .append(": ")
+                    .append(StringUtils.capitalize(entry.getValue()))
+                    .append("\n");
+        }
+
+
         plantGalleryItem.setOnClickListener(v -> {
             new Thread(() -> {
                 try {
@@ -184,6 +194,7 @@ public class PlantGalleryFragment extends Fragment {
                     args.putString("bestLightCondition", plant.bestLightCondition());
                     args.putString("bestSoilType", plant.bestSoilType());
                     args.putString("bestWatering", plant.bestWatering());
+                    args.putSerializable("taxonomy", new HashMap<>(plant.taxonomy()));
 
                     Fragment targetFragment = new PlantInformationFragment();
                     targetFragment.setArguments(args);

@@ -9,9 +9,7 @@ import org.json.JSONArray;
 
 import java.io.Console;
 import java.io.IOException;
-import java.util.Base64;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 import okhttp3.*;
@@ -140,9 +138,46 @@ public class PlantIdApi {
 
             JSONObject plantData = new JSONObject(responseBody);
 
-            String scientificName = plantData.getString("name");
-            String family = plantData.getJSONObject("taxonomy").getString("family");
-            String genus = plantData.getJSONObject("taxonomy").getString("genus");
+            String scientificName = "";
+            if (plantData.has("name")){
+                scientificName = plantData.getString("name");
+            }
+
+            String family = "";
+            if (plantData.getJSONObject("taxonomy").has("family")){
+                family = plantData.getJSONObject("taxonomy").getString("family");
+            }
+
+            String phylum = "";
+            if (plantData.getJSONObject("taxonomy").has("phylum")){
+                phylum = plantData.getJSONObject("taxonomy").getString("phylum");
+            }
+
+            String kingdom = "";
+            if (plantData.getJSONObject("taxonomy").has("kingdom")){
+                kingdom = plantData.getJSONObject("taxonomy").getString("kingdom");
+            }
+
+            String order = "";
+            if (plantData.getJSONObject("taxonomy").has("order")){
+                order = plantData.getJSONObject("taxonomy").getString("order");
+            }
+
+            String rank = "";
+            if (plantData.getJSONObject("taxonomy").has("rank")){
+                rank = plantData.getJSONObject("taxonomy").getString("rank");
+            }
+
+            String genus = "";
+            if (plantData.getJSONObject("taxonomy").has("genus")){
+                genus = plantData.getJSONObject("taxonomy").getString("genus");
+            }
+
+            String plantClass = "";
+            if (plantData.getJSONObject("taxonomy").has("class")){
+                plantClass = plantData.getJSONObject("taxonomy").getString("class");
+            }
+
             String image = plantData.getJSONObject("image").getString("value");
             String bestLightCondition = plantData.getString("best_light_condition");
             String bestWatering = plantData.getString("best_watering");
@@ -151,6 +186,14 @@ public class PlantIdApi {
             String toxicity = plantData.getString("toxicity");
             String culturalSignificance = plantData.getString("cultural_significance");
 
+            HashMap<String, String> taxonomy = new HashMap<>();
+            taxonomy.put("rank", rank);
+            taxonomy.put("genus", genus);
+            taxonomy.put("family", family);
+            taxonomy.put("order", order);
+            taxonomy.put("class", plantClass);
+            taxonomy.put("phylum", phylum);
+            taxonomy.put("kingdom", kingdom);
 
             String description;
             if (plantData.isNull("description")) {
@@ -196,6 +239,7 @@ public class PlantIdApi {
                     .scientificName(scientificName)
                     .family(family)
                     .genus(genus)
+                    .taxonomy(taxonomy)
                     .image(image)
                     .description(description)
                     .wikiUrl(wikiUrl)
@@ -277,4 +321,3 @@ public class PlantIdApi {
         }
     }
 }
-

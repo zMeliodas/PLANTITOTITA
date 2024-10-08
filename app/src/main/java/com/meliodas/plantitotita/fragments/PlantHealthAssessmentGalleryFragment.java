@@ -2,6 +2,7 @@ package com.meliodas.plantitotita.fragments;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -62,7 +63,7 @@ public class PlantHealthAssessmentGalleryFragment extends Fragment {
 
                    Plant plant = new Plant.Builder()
                            .name((String) plantData.getOrDefault("name", ""))
-                            .scientificName((String) plantData.getOrDefault("scientific_name", ""))
+                            .scientificName((String) plantData.getOrDefault("scientificName", ""))
                             .image((String) healthIdentification.getOrDefault("image", ""))
                             .build();
 
@@ -149,10 +150,10 @@ public class PlantHealthAssessmentGalleryFragment extends Fragment {
             }).start();
         });
 
-        /*plantGalleryItem.setOnLongClickListener(v -> {
+        plantGalleryItem.setOnLongClickListener(v -> {
             showDeleteConfirmationDialog(plant);
             return true;
-        });*/
+        });
 
         return plantGalleryItem;
     }
@@ -202,5 +203,93 @@ public class PlantHealthAssessmentGalleryFragment extends Fragment {
         }).start();
     }
 
+    private void showDeleteConfirmationDialog(Plant plant) {
+        showDialog(
+                "Are you sure you want to delete the health assessment for " + StringUtils.capitalize(plant.name()) + "?",
+                () -> deletePlant(plant)
+        );
+    }
 
+    private void deletePlant(Plant plant) {
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        // Remove the plant from the local list
+        plantList.remove(plant);
+
+        // Update the UI
+        showPlants(plantList, getLayoutInflater());
+
+        // Update the database
+        dbManager.getUserDoc(userId).get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists() && documentSnapshot.contains("plant_health_assessments")) {
+                List<Map<String, Object>> assessments = (List<Map<String, Object>>) documentSnapshot.get("plant_health_assessments");
+
+                boolean removed = assessments.removeIf(assessment -> {
+                    String assessmentImage = (String) assessment.get("image");
+                    boolean matches = plant.image().equals(assessmentImage);
+
+                    return matches;
+                });
+
+                if (!removed) {
+                    Toast.makeText(getContext(), "No matching assessment found for " + plant.name(), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // Update the database
+                dbManager.getUserDoc(userId).update("plant_health_assessments", assessments)
+                        .addOnSuccessListener(aVoid -> {
+                            Toast.makeText(getContext(), plant.name() + " assessment deleted!", Toast.LENGTH_SHORT).show();
+                        })
+                        .addOnFailureListener(e -> {
+                            Toast.makeText(getContext(), "Failed to delete from database: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            // Revert the local change if the database update fails
+                            plantList.add(plant);
+                            showPlants(plantList, getLayoutInflater());
+                        });
+            } else {
+                Toast.makeText(getContext(), "No assessments found in the database", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(e -> {
+            Toast.makeText(getContext(), "Failed to access database: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            // Revert the local change if database access fails
+            plantList.add(plant);
+            showPlants(plantList, getLayoutInflater());
+        });
+    }
+
+    private void showDialog(String message, Runnable positiveAction) {
+        View view = LayoutInflater.from(requireContext()).inflate(R.layout.custom_alert_dialog_log_out, null);
+
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(requireContext());
+        builder.setView(view);
+
+        final androidx.appcompat.app.AlertDialog alertDialog = builder.create();
+
+        TextView dialogMessage = view.findViewById(R.id.dialogMessage);
+        Button continueButton = view.findViewById(R.id.dialogContinueButton);
+        Button continueButton1 = view.findViewById(R.id.dialogContinueButton1);
+
+        // Set the custom message
+        dialogMessage.setText(message);
+
+        // Set the positive button action
+        continueButton.setText("Yes");
+        continueButton.setOnClickListener(view1 -> {
+            positiveAction.run();
+            alertDialog.dismiss();
+        });
+
+        // Set the negative button action
+        continueButton1.setText("No");
+        continueButton1.setOnClickListener(view1 -> {
+            alertDialog.dismiss();
+        });
+
+        if (alertDialog.getWindow() != null) {
+            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+
+        alertDialog.show();
+    }
 }

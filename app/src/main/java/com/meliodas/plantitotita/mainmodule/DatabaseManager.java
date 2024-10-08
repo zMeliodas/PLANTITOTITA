@@ -61,8 +61,7 @@ public class DatabaseManager {
             healthData.put("image", imageUrl);
 
             data.add(healthData);
-
-
+            
             userDoc.set(new HashMap<String, Object>() {{
                 put("plant_health_assessments", data);
             }}, SetOptions.merge());
@@ -148,6 +147,7 @@ public class DatabaseManager {
         plantData.put("bestSoilType", plant.bestSoilType());
         plantData.put("bestWatering", plant.bestWatering());
         plantData.put("wikiUrl", plant.wikiUrl());
+        plantData.put("taxonomy", plant.taxonomy());
         return plantData;
     }
 

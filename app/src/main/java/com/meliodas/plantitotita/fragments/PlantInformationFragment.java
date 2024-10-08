@@ -1,7 +1,17 @@
 package com.meliodas.plantitotita.fragments;
 
+import android.animation.LayoutTransition;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
+import android.transition.AutoTransition;
+import android.transition.Transition;
+import android.transition.TransitionManager;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,10 +19,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.ImageView;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import com.bumptech.glide.Glide;
 import com.meliodas.plantitotita.R;
+import com.meliodas.plantitotita.mainmodule.StringUtils;
+import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class PlantInformationFragment extends Fragment {
 
@@ -28,6 +41,16 @@ public class PlantInformationFragment extends Fragment {
     private TextView bestLightCondition;
     private TextView bestSoilType;
     private TextView bestWatering;
+    private TextView taxonomy;
+    private static String imageViewPhoto;
+    private TextView descriptionTitle, ediblePartsTitle, propagationMethodsTitle, commonUsesTitle, culturalSignificanceTitle, toxicityTitle, bestLightConditionTitle, bestSoilTypeTitle, bestWateringTitle, taxonomyTitle;
+    private LinearLayout layout1, layout2, layout3, layout4, layout5, layout6, layout7, layout8, layout9, layout10;
+    private CardView cardView1, cardView2, cardView3, cardView4, cardView5, cardView6, cardView7, cardView8, cardView9, cardView10;
+    private ScrollView scrollView;
+
+    private static final List<String> TAXONOMY_ORDER = Arrays.asList(
+            "kingdom", "phylum", "class", "order", "family", "genus", "species"
+    );
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,6 +58,7 @@ public class PlantInformationFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_plant_information, container, false);
 
         View backButton = view.findViewById(R.id.btnReturnPlantInfo);
+
         backButton.setOnClickListener(v -> {
             PlantGalleryFragment plantGalleryFragment = new PlantGalleryFragment();
             FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
@@ -43,10 +67,11 @@ public class PlantInformationFragment extends Fragment {
             transaction.commit();
         });
 
+        plantImage = view.findViewById(R.id.plantInfoImage);
         plantName = view.findViewById(R.id.plantInformationName);
         scientificName = view.findViewById(R.id.plantInformationScientificName);
+
         description = view.findViewById(R.id.plantInformationDescription);
-        plantImage = view.findViewById(R.id.plantInfoImage);
         edibleParts = view.findViewById(R.id.edibleParts);
         propagationMethods = view.findViewById(R.id.propagationMethods);
         commonUses = view.findViewById(R.id.commonUses);
@@ -55,10 +80,73 @@ public class PlantInformationFragment extends Fragment {
         bestLightCondition = view.findViewById(R.id.bestLightCondition);
         bestSoilType = view.findViewById(R.id.bestSoilType);
         bestWatering = view.findViewById(R.id.bestWatering);
+        taxonomy = view.findViewById(R.id.plantTaxonomy);
+
+        scrollView = view.findViewById(R.id.scrollViewPlantInfo);
+
+        layout1 = view.findViewById(R.id.layout1);
+        layout2 = view.findViewById(R.id.layout2);
+        layout3 = view.findViewById(R.id.layout3);
+        layout4 = view.findViewById(R.id.layout4);
+        layout5 = view.findViewById(R.id.layout5);
+        layout6 = view.findViewById(R.id.layout6);
+        layout7 = view.findViewById(R.id.layout7);
+        layout8 = view.findViewById(R.id.layout8);
+        layout9 = view.findViewById(R.id.layout9);
+        layout10 = view.findViewById(R.id.layout10);
+
+        cardView1 = view.findViewById(R.id.cardView1);
+        cardView2 = view.findViewById(R.id.cardView2);
+        cardView3 = view.findViewById(R.id.cardView3);
+        cardView4 = view.findViewById(R.id.cardView4);
+        cardView5 = view.findViewById(R.id.cardView5);
+        cardView6 = view.findViewById(R.id.cardView6);
+        cardView7 = view.findViewById(R.id.cardView7);
+        cardView8 = view.findViewById(R.id.cardView8);
+        cardView9 = view.findViewById(R.id.cardView9);
+        cardView10 = view.findViewById(R.id.cardView10);
+
+        cardView1.setOnClickListener(v -> {
+            expandView(description, layout1);
+        });
+
+        cardView2.setOnClickListener(v -> {
+            expandView(taxonomy, layout2);
+        });
+
+        cardView3.setOnClickListener(v -> {
+            expandView(commonUses, layout3);
+        });
+
+        cardView4.setOnClickListener(v -> {
+            expandView(culturalSignificance, layout4);
+        });
+
+        cardView5.setOnClickListener(v -> {
+            expandView(toxicity, layout5);
+        });
+
+        cardView6.setOnClickListener(v -> {
+            expandView(propagationMethods, layout6);
+        });
+
+        cardView7.setOnClickListener(v -> {
+            expandView(edibleParts, layout7);
+        });
+
+        cardView8.setOnClickListener(v -> {
+            expandView(bestLightCondition, layout8);
+        });
+
+        cardView9.setOnClickListener(v -> {
+            expandView(bestSoilType, layout9);
+        });
+
+        cardView10.setOnClickListener(v -> {
+            expandView(bestWatering, layout10);
+        });
 
         Bundle args = getArguments();
-
-        Log.d("PlantInformationFragment", "onCreateView: " + args);
 
         if (args != null) {
             String name = args.getString("plantName", "");
@@ -73,12 +161,13 @@ public class PlantInformationFragment extends Fragment {
             String bestLightCondition = args.getString("bestLightCondition", "");
             String bestSoilType = args.getString("bestSoilType", "");
             String bestWatering = args.getString("bestWatering", "");
+            HashMap<String, String> taxonomyMap = (HashMap<String, String>) args.getSerializable("taxonomy");
 
-            plantName.setText(name);
-            scientificName.setText(sciName);
+            plantName.setText(StringUtils.capitalize(name));
+            scientificName.setText(StringUtils.capitalize(sciName));
             description.setText(desc);
-            edibleParts.setText(arrayToString(ediblePartsArray));
-            propagationMethods.setText(arrayToString(propagationMethodsArray));
+            edibleParts.setText(StringUtils.arrayToString(ediblePartsArray));
+            propagationMethods.setText(StringUtils.arrayToString(propagationMethodsArray));
             this.commonUses.setText(commonUses);
             this.culturalSignificance.setText(culturalSignificance);
             this.toxicity.setText(toxicity);
@@ -86,23 +175,110 @@ public class PlantInformationFragment extends Fragment {
             this.bestSoilType.setText(bestSoilType);
             this.bestWatering.setText(bestWatering);
 
+            if (taxonomyMap != null && !taxonomyMap.isEmpty()) {
+                StringBuilder taxonomyBuilder = new StringBuilder();
+                for (String level : TAXONOMY_ORDER) {
+                    String value = taxonomyMap.get(level);
+                    if (value != null && !value.isEmpty()) {
+                        taxonomyBuilder.append(StringUtils.capitalize(level))
+                                .append(": ")
+                                .append(StringUtils.capitalize(value))
+                                .append("\n");
+                    }
+                }
+                this.taxonomy.setText(taxonomyBuilder.toString().trim());
+            } else {
+                this.taxonomy.setText("Taxonomy information not available");
+            }
+
             if (!imageUrl.isEmpty()) {
                 Glide.with(this)
                         .load(imageUrl)
                         .placeholder(R.drawable.aaboutus)
                         .error(R.drawable.custom_dialog_layout_error_icon)
                         .into(plantImage);
+
+                imageViewPhoto = imageUrl;
+                plantImage.setOnClickListener(v -> showResourceImagePopup(requireContext(), imageViewPhoto));
             }
         }
 
         return view;
     }
 
-    public String arrayToString(ArrayList<String> array) {
-        StringBuilder sb = new StringBuilder();
-        for (String s : array) {
-            sb.append(s).append("\n");
+    public static void showResourceImagePopup(Context context, String imageResource) {
+        AlertDialog.Builder adb = new AlertDialog.Builder(context);
+        View popupView = LayoutInflater.from(context).inflate(R.layout.image_popup_template, null);
+        ImageView popupImageView = popupView.findViewById(R.id.imageView88);
+
+        Picasso.get().load(imageResource).into(popupImageView);
+        AlertDialog dialog = adb.create();
+
+        if (imageViewPhoto == null || imageViewPhoto.isEmpty()) {
+            return;
         }
-        return sb.toString();
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setView(popupView);
+        dialog.show();
+    }
+
+    public void expandView(TextView description, LinearLayout layout) {
+        int visibility = (description.getVisibility() == View.GONE) ? View.VISIBLE : View.GONE;
+
+
+        // Create an AutoTransition for the description's visibility
+        AutoTransition transition = new AutoTransition();
+
+        // Set a longer duration for the expansion/collapse of the card
+        transition.setDuration(300); // Increase this duration for a slower expansion
+
+        // Use a smooth interpolator
+        transition.setInterpolator(new FastOutSlowInInterpolator());
+
+        // Disable layout transitions to prevent overlap issues during the animation
+        layout.setLayoutTransition(null);
+
+        // Add a listener to manage the layout transitions after the description animation
+        transition.addListener(new Transition.TransitionListener() {
+            @Override
+            public void onTransitionStart(Transition transition) {
+                // Nothing to do at the start of the transition
+            }
+
+            @Override
+            public void onTransitionEnd(Transition transition) {
+                // Re-enable layout transitions after the description's animation ends
+                LayoutTransition layoutTransition = new LayoutTransition();
+
+                layout.setLayoutTransition(layoutTransition);
+            }
+
+            @Override
+            public void onTransitionCancel(Transition transition) {
+                // Handle cancellation if needed
+            }
+
+            @Override
+            public void onTransitionPause(Transition transition) {
+                // Handle pause if needed
+            }
+
+            @Override
+            public void onTransitionResume(Transition transition) {
+                // Handle resume if needed
+            }
+        });
+
+        // Begin the transition for the description's visibility
+        TransitionManager.beginDelayedTransition(layout, transition);
+        description.setVisibility(visibility);
+    }
+
+    private void centerViewInScrollView(final ScrollView scrollView, final View view) {
+        scrollView.post(() -> {
+            int scrollY = (view.getTop() + view.getBottom() - scrollView.getHeight()) / 2;
+            scrollView.scrollTo(0, scrollY);
+        });
     }
 }

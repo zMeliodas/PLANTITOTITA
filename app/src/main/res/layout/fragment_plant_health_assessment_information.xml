@@ -9,7 +9,7 @@
         tools:context=".fragments.PlantHealthAssessmentInformationFragment">
 
     <Button
-            android:id="@+id/btnReturnPlantInfo"
+            android:id="@+id/btnReturnPlantHealthAssessmentInfo"
             android:layout_width="44dp"
             android:layout_height="39dp"
             android:background="@drawable/resource_return"
@@ -95,7 +95,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
                     <TextView
-                            android:id="@+id/disease"
+                            android:id="@+id/diseaseTitle"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
@@ -114,7 +114,7 @@
                             android:id="@+id/diseaseDescription"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/disease"
+                            app:layout_constraintTop_toBottomOf="@id/diseaseTitle"
                             android:gravity="center"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
