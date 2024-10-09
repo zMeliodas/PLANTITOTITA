@@ -1,18 +1,25 @@
 package com.meliodas.plantitotita.fragments;
 
+import android.animation.LayoutTransition;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.transition.AutoTransition;
+import android.transition.Transition;
+import android.transition.TransitionManager;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.meliodas.plantitotita.R;
@@ -36,6 +43,8 @@ public class PlantHealthAssessmentInformationFragment extends Fragment {
     private ImageView plantImage;
     private DatabaseManager dbManager;
     private static String imageViewPhoto;
+    private LinearLayout diseaseLayout, biologicalLayout, chemicalLayout, preventionLayout;
+    private CardView diseaseCard, biologicalCard, chemicalCard, preventionCard;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,6 +68,21 @@ public class PlantHealthAssessmentInformationFragment extends Fragment {
         prevention = view.findViewById(R.id.prevention);
         diseaseTitle = view.findViewById(R.id.diseaseTitle);
         diseaseDescription = view.findViewById(R.id.diseaseDescription);
+
+        diseaseLayout = view.findViewById(R.id.layout1);
+        biologicalLayout = view.findViewById(R.id.layout2);
+        chemicalLayout = view.findViewById(R.id.layout3);
+        preventionLayout = view.findViewById(R.id.layout4);
+
+        diseaseCard = view.findViewById(R.id.cardView1);
+        biologicalCard = view.findViewById(R.id.cardView2);
+        chemicalCard = view.findViewById(R.id.cardView3);
+        preventionCard = view.findViewById(R.id.cardView4);
+
+        setOnClickListener(diseaseDescription, diseaseLayout, diseaseCard);
+        setOnClickListener(biologicalTreatments, biologicalLayout, biologicalCard);
+        setOnClickListener(chemicalTreatments, chemicalLayout, chemicalCard);
+        setOnClickListener(prevention, preventionLayout, preventionCard);
 
         dbManager = new DatabaseManager();
 
@@ -86,6 +110,16 @@ public class PlantHealthAssessmentInformationFragment extends Fragment {
         }
 
         return view;
+    }
+
+    private void setOnClickListener(TextView textView, LinearLayout linearLayout, CardView cardViews) {
+        linearLayout.setOnClickListener(v -> {
+            expandView(textView, linearLayout);
+        });
+
+        cardViews.setOnClickListener(v -> {
+            expandView(textView, linearLayout);
+        });
     }
 
     private void loadHealthAssessmentData(String imageUrl) {
@@ -138,5 +172,56 @@ public class PlantHealthAssessmentInformationFragment extends Fragment {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setView(popupView);
         dialog.show();
+    }
+
+    public void expandView(TextView description, LinearLayout layout) {
+        int visibility = (description.getVisibility() == View.GONE) ? View.VISIBLE : View.GONE;
+
+        // Create an AutoTransition for the description's visibility
+        AutoTransition transition = new AutoTransition();
+
+        // Set a longer duration for the expansion/collapse of the card
+        transition.setDuration(300); // Increase this duration for a slower expansion
+
+        // Use a smooth interpolator
+        transition.setInterpolator(new FastOutSlowInInterpolator());
+
+        // Disable layout transitions to prevent overlap issues during the animation
+        layout.setLayoutTransition(null);
+
+        // Add a listener to manage the layout transitions after the description animation
+        transition.addListener(new Transition.TransitionListener() {
+            @Override
+            public void onTransitionStart(Transition transition) {
+                // Nothing to do at the start of the transition
+            }
+
+            @Override
+            public void onTransitionEnd(Transition transition) {
+                // Re-enable layout transitions after the description's animation ends
+                LayoutTransition layoutTransition = new LayoutTransition();
+
+                layout.setLayoutTransition(layoutTransition);
+            }
+
+            @Override
+            public void onTransitionCancel(Transition transition) {
+                // Handle cancellation if needed
+            }
+
+            @Override
+            public void onTransitionPause(Transition transition) {
+                // Handle pause if needed
+            }
+
+            @Override
+            public void onTransitionResume(Transition transition) {
+                // Handle resume if needed
+            }
+        });
+
+        // Begin the transition for the description's visibility
+        TransitionManager.beginDelayedTransition(layout, transition);
+        description.setVisibility(visibility);
     }
 }

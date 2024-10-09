@@ -78,16 +78,8 @@ public class ArSceneActivity extends AppCompatActivity {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         checkIfLocationIsEnabled();
-
-        // Request location updates and permissions
         requestLocation();
-
-        if (arFragment == null) {
-            throw new IllegalStateException("Cannot find AR fragment");
-        }
-
-        plant = new Plant.Builder().build();
-        arFragment.getPlaneDiscoveryController().hide();
+        enableInstantPlacement();
 
         ViewRenderable.builder()
                 .setView(this, createView(plantName, plantScientificName))
@@ -105,7 +97,10 @@ public class ArSceneActivity extends AppCompatActivity {
                 });
 
         arFragment.getArSceneView().getScene().addOnUpdateListener(this::onSceneUpdate);
+        arFragment.getPlaneDiscoveryController().hide();
+        arFragment.getPlaneDiscoveryController().setInstructionView(null);
     }
+
 
     @Override
     protected void onResume() {
@@ -140,7 +135,7 @@ public class ArSceneActivity extends AppCompatActivity {
         view.setOnClickListener(v -> {
             // TODO: change from start activity to adding a fragment to the stack
             Intent intent = new Intent(this, PlantInformationActivity.class);
-            intent.putExtra("plantName", this.plantName);
+            intent.putExtra("plantName", this.plantName != null ? this.plantName : "");
             intent.putExtra("plantScientificName", plant.scientificName() != null ? plant.scientificName() : "");
             intent.putExtra("image", plant.image() != null ? plant.image() : "");
             intent.putExtra("identification", plant.identification() != null ? plant.identification() : "");
@@ -154,8 +149,6 @@ public class ArSceneActivity extends AppCompatActivity {
             intent.putExtra("bestSoilType", plant.bestSoilType() != null ? plant.bestSoilType() : "");
             intent.putExtra("bestWatering", plant.bestWatering() != null ? plant.bestWatering() : "");
             intent.putExtra("taxonomy", new HashMap<>(plant.taxonomy()));
-
-            Log.d("ArSceneActivity", "createView: " + plant.toString());
 
             startActivity(intent);
         });
@@ -172,45 +165,44 @@ public class ArSceneActivity extends AppCompatActivity {
                 Session session = arFragment.getArSceneView().getSession();
                 Config config = session.getConfig();
                 config.setFocusMode(Config.FocusMode.AUTO);
+                config.setInstantPlacementMode(Config.InstantPlacementMode.LOCAL_Y_UP);
 
                 session.configure(config);
             }
         }, UPDATE_INTERVAL_MS);
     }
 
+    private void enableInstantPlacement() {
+        Session session = arFragment.getArSceneView().getSession();
+        if (session != null) {
+            Config config = session.getConfig();
+            // Enable Instant Placement mode
+            config.setInstantPlacementMode(Config.InstantPlacementMode.LOCAL_Y_UP);
+            session.configure(config);
+        }
+    }
+
+    // Update text position based on hitTestInstantPlacement
     private void updateTextPosition() {
         Frame frame = arFragment.getArSceneView().getArFrame();
         if (frame == null || textRenderable == null) return;
 
+        // Perform Instant Placement hit test at the center of the screen
         Point center = new Point(
                 arFragment.getView().getWidth() / 2,
                 arFragment.getView().getHeight() / 2
         );
 
-        List<HitResult> hitResults = frame.hitTest(center.x, center.y);
+        float approximateDistanceMeters = 2.0f; // Approximate distance for initial placement
+        List<HitResult> hitResults = frame.hitTestInstantPlacement(center.x, center.y, approximateDistanceMeters);
+
         if (hitResults.isEmpty()) return;
 
-        HitResult nearestFloorHit = null;
-        float nearestDistance = Float.MAX_VALUE;
+        HitResult hit = hitResults.get(0); // Get the nearest hit result
 
-        for (HitResult hit : hitResults) {
-            Plane plane = hit.getTrackable() instanceof Plane ? (Plane) hit.getTrackable() : null;
-            if (plane != null && plane.getType() == Plane.Type.HORIZONTAL_UPWARD_FACING
-                    && plane.getTrackingState() == TrackingState.TRACKING) {
-                float[] hitPoseTranslation = hit.getHitPose().getTranslation();
-                float[] cameraPoseTranslation = frame.getCamera().getPose().getTranslation();
-
-                float distance = calculateDistance(hitPoseTranslation, cameraPoseTranslation);
-
-                if (distance < nearestDistance) {
-                    nearestDistance = distance;
-                    nearestFloorHit = hit;
-                }
-            }
-        }
-
-        if (nearestFloorHit != null) {
-            Pose hitPose = nearestFloorHit.getHitPose();
+        // Update AR object based on the Instant Placement hit result
+        if (hit.getTrackable() instanceof InstantPlacementPoint instantPlacementPoint) {
+            Pose hitPose = instantPlacementPoint.getPose();
             placeOrUpdateText(hitPose);
         }
     }
@@ -222,12 +214,14 @@ public class ArSceneActivity extends AppCompatActivity {
         return (float) Math.sqrt(dx * dx + dy * dy + dz * dz);
     }
 
+    // Place or update text position with Instant Placement
     private void placeOrUpdateText(Pose hitPose) {
         if (currentAnchorNode != null) {
             arFragment.getArSceneView().getScene().removeChild(currentAnchorNode);
             currentAnchorNode.getAnchor().detach();
         }
 
+        // Create anchor from the hit pose
         Anchor anchor = arFragment.getArSceneView().getSession().createAnchor(hitPose);
         currentAnchorNode = new AnchorNode(anchor);
         textNode = new TransformableNode(arFragment.getTransformationSystem());

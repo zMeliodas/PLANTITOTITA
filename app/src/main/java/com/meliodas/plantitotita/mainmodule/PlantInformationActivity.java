@@ -1,9 +1,12 @@
 package com.meliodas.plantitotita.mainmodule;
 
+import android.os.Build;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import com.meliodas.plantitotita.R;
 import com.meliodas.plantitotita.fragments.PlantInformationFragment;
+
+import java.util.HashMap;
 
 public class PlantInformationActivity extends AppCompatActivity {
 
@@ -29,7 +32,9 @@ public class PlantInformationActivity extends AppCompatActivity {
             args.putString("bestLightCondition", getIntent().getStringExtra("bestLightCondition"));
             args.putString("bestSoilType", getIntent().getStringExtra("bestSoilType"));
             args.putString("bestWatering", getIntent().getStringExtra("bestWatering"));
-            args.putString("taxonomy", getIntent().getStringExtra("taxonomy"));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                args.putSerializable("taxonomy", getIntent().getSerializableExtra("taxonomy", HashMap.class));
+            }
 
             fragment.setArguments(args);
 

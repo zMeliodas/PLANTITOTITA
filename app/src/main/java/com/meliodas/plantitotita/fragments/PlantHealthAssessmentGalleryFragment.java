@@ -39,6 +39,7 @@ import static android.app.Activity.RESULT_OK;
 public class PlantHealthAssessmentGalleryFragment extends Fragment {
 
     private static final int PICK_IMAGE_REQUEST = 100;
+    private static final int CAPTURE_IMAGE_REQUEST = 101;
     private final DatabaseManager dbManager = new DatabaseManager();
     private Uri imageUri;
     private HealthIdentification healthIdentification;
@@ -51,30 +52,8 @@ public class PlantHealthAssessmentGalleryFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_plant_health_assessment, container, false);
 
-        dbManager.getHealthAssessments(FirebaseAuth.getInstance().getUid(), healthIdentifications -> {
-            this.healthIdentifications = healthIdentifications;
-
-            StringUtils.largeLog("PlantHealthAssessmentGalleryFragment",  healthIdentifications.toString());
-
-            for (Map<String, Object> healthIdentification : healthIdentifications) {
-                try {
-
-                   Map<String, Object> plantData = (Map<String, Object>) healthIdentification.get("plant");
-
-                   Plant plant = new Plant.Builder()
-                           .name((String) plantData.getOrDefault("name", ""))
-                            .scientificName((String) plantData.getOrDefault("scientificName", ""))
-                            .image((String) healthIdentification.getOrDefault("image", ""))
-                            .build();
-
-                    plantList.add(plant);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            plantGalleryLayout = view.findViewById(R.id.plantGalleryLayout);
-            showPlants(plantList, inflater);
-        });
+        plantGalleryLayout = view.findViewById(R.id.plantGalleryLayout);
+        refreshPlantList();
 
         return view;
     }
@@ -83,6 +62,7 @@ public class PlantHealthAssessmentGalleryFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         View uploadImageBtn = view.findViewById(R.id.PlantHealthAssessmentLayout);
         Button uploadImageBtnIcon = view.findViewById(R.id.PlantHealthAssessmentUploadIcon);
+        Button takePhotoBtn = view.findViewById(R.id.PlantHealthAssessmentTakePhotoIcon);
         uploadImageBtn.setOnClickListener(v -> {
             selectImage();
         });
@@ -90,13 +70,15 @@ public class PlantHealthAssessmentGalleryFragment extends Fragment {
         uploadImageBtnIcon.setOnClickListener(v -> {
             selectImage();
         });
+
+        takePhotoBtn.setOnClickListener(v -> takePhoto());
     }
 
     // Dynamically create and display plant items
     private void showPlants(List<Plant> plants, LayoutInflater inflater) {
         plantGalleryLayout.removeAllViews(); // Clear existing views
         if (plants.isEmpty()) {
-            Toast.makeText(getContext(), "No matching plants found!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "No plant health assessments found!", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -120,14 +102,14 @@ public class PlantHealthAssessmentGalleryFragment extends Fragment {
         String capitalizedScientificName = StringUtils.capitalize(plant.scientificName());
         plantScientificNameTextView.setText(capitalizedScientificName);
 
-        Log.d("PlantHealthAssessmentGalleryFragment", "createPlantGalleryItem: " + plant.name() +" " + plant.scientificName());
+        Log.d("PlantHealthAssessmentGalleryFragment", "createPlantGalleryItem: " + plant.name() + " " + plant.scientificName());
 
         ShapeableImageView plantImageView = plantGalleryItem.findViewById(R.id.plantGalleryContainerImgView);
 
         // Load image from URL using Glide or another image loading library
         Glide.with(this).load(plant.image()).placeholder(R.drawable.sad).error(R.drawable.custom_dialog_layout_error_icon).into(plantImageView);
 
-        plantGalleryItem.setOnClickListener(v -> {
+        plantGalleryItem.setOnClickListener(v -> {  // Open the PlantHealthAssessmentInformationFragment when the plant item is clicked
             new Thread(() -> {
                 try {
                     Bundle args = new Bundle();
@@ -165,42 +147,107 @@ public class PlantHealthAssessmentGalleryFragment extends Fragment {
         startActivityForResult(intent, PICK_IMAGE_REQUEST);
     }
 
+    private void takePhoto() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, CAPTURE_IMAGE_REQUEST);
+        }
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode != PICK_IMAGE_REQUEST || resultCode != RESULT_OK || data == null || data.getData() == null) {
+        if (resultCode != RESULT_OK || data == null) {
             return;
         }
 
-        imageUri = data.getData();
-        new Thread( () -> {
+        if (requestCode == PICK_IMAGE_REQUEST && data.getData() != null) {
+            imageUri = data.getData();
+            processImage(imageUri);
+        } else if (requestCode == CAPTURE_IMAGE_REQUEST) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            processImage(imageBitmap);
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void processImage(Uri imageUri) {
+        new Thread(() -> {
             try {
-                // Convert image URI to Bitmap
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imageUri);
-
-                // Convert Bitmap to byte array
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-                byte[] imageData = byteArrayOutputStream.toByteArray();
-
-                // Here you could get location data (latitude, longitude) if needed. For now, I'm passing dummy values.
-                double longitude = 0.0;
-                double latitude = 0.0;
-
-                // Pass the image byte array to your API call
-                PlantIdApi plantIdApi = new PlantIdApi();
-                healthIdentification = plantIdApi.identifyHealth(imageData, longitude, latitude);
-
-                //upload to firebase storage
-                dbManager.uploadImage(FirebaseAuth.getInstance().getUid(), imageUri, imageUrl -> {
-                    dbManager.addHealthAssessment(healthIdentification, FirebaseAuth.getInstance().getUid(), imageUrl);
-                });
-            } catch (IOException | JSONException e) {
+                processImageBitmap(bitmap);
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }).start();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void processImage(Bitmap bitmap) {
+        new Thread(() -> processImageBitmap(bitmap)).start();
+    }
+
+    private void onImageUploadComplete(String imageUrl) {
+        getActivity().runOnUiThread(() -> {
+            dbManager.addHealthAssessment(healthIdentification, FirebaseAuth.getInstance().getUid(), imageUrl);
+            refreshPlantList();
+            Toast.makeText(getContext(), "Plant health assessment added successfully", Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    private void refreshPlantList() {
+        String userId = FirebaseAuth.getInstance().getUid();
+        dbManager.getHealthAssessments(userId, healthIdentifications -> {
+            this.healthIdentifications = healthIdentifications;
+            plantList.clear();
+
+            for (Map<String, Object> healthIdentification : healthIdentifications) {
+                try {
+                    Map<String, Object> plantData = (Map<String, Object>) healthIdentification.get("plant");
+                    Plant plant = new Plant.Builder()
+                            .name((String) plantData.getOrDefault("name", ""))
+                            .scientificName((String) plantData.getOrDefault("scientificName", ""))
+                            .image((String) healthIdentification.getOrDefault("image", ""))
+                            .build();
+                    plantList.add(plant);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            getActivity().runOnUiThread(() -> showPlants(plantList, getLayoutInflater()));
+        });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void processImageBitmap(Bitmap bitmap) {
+        try {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+            byte[] imageData = byteArrayOutputStream.toByteArray();
+
+            double longitude = 0.0;
+            double latitude = 0.0;
+
+            PlantIdApi plantIdApi = new PlantIdApi();
+            healthIdentification = plantIdApi.identifyHealth(imageData, longitude, latitude);
+
+            getActivity().runOnUiThread(() -> {
+                    dbManager.uploadImage(FirebaseAuth.getInstance().getUid(), imageUri, imageUrl -> {
+                    dbManager.addHealthAssessment(healthIdentification, FirebaseAuth.getInstance().getUid(), imageUrl);
+                    // Refresh the plant list or update UI as needed
+                    // You might want to call a method like refreshPlantList() here
+                });
+            });
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+            getActivity().runOnUiThread(() ->
+                    Toast.makeText(getContext(), "Error processing image", Toast.LENGTH_SHORT).show()
+            );
+        }
     }
 
     private void showDeleteConfirmationDialog(Plant plant) {

@@ -88,143 +88,208 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintVertical_bias="0.0">
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:paddingTop="1.7dp"
+                    android:paddingBottom="1.7dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                        android:animateLayoutChanges="true"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
-                    <TextView
-                            android:id="@+id/diseaseTitle"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            android:gravity="center"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/mada_black"
-                            android:paddingStart="15dp"
-                            android:paddingTop="10dp"
-                            android:paddingEnd="10dp"
-                            android:paddingBottom="10dp"
-                            android:text="Disease"
-                            android:textColor="@color/PLANTITOblack"
-                            android:textSize="24sp"/>
-                    <TextView
-                            android:id="@+id/diseaseDescription"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/diseaseTitle"
-                            android:gravity="center"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/mada"
-                            android:paddingStart="15dp"
-                            android:paddingTop="10dp"
-                            android:paddingEnd="10dp"
-                            android:paddingBottom="10dp"
-                            android:text="Plant disease description goes here"
-                            android:textColor="@color/PLANTITOblack"
-                            android:textSize="18sp"/>
 
-                    <TextView
-                            android:id="@+id/biologicalTreatmentTitle"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/diseaseDescription"
-                            android:gravity="start"
+                    <androidx.cardview.widget.CardView
+                            android:id="@+id/cardView1"
+                            android:backgroundTint="@color/PLANTITOyellow"
+                            android:animateLayoutChanges="true"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/mada_black"
-                            android:paddingStart="15dp"
-                            android:paddingTop="10dp"
-                            android:paddingEnd="10dp"
-                            android:paddingBottom="10dp"
-                            android:text="Biological Treatment"
-                            android:textColor="@color/PLANTITOblack"
-                            android:textSize="24sp"/>
-                    <TextView
-                            android:id="@+id/biologicalTreatment"
+                            android:layout_margin="20dp"
+                            app:cardCornerRadius="20dp"
+                            app:cardElevation="10dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/biologicalTreatmentTitle"
-                            android:gravity="start"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/mada"
-                            android:paddingStart="15dp"
-                            android:paddingTop="10dp"
-                            android:paddingEnd="10dp"
-                            android:paddingBottom="10dp"
-                            android:text="There is no biological treatment for this disease"
-                            android:textColor="@color/PLANTITOblack"
-                            android:textSize="18sp"/>
+                            app:layout_constraintTop_toTopOf="parent">
 
-                    <TextView
-                            android:id="@+id/chemicalTreatmentTitle"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/biologicalTreatment"
-                            android:gravity="start"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/mada_black"
-                            android:paddingStart="15dp"
-                            android:paddingTop="10dp"
-                            android:paddingEnd="10dp"
-                            android:paddingBottom="10dp"
-                            android:text="Chemical Treatment"
-                            android:textColor="@color/PLANTITOblack"
-                            android:textSize="24sp"/>
-                    <TextView
-                            android:id="@+id/chemicalTreatment"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/chemicalTreatmentTitle"
-                            android:gravity="start"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/mada"
-                            android:paddingStart="15dp"
-                            android:paddingTop="10dp"
-                            android:paddingEnd="10dp"
-                            android:paddingBottom="10dp"
-                            android:text="There is no chemical treatment for this disease"
-                            android:textColor="@color/PLANTITOblack"
-                            android:textSize="18sp"/>
+                        <LinearLayout
+                                android:id="@+id/layout1"
+                                android:animateLayoutChanges="true"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                            <TextView
+                                    android:id="@+id/diseaseTitle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/mada_black"
+                                    android:paddingStart="15dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingEnd="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:text="Disease"
+                                    android:textColor="@color/PLANTITOblack"
+                                    android:textSize="24sp"/>
 
-                    <TextView
-                            android:id="@+id/preventionTitle"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/chemicalTreatment"
-                            android:gravity="start"
+                            <TextView
+                                    android:id="@+id/diseaseDescription"
+                                    android:visibility="gone"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/mada"
+                                    android:paddingStart="15dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingEnd="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:textColor="@color/PLANTITOblack"
+                                    android:text="Plant disease description goes here"
+                                    android:textSize="18sp"/>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                            android:id="@+id/cardView2"
+                            android:backgroundTint="@color/PLANTITOyellow"
+                            android:animateLayoutChanges="true"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/mada_black"
-                            android:paddingStart="15dp"
-                            android:paddingTop="10dp"
-                            android:paddingEnd="10dp"
-                            android:paddingBottom="10dp"
-                            android:text="Prevention"
-                            android:textColor="@color/PLANTITOblack"
-                            android:textSize="24sp"/>
-                    <TextView
-                            android:id="@+id/prevention"
+                            android:layout_margin="20dp"
+                            app:cardCornerRadius="20dp"
+                            app:cardElevation="10dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/preventionTitle"
-                            android:gravity="start"
+                            app:layout_constraintTop_toBottomOf="@id/cardView1">
+
+                        <LinearLayout
+                                android:id="@+id/layout2"
+                                android:animateLayoutChanges="true"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                            <TextView
+                                    android:id="@+id/biologicalTreatmentTitle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/mada_black"
+                                    android:paddingStart="15dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingEnd="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:text="Biological Treatment"
+                                    android:textColor="@color/PLANTITOblack"
+                                    android:textSize="24sp"/>
+
+                            <TextView
+                                    android:id="@+id/biologicalTreatment"
+                                    android:visibility="gone"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/mada"
+                                    android:paddingStart="15dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingEnd="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:text="Biological Treatment description goes here"
+                                    android:textColor="@color/PLANTITOblack"
+                                    android:textSize="18sp"/>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                            android:id="@+id/cardView3"
+                            android:backgroundTint="@color/PLANTITOyellow"
+                            android:animateLayoutChanges="true"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/mada"
-                            android:paddingStart="15dp"
-                            android:paddingTop="10dp"
-                            android:paddingEnd="10dp"
-                            android:paddingBottom="10dp"
-                            android:text="There is no prevention for this disease"
-                            android:textColor="@color/PLANTITOblack"
-                            android:textSize="18sp"/>
+                            android:layout_margin="20dp"
+                            app:cardCornerRadius="20dp"
+                            app:cardElevation="10dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/cardView2">
+
+                        <LinearLayout
+                                android:id="@+id/layout3"
+                                android:animateLayoutChanges="true"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                            <TextView
+                                    android:id="@+id/chemicalTreatmentTitle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/mada_black"
+                                    android:paddingStart="15dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingEnd="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:text="Chemical Treatment"
+                                    android:textColor="@color/PLANTITOblack"
+                                    android:textSize="24sp"/>
+
+                            <TextView
+                                    android:id="@+id/chemicalTreatment"
+                                    android:visibility="gone"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/mada"
+                                    android:paddingStart="15dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingEnd="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:text="Chemical Treatment description goes here"
+                                    android:textColor="@color/PLANTITOblack"
+                                    android:textSize="18sp"/>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                            android:id="@+id/cardView4"
+                            android:backgroundTint="@color/PLANTITOyellow"
+                            android:animateLayoutChanges="true"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="20dp"
+                            android:layout_marginBottom="30dp"
+                            app:cardCornerRadius="20dp"
+                            app:cardElevation="10dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/cardView3"
+                            app:layout_constraintBottom_toBottomOf="parent">
+
+                        <LinearLayout
+                                android:id="@+id/layout4"
+                                android:animateLayoutChanges="true"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                            <TextView
+                                    android:id="@+id/preventionTitle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/mada_black"
+                                    android:paddingStart="15dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingEnd="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:text="Prevention"
+                                    android:textColor="@color/PLANTITOblack"
+                                    android:textSize="24sp"/>
+
+                            <TextView
+                                    android:id="@+id/prevention"
+                                    android:visibility="gone"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/mada"
+                                    android:paddingStart="15dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingEnd="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:text="Prevention description goes here"
+                                    android:textColor="@color/PLANTITOblack"
+                                    android:textSize="18sp"/>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </ScrollView>
         </androidx.constraintlayout.widget.ConstraintLayout>
