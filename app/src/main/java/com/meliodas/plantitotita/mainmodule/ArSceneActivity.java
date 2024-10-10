@@ -332,6 +332,7 @@ public class ArSceneActivity extends AppCompatActivity {
                 plantName = plant.name();
                 plantScientificName = plant.scientificName();
                 this.plant = plant;
+                Log.i("lopit", "Plant identified: " + plant.toString());
                 runOnUiThread(() -> {
                     updateArText(plantName, plantScientificName);
                     Toast.makeText(ArSceneActivity.this, plant.toString(), Toast.LENGTH_SHORT).show();

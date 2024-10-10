@@ -206,12 +206,17 @@ public class PlantIdApi {
             String wikiUrl = plantData.getString("url");
 
             List<String> commonNames = new ArrayList<>();
-            JSONArray commonNamesArray = plantData.getJSONArray("common_names");
-            for (int i = 0; i < commonNamesArray.length(); i++) {
-                commonNames.add(commonNamesArray.getString(i));
-            }
+            String commonName = "";
 
-            String commonName = commonNames.isEmpty() ? "No Common Name" : commonNames.get(0);
+            if (plantData.has("common_names")) {
+                JSONArray commonNamesArray = plantData.getJSONArray("common_names");
+
+                for (int i = 0; i < commonNamesArray.length(); i++) {
+                    commonNames.add(commonNamesArray.getString(i));
+                }
+
+                commonName = commonNames.isEmpty() ? "No Common Name" : commonNames.get(0);
+            }
 
             ArrayList<String> edibleParts = new ArrayList<>();
             if (plantData.isNull("edible_parts")) {
