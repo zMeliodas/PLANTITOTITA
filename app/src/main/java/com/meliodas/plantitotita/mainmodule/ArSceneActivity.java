@@ -53,6 +53,7 @@ public class ArSceneActivity extends AppCompatActivity {
     private TransformableNode textNode;
     private final Handler handler = new Handler();
     private static final long UPDATE_INTERVAL_MS = 3000;
+    private boolean isUpdatingTextPosition = true;
 
     private PlantIdApi plantIdApi;
     private DatabaseManager databaseManager;
@@ -74,6 +75,22 @@ public class ArSceneActivity extends AppCompatActivity {
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
         plantIdApi = new PlantIdApi();
         databaseManager = new DatabaseManager();
+        plant = new Plant.Builder().
+                name("").
+                scientificName("").
+                image("").
+                identification("").
+                description("").
+                edibleParts(new ArrayList<>()).
+                propagationMethods(new ArrayList<>()).
+                commonUses("").
+                toxicity("").
+                culturalSignificance("").
+                bestLightCondition("").
+                bestSoilType("").
+                bestWatering("").
+                taxonomy(new HashMap<>()).
+                build();
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -133,7 +150,7 @@ public class ArSceneActivity extends AppCompatActivity {
         plantNameText.setText(StringUtils.capitalize(plantName));
         scientificNameText.setText(StringUtils.capitalize(scientificName));
         view.setOnClickListener(v -> {
-            // TODO: change from start activity to adding a fragment to the stack
+            isUpdatingTextPosition = false; // Stop updating text position
             Intent intent = new Intent(this, PlantInformationActivity.class);
             intent.putExtra("plantName", this.plantName != null ? this.plantName : "");
             intent.putExtra("plantScientificName", plant.scientificName() != null ? plant.scientificName() : "");
@@ -156,9 +173,11 @@ public class ArSceneActivity extends AppCompatActivity {
     }
 
     private void startUpdatingTextPosition() {
+
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
+                if (!isUpdatingTextPosition) return;
                 updateTextPosition();
                 handler.postDelayed(this, UPDATE_INTERVAL_MS);
 
@@ -207,21 +226,20 @@ public class ArSceneActivity extends AppCompatActivity {
         }
     }
 
-    private float calculateDistance(float[] point1, float[] point2) {
-        float dx = point1[0] - point2[0];
-        float dy = point1[1] - point2[1];
-        float dz = point1[2] - point2[2];
-        return (float) Math.sqrt(dx * dx + dy * dy + dz * dz);
-    }
-
     // Place or update text position with Instant Placement
     private void placeOrUpdateText(Pose hitPose) {
         if (currentAnchorNode != null) {
             arFragment.getArSceneView().getScene().removeChild(currentAnchorNode);
-            currentAnchorNode.getAnchor().detach();
+            if (currentAnchorNode.getAnchor() != null) {
+                currentAnchorNode.getAnchor().detach();
+            }
+            currentAnchorNode = null;
         }
 
-        // Create anchor from the hit pose
+        Session session = arFragment.getArSceneView().getSession();
+
+        if (session == null) return;
+
         Anchor anchor = arFragment.getArSceneView().getSession().createAnchor(hitPose);
         currentAnchorNode = new AnchorNode(anchor);
         textNode = new TransformableNode(arFragment.getTransformationSystem());
@@ -234,7 +252,11 @@ public class ArSceneActivity extends AppCompatActivity {
     }
 
     private void updateTextRotation() {
-        if (textNode != null && arFragment.getArSceneView().getScene().getCamera() != null) {
+        if (textNode != null && arFragment != null &&
+                arFragment.getArSceneView() != null &&
+                arFragment.getArSceneView().getScene() != null &&
+                arFragment.getArSceneView().getScene().getCamera() != null) {
+
             Vector3 cameraPosition = arFragment.getArSceneView().getScene().getCamera().getWorldPosition();
             Vector3 textPosition = textNode.getWorldPosition();
             Vector3 direction = Vector3.subtract(cameraPosition, textPosition);
