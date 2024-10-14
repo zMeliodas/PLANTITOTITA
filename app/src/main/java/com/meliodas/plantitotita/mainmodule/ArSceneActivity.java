@@ -173,7 +173,6 @@ public class ArSceneActivity extends AppCompatActivity {
     }
 
     private void startUpdatingTextPosition() {
-
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {

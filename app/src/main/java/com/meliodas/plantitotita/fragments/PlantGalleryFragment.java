@@ -4,7 +4,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -179,10 +178,10 @@ public class PlantGalleryFragment extends Fragment {
                 try {
                     Bundle args = new Bundle();
                     args.putString("plantName", capitalizedPlantName);
-                    args.putString("image", plant.image());
-                    args.putString("description", plant.description());
+                    args.putString("plantImageUrl", plant.image());
+                    args.putString("plantDescription", plant.description());
                     args.putString("wikiUrl", plant.wikiUrl());
-                    args.putString("scientificName", capitalizedScientificName);
+                    args.putString("plantScientificName", capitalizedScientificName);
                     args.putString("family", StringUtils.capitalize(plant.family()));
                     args.putString("genus", StringUtils.capitalize(plant.genus()));
                     args.putString("wikiUrl", plant.wikiUrl());

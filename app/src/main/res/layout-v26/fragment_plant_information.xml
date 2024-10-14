@@ -25,7 +25,6 @@
             android:background="@drawable/save_icon_silhouette_svgrepo_com"
             android:layout_marginTop="13dp"
             android:tooltipText="Save to Gallery"
-            android:visibility="invisible"
             app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="16dp"/>
 
@@ -39,7 +38,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="150dp">
-
 
         <TextView
                 android:id="@+id/plantInformationName"

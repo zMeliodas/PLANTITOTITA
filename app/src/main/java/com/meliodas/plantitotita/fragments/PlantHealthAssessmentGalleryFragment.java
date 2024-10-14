@@ -2,10 +2,12 @@ package com.meliodas.plantitotita.fragments;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.ImageDecoder;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Button;
@@ -15,11 +17,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import com.bumptech.glide.Glide;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,24 +33,54 @@ import com.meliodas.plantitotita.mainmodule.*;
 import org.json.JSONException;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Locale;
 
 import static android.app.Activity.RESULT_OK;
 
-
 public class PlantHealthAssessmentGalleryFragment extends Fragment {
-
     private static final int PICK_IMAGE_REQUEST = 100;
     private static final int CAPTURE_IMAGE_REQUEST = 101;
+
     private final DatabaseManager dbManager = new DatabaseManager();
-    private Uri imageUri;
     private HealthIdentification healthIdentification;
     private List<Map<String, Object>> healthIdentifications;
     private LinearLayout plantGalleryLayout;
     private final List<Plant> plantList = new ArrayList<>();
+
+    private ActivityResultLauncher<Intent> pickImageLauncher;
+    private ActivityResultLauncher<Uri> takePhotoLauncher;
+
+    @RequiresApi(api = Build.VERSION_CODES.P)
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        pickImageLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        imageUri = result.getData().getData();
+                        processImage(imageUri);
+                    }
+                }
+        );
+
+        takePhotoLauncher = registerForActivityResult(
+                new ActivityResultContracts.TakePicture(),
+                result -> {
+                    if (result) {
+                        processImage(photoUri);
+                    }
+                }
+        );
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,14 +98,8 @@ public class PlantHealthAssessmentGalleryFragment extends Fragment {
         View uploadImageBtn = view.findViewById(R.id.PlantHealthAssessmentLayout);
         Button uploadImageBtnIcon = view.findViewById(R.id.PlantHealthAssessmentUploadIcon);
         Button takePhotoBtn = view.findViewById(R.id.PlantHealthAssessmentTakePhotoIcon);
-        uploadImageBtn.setOnClickListener(v -> {
-            selectImage();
-        });
-
-        uploadImageBtnIcon.setOnClickListener(v -> {
-            selectImage();
-        });
-
+        uploadImageBtn.setOnClickListener(v -> selectImage());
+        uploadImageBtnIcon.setOnClickListener(v -> selectImage());
         takePhotoBtn.setOnClickListener(v -> takePhoto());
     }
 
@@ -140,45 +169,15 @@ public class PlantHealthAssessmentGalleryFragment extends Fragment {
         return plantGalleryItem;
     }
 
-    public void selectImage() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, PICK_IMAGE_REQUEST);
-    }
+    private Uri imageUri;
+    private Uri photoUri;
 
-    private void takePhoto() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, CAPTURE_IMAGE_REQUEST);
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode != RESULT_OK || data == null) {
-            return;
-        }
-
-        if (requestCode == PICK_IMAGE_REQUEST && data.getData() != null) {
-            imageUri = data.getData();
-            processImage(imageUri);
-        } else if (requestCode == CAPTURE_IMAGE_REQUEST) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            processImage(imageBitmap);
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private void processImage(Uri imageUri) {
+    @RequiresApi(api = Build.VERSION_CODES.P)
+    private void processImage(Uri uri) {
         new Thread(() -> {
             try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imageUri);
-                processImageBitmap(bitmap);
+                Bitmap bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(requireContext().getContentResolver(), uri));
+                processImageBitmap(bitmap, uri);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -186,16 +185,61 @@ public class PlantHealthAssessmentGalleryFragment extends Fragment {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void processImage(Bitmap bitmap) {
-        new Thread(() -> processImageBitmap(bitmap)).start();
+    private void processImageBitmap(Bitmap bitmap, Uri uri) {
+        try {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+            byte[] imageData = byteArrayOutputStream.toByteArray();
+
+            double longitude = 0.0;
+            double latitude = 0.0;
+
+            PlantIdApi plantIdApi = new PlantIdApi();
+            healthIdentification = plantIdApi.identifyHealth(imageData, longitude, latitude);
+
+            requireActivity().runOnUiThread(() -> {
+                if (uri != null) {
+                    dbManager.uploadImage(FirebaseAuth.getInstance().getUid(), uri, imageUrl -> {
+                        dbManager.addHealthAssessment(healthIdentification, FirebaseAuth.getInstance().getUid(), imageUrl);
+                        refreshPlantList();
+                    });
+                } else {
+                    Toast.makeText(requireContext(), "Error: Image URI is null", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+            requireActivity().runOnUiThread(() ->
+                    Toast.makeText(requireContext(), "Error processing image", Toast.LENGTH_SHORT).show()
+            );
+        }
     }
 
-    private void onImageUploadComplete(String imageUrl) {
-        getActivity().runOnUiThread(() -> {
-            dbManager.addHealthAssessment(healthIdentification, FirebaseAuth.getInstance().getUid(), imageUrl);
-            refreshPlantList();
-            Toast.makeText(getContext(), "Plant health assessment added successfully", Toast.LENGTH_SHORT).show();
-        });
+    public void selectImage() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        pickImageLauncher.launch(intent);
+    }
+
+    private void takePhoto() {
+        File photoFile = null;
+        try {
+            photoFile = createImageFile();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        if (photoFile != null) {
+            photoUri = FileProvider.getUriForFile(requireContext(), "com.meliodas.plantitotita.fileprovider", photoFile);
+            takePhotoLauncher.launch(photoUri);
+        } else {
+            Toast.makeText(requireContext(), "Error creating image file", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private File createImageFile() throws IOException {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        return File.createTempFile(imageFileName, ".jpg", storageDir);
     }
 
     private void refreshPlantList() {
@@ -235,17 +279,16 @@ public class PlantHealthAssessmentGalleryFragment extends Fragment {
             PlantIdApi plantIdApi = new PlantIdApi();
             healthIdentification = plantIdApi.identifyHealth(imageData, longitude, latitude);
 
-            getActivity().runOnUiThread(() -> {
-                    dbManager.uploadImage(FirebaseAuth.getInstance().getUid(), imageUri, imageUrl -> {
+            requireActivity().runOnUiThread(() -> {
+                dbManager.uploadImage(FirebaseAuth.getInstance().getUid(), imageUri, imageUrl -> {
                     dbManager.addHealthAssessment(healthIdentification, FirebaseAuth.getInstance().getUid(), imageUrl);
-                    // Refresh the plant list or update UI as needed
-                    // You might want to call a method like refreshPlantList() here
+                    refreshPlantList(); // Add this line to refresh the plant list after adding a new assessment
                 });
             });
         } catch (IOException | JSONException e) {
             e.printStackTrace();
-            getActivity().runOnUiThread(() ->
-                    Toast.makeText(getContext(), "Error processing image", Toast.LENGTH_SHORT).show()
+            requireActivity().runOnUiThread(() ->
+                    Toast.makeText(requireContext(), "Error processing image", Toast.LENGTH_SHORT).show()
             );
         }
     }

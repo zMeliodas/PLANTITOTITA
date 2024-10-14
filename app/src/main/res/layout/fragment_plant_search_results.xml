@@ -59,7 +59,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        android:id="@+id/plantGalleryLayout" android:orientation="vertical">
+                        android:id="@+id/plantSearchLayout" android:orientation="vertical">
                 </LinearLayout>
             </ScrollView>
         </androidx.constraintlayout.widget.ConstraintLayout>

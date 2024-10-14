@@ -3,10 +3,14 @@ package com.meliodas.plantitotita.fragments;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -52,6 +56,40 @@ public class HomePageFragment extends Fragment {
         ConstraintLayout button4 = view.findViewById(R.id.getStartedLayout1);
         ConstraintLayout button5 = view.findViewById(R.id.getStartedLayout2);
         ConstraintLayout button6 = view.findViewById(R.id.getStartedLayout3);
+
+        EditText searchEditText = view.findViewById(R.id.editTxtSearch);
+
+//        searchEditText.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//                // Do nothing
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                // Do nothing
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                String searchQuery = s.toString();
+//
+//            }
+//        });
+        searchEditText.setOnKeyListener((v, keyCode, event) -> {
+            if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP) {
+                String searchQuery = searchEditText.getText().toString();
+                PlantSearchResultsFragment fragment = new PlantSearchResultsFragment();
+                Bundle args = new Bundle();
+                args.putString("searchQuery", searchQuery);
+                fragment.setArguments(args);
+                requireActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.frameLayout, fragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+            return false;
+        });
 
         button1.setOnClickListener(v -> onClickGetStartedScanPlant());
         button2.setOnClickListener(v -> onClickGetStartedPlantGallery());
@@ -153,9 +191,9 @@ public class HomePageFragment extends Fragment {
             PlantInformationFragment plantInfoFragment = new PlantInformationFragment();
             Bundle args = new Bundle();
             args.putString("plantName", capitalizedName);
-            args.putString("scientificName", StringUtils.capitalize(plant.scientificName()));
-            args.putString("description", plant.description());
-            args.putString("image", plant.image());
+            args.putString("plantScientificName", StringUtils.capitalize(plant.scientificName()));
+            args.putString("plantDescription", plant.description());
+            args.putString("plantImageUrl", plant.image());
             args.putStringArrayList("edibleParts", plant.edibleParts());
             args.putStringArrayList("propagationMethods", plant.propagationMethods());
             args.putString("commonUses", plant.commonUses());

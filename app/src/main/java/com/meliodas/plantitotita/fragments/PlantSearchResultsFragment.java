@@ -1,63 +1,124 @@
 package com.meliodas.plantitotita.fragments;
 
 import android.os.Bundle;
+import android.util.Base64;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.fragment.app.FragmentTransaction;
+import com.bumptech.glide.Glide;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.meliodas.plantitotita.R;
+import com.meliodas.plantitotita.mainmodule.Plant;
+import com.meliodas.plantitotita.mainmodule.PlantIdApi;
+import org.json.JSONException;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link PlantSearchResultsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+
 public class PlantSearchResultsFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public PlantSearchResultsFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment PlantSearchResultsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static PlantSearchResultsFragment newInstance(String param1, String param2) {
-        PlantSearchResultsFragment fragment = new PlantSearchResultsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_plant_search_results, container, false);
+        View view = inflater.inflate(R.layout.fragment_plant_search_results, container, false);
+        LinearLayout plantGallery = view.findViewById(R.id.plantSearchLayout);
+
+        Bundle bundle = getArguments();
+        assert bundle != null;
+        String searchQuery = bundle.getString("searchQuery") != null ? bundle.getString("searchQuery") : "No search query found";
+
+        new Thread(() -> {
+            PlantIdApi plantIdApi = new PlantIdApi();
+            try {
+                List<HashMap<String, String>> plants = plantIdApi.searchAndGetAccessTokens(searchQuery);
+                for (HashMap<String, String> plant : plants) {
+                    getActivity().runOnUiThread(() -> plantGallery.addView(resultView(plant.get("name"), plant.get("matched_in_type"), plant.get("access_token"), plant.get("image"))));
+                }
+            } catch (IOException e) {
+                if (e.getMessage().startsWith("No plants found for query")) {
+                    getActivity().runOnUiThread(() -> {
+                        // TODO - Add a TextView to the actual layout instead of programatically creating one
+                        TextView noResults = new TextView(getContext());
+                        noResults.setText("No results found for query: " + searchQuery);
+                        plantGallery.addView(noResults);
+                    });
+                } else {
+                    e.printStackTrace();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+        return view;
+    }
+
+    private View resultView(String plantName, String matchType, String accessToken, String image) {
+        View view = getLayoutInflater().inflate(R.layout.custom_container_plantgallery, null);
+        TextView plantNameTextView = view.findViewById(R.id.plantIDName);
+        TextView plantScientificNameTextView = view.findViewById(R.id.plantIDScientificName);
+        ShapeableImageView plantImageView = view.findViewById(R.id.plantGalleryContainerImgView);
+
+        plantNameTextView.setText(plantName);
+        plantScientificNameTextView.setText("");
+
+        Glide.with(getContext()).load(Base64.decode(image, Base64.DEFAULT)).into(plantImageView);
+
+        view.setOnClickListener(v -> {
+            PlantIdApi plantIdApi = new PlantIdApi();
+
+            new Thread(() -> {
+                Plant plant = null;
+                try {
+                    plant = plantIdApi.getPlantDetailFromAccessToken(accessToken);
+                } catch (IOException | JSONException e) {
+                    throw new RuntimeException(e);
+                }
+
+                Bundle bundle = new Bundle();
+                bundle.putString("plantName", plant.name());
+                bundle.putString("plantScientificName", plant.scientificName());
+                bundle.putString("plantDescription", plant.description());
+                bundle.putString("plantImageUrl", plant.image());
+                bundle.putStringArrayList("edibleParts", plant.edibleParts());
+                bundle.putStringArrayList("propagationMethods", plant.propagationMethods());
+                bundle.putString("commonUses", plant.commonUses());
+                bundle.putString("culturalSignificance", plant.culturalSignificance());
+                bundle.putString("toxicity", plant.toxicity());
+                bundle.putString("bestLightCondition", plant.bestLightCondition());
+                bundle.putString("bestSoilType", plant.bestSoilType());
+                bundle.putString("bestWatering", plant.bestWatering());
+                bundle.putSerializable("taxonomy", plant.taxonomy());
+                bundle.putBoolean("allowSaveToGallery", true);
+
+                Fragment targetFragment = new PlantInformationFragment();
+                targetFragment.setArguments(bundle);
+                getActivity().runOnUiThread(() -> {
+                    FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                    transaction.replace(R.id.frameLayout, targetFragment);
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+                });
+            }).start();
+
+        });
+
+        return view;
+    }
+
+    private String cleanMatchType(String matchType) {
+        return switch (matchType) {
+            case "common_name", "entity_name" -> "Common Name";
+            case "scientific_name" -> "Scientific Name";
+            case "family" -> "Family";
+            case "genus" -> "Genus";
+            default -> "Unknown";
+        };
     }
 }

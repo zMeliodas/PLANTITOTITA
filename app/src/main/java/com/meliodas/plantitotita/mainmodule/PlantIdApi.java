@@ -139,42 +139,42 @@ public class PlantIdApi {
             JSONObject plantData = new JSONObject(responseBody);
 
             String scientificName = "";
-            if (plantData.has("name")){
+            if (plantData.has("name")) {
                 scientificName = plantData.getString("name");
             }
 
             String family = "";
-            if (plantData.getJSONObject("taxonomy").has("family")){
+            if (plantData.getJSONObject("taxonomy").has("family")) {
                 family = plantData.getJSONObject("taxonomy").getString("family");
             }
 
             String phylum = "";
-            if (plantData.getJSONObject("taxonomy").has("phylum")){
+            if (plantData.getJSONObject("taxonomy").has("phylum")) {
                 phylum = plantData.getJSONObject("taxonomy").getString("phylum");
             }
 
             String kingdom = "";
-            if (plantData.getJSONObject("taxonomy").has("kingdom")){
+            if (plantData.getJSONObject("taxonomy").has("kingdom")) {
                 kingdom = plantData.getJSONObject("taxonomy").getString("kingdom");
             }
 
             String order = "";
-            if (plantData.getJSONObject("taxonomy").has("order")){
+            if (plantData.getJSONObject("taxonomy").has("order")) {
                 order = plantData.getJSONObject("taxonomy").getString("order");
             }
 
             String rank = "";
-            if (plantData.getJSONObject("taxonomy").has("rank")){
+            if (plantData.getJSONObject("taxonomy").has("rank")) {
                 rank = plantData.getJSONObject("taxonomy").getString("rank");
             }
 
             String genus = "";
-            if (plantData.getJSONObject("taxonomy").has("genus")){
+            if (plantData.getJSONObject("taxonomy").has("genus")) {
                 genus = plantData.getJSONObject("taxonomy").getString("genus");
             }
 
             String plantClass = "";
-            if (plantData.getJSONObject("taxonomy").has("class")){
+            if (plantData.getJSONObject("taxonomy").has("class")) {
                 plantClass = plantData.getJSONObject("taxonomy").getString("class");
             }
 
@@ -275,6 +275,52 @@ public class PlantIdApi {
         String accessToken = searchPlantByName(plantScientificName);
 
         return getPlantDetailFromAccessToken(accessToken);
+    }
+
+    public List<HashMap<String, String>> searchAndGetAccessTokens(String plantName) throws IOException, JSONException {
+        plantIdApiUrl = "https://plant.id/api/v3/kb/plants/name_search?q=" + plantName + "&thumbnails=true";
+
+        Request request = new Request.Builder()
+                .url(plantIdApiUrl)
+                .get()
+                .addHeader("Api-Key", apiKey)  // Use API key for authorization
+                .addHeader("Content-Type", "application/json")
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                String responseBody = response.body().string();
+                Log.e("API Error", "Unexpected code " + response + " Response Body: " + responseBody);
+                throw new IOException("Unexpected code " + response + " Response Body: " + responseBody);
+            }
+
+            // Read the response body and extract access token
+            String responseBody = response.body().string();
+            Log.i("Plant Search Response", "Response Body: " + responseBody);
+            JSONObject jsonResponse = new JSONObject(responseBody);
+
+            // Ensure at least one plant is found and an access token is available
+            JSONArray plantsArray = jsonResponse.getJSONArray("entities");
+            if (plantsArray.length() == 0) {
+                throw new IOException("No plants found for query: " + plantName);
+            }
+
+            List<HashMap<String, String>> accessTokens = new ArrayList<>();
+            for (int i = 0; i < plantsArray.length(); i++) {
+                JSONObject plant = plantsArray.getJSONObject(i);
+                HashMap<String, String> plantDetails = new HashMap<>();
+                plantDetails.put("name", plant.getString("entity_name"));
+                plantDetails.put("access_token", plant.getString("access_token"));
+                plantDetails.put("matched_in_type", plant.getString("matched_in_type"));
+                plantDetails.put("image", plant.getString("thumbnail"));
+                accessTokens.add(plantDetails);
+            }
+
+            return accessTokens;
+        } catch (IOException e) {
+            Log.e("API Error", "Error occurred while making API request", e);
+            throw e;
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

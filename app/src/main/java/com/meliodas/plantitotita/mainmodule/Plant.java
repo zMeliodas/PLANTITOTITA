@@ -1,11 +1,6 @@
 package com.meliodas.plantitotita.mainmodule;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public final class Plant {
     private final String identification;
@@ -17,7 +12,7 @@ public final class Plant {
     private final String description;
     private final String wikiUrl;
     private final List<String> commonNames;
-    private final Map<String, String> taxonomy;
+    private final HashMap<String, String> taxonomy;
     private final String url;
     private final int gbifId;
     private final int inaturalistId;
@@ -70,7 +65,7 @@ public final class Plant {
         private String description;
         private String wikiUrl;
         private List<String> commonNames = List.of();
-        private Map<String, String> taxonomy = Map.of();
+        private HashMap<String, String> taxonomy = new HashMap<>();
         private String url = "";
         private int gbifId = 0;
         private int inaturalistId = 0;
@@ -131,7 +126,7 @@ public final class Plant {
             return this;
         }
 
-        public Builder taxonomy(Map<String, String> taxonomy) {
+        public Builder taxonomy(HashMap<String, String> taxonomy) {
             this.taxonomy = taxonomy;
             return this;
         }
@@ -248,7 +243,7 @@ public final class Plant {
         return commonNames;
     }
 
-    public Map<String, String> taxonomy() {
+    public HashMap<String, String> taxonomy() {
         return taxonomy;
     }
 
