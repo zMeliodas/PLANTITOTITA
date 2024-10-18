@@ -100,35 +100,14 @@
             app:layout_constraintTop_toBottomOf="@+id/editProfileLastNameTxtView"/>
 
     <TextView
-            android:text="E-Mail Address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/editProfileEmailTxtView"
-            android:fontFamily="@font/mada_medium" android:textSize="20sp"
-            android:textColor="@color/PLANTITOgreen" app:layout_constraintTop_toBottomOf="@id/editProfileEditTxtLastName"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="10dp"
-            android:layout_marginStart="40dp"/>
-    <EditText
-            android:layout_width="320dp"
-            android:layout_height="65dp"
-            android:id="@+id/editProfileEditTxtEmail"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:inputType="textEmailAddress"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/custom_button_white"
-            android:layout_marginTop="1dp"
-            android:textSize="20sp" android:textColor="@color/black" android:fontFamily="@font/mada_medium"
-            android:paddingStart="25dp" android:paddingEnd="15dp"
-            app:layout_constraintTop_toBottomOf="@+id/editProfileEmailTxtView"/>
-
-    <TextView
             android:text="Contact Number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/editProfileContactNumberTxtView"
             android:fontFamily="@font/mada_medium" android:textSize="20sp"
-            android:textColor="@color/PLANTITOgreen" app:layout_constraintTop_toBottomOf="@id/editProfileEditTxtEmail"
+            android:textColor="@color/PLANTITOgreen" app:layout_constraintTop_toBottomOf="@id/editProfileEditTxtLastName"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="10dp"
             android:layout_marginStart="40dp"/>
+
     <EditText
             android:layout_width="320dp"
             android:layout_height="65dp"

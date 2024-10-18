@@ -1,6 +1,8 @@
 package com.meliodas.plantitotita.fragments;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.ImageDecoder;
 import android.graphics.drawable.ColorDrawable;
@@ -47,7 +49,7 @@ import static android.app.Activity.RESULT_OK;
 public class PlantHealthAssessmentGalleryFragment extends Fragment {
     private static final int PICK_IMAGE_REQUEST = 100;
     private static final int CAPTURE_IMAGE_REQUEST = 101;
-
+    private static final int CAMERA_REQUEST_CODE = 1001;
     private final DatabaseManager dbManager = new DatabaseManager();
     private HealthIdentification healthIdentification;
     private List<Map<String, Object>> healthIdentifications;
@@ -100,7 +102,13 @@ public class PlantHealthAssessmentGalleryFragment extends Fragment {
         Button takePhotoBtn = view.findViewById(R.id.PlantHealthAssessmentTakePhotoIcon);
         uploadImageBtn.setOnClickListener(v -> selectImage());
         uploadImageBtnIcon.setOnClickListener(v -> selectImage());
-        takePhotoBtn.setOnClickListener(v -> takePhoto());
+        takePhotoBtn.setOnClickListener(v -> {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                checkCameraPermission();
+            } else {
+                takePhoto();  // Older versions do not require runtime permissions
+            }
+        });
     }
 
     // Dynamically create and display plant items
@@ -381,5 +389,26 @@ public class PlantHealthAssessmentGalleryFragment extends Fragment {
         }
 
         alertDialog.show();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void checkCameraPermission() {
+        if (requireContext().checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            takePhoto();  // Permission is granted, proceed with taking the photo
+        } else {
+            requestPermissions(new String[]{Manifest.permission.CAMERA}, CAMERA_REQUEST_CODE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == CAMERA_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                takePhoto();  // Permission granted, proceed with taking the photo
+            } else {
+                Toast.makeText(getContext(), "Camera permission is required to take photos", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

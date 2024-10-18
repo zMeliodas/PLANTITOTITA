@@ -42,7 +42,7 @@ public class EditProfilePage extends AppCompatActivity {
     StorageReference storageRef;
     FirebaseFirestore fStore;
     private String imageViewPhoto, firstName, lastName, eMail, mobileNum;
-    private EditText editTextFirstName, editTextLastName, editTextEmail, editTextMobileNum;
+    private EditText editTextFirstName, editTextLastName, editTextMobileNum;
     private ImageView imageView;
     private boolean imageChanged = false;
 
@@ -76,7 +76,6 @@ public class EditProfilePage extends AppCompatActivity {
         imageView = findViewById(R.id.editProfileImageView);
         editTextFirstName = findViewById(R.id.editProfileEditTxtFirstName);
         editTextLastName = findViewById(R.id.editProfileEditTxtLastName);
-        editTextEmail = findViewById(R.id.editProfileEditTxtEmail);
         editTextMobileNum = findViewById(R.id.editProfileEditTxtContactNumber);
 
         DocumentReference documentReference = fStore.collection("users").document(firebaseUser.getUid());
@@ -87,12 +86,10 @@ public class EditProfilePage extends AppCompatActivity {
                 imageViewPhoto = value.getString("profile_picture");
                 firstName = value.getString("user_name");
                 lastName = value.getString("last_name");
-                eMail = value.getString("email_address");
                 mobileNum = value.getString("mobile_number");
 
                 editTextFirstName.setText(firstName);
                 editTextLastName.setText(lastName);
-                editTextEmail.setText(eMail);
                 editTextMobileNum.setText(mobileNum);
 
                 if (imageViewPhoto == null || imageViewPhoto.isEmpty()) {
@@ -108,8 +105,8 @@ public class EditProfilePage extends AppCompatActivity {
         Map<String, Object> userInfo = new HashMap<>();
         userInfo.put("user_name", editTextFirstName.getText().toString());
         userInfo.put("last_name", editTextLastName.getText().toString());
-        userInfo.put("email_address", editTextEmail.getText().toString());
         userInfo.put("mobile_number", editTextMobileNum.getText().toString());
+
         if(imageChanged) uploadImage(firebaseUser.getEmail());
 
         fStore.collection("users").document(firebaseUser.getUid()).set(userInfo, SetOptions.merge()).addOnSuccessListener(unused -> {
@@ -207,22 +204,9 @@ public class EditProfilePage extends AppCompatActivity {
                 return;
             }
 
-            if (editTextEmail.getText() == null || editTextEmail.getText().toString().isEmpty()){
-                alertDialog.dismiss();
-                editTextEmail.setError("Email can't be blank");
-                return;
-            }
-
             if (editTextMobileNum.getText() == null || editTextMobileNum.getText().toString().isEmpty()){
                 alertDialog.dismiss();
                 editTextMobileNum.setError("Mobile number can't be blank");
-                return;
-            }
-
-            if (!editTextEmail.getText().toString().matches("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+")) {
-                alertDialog.dismiss();
-                editTextEmail.setError("Invalid email address Ex.abcdefg123@gmail.com");
-                editTextEmail.requestFocus();
                 return;
             }
 

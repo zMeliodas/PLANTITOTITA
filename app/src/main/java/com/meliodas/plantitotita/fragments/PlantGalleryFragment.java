@@ -27,6 +27,7 @@ public class PlantGalleryFragment extends Fragment {
     private List<Map<String, Object>> identifications;
     private LinearLayout plantGalleryLayout;
     private final List<Plant> plantList = new ArrayList<>();
+    private static final int CAMERA_REQUEST_CODE = 1001;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -135,10 +136,16 @@ public class PlantGalleryFragment extends Fragment {
     private void filterPlants(String searchText) {
         List<Plant> filteredPlants = new ArrayList<>();
         for (Plant plant : plantList) {
-            if (plant.name().toLowerCase().contains(searchText.toLowerCase()) ||
-                    plant.scientificName().toLowerCase().contains(searchText.toLowerCase()) ||
-                    plant.family().toLowerCase().contains(searchText.toLowerCase()) ||
-                    plant.genus().toLowerCase().contains(searchText.toLowerCase())) {
+            // Handle null values using safe comparisons
+            String plantName = plant.name() != null ? plant.name().toLowerCase() : "";
+            String scientificName = plant.scientificName() != null ? plant.scientificName().toLowerCase() : "";
+            String family = plant.family() != null ? plant.family().toLowerCase() : "";
+            String genus = plant.genus() != null ? plant.genus().toLowerCase() : "";
+
+            if (plantName.contains(searchText.toLowerCase()) ||
+                    scientificName.contains(searchText.toLowerCase()) ||
+                    family.contains(searchText.toLowerCase()) ||
+                    genus.contains(searchText.toLowerCase())) {
                 filteredPlants.add(plant);
             }
         }
@@ -234,11 +241,18 @@ public class PlantGalleryFragment extends Fragment {
         dbManager.getUserDoc(userId).get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists() && documentSnapshot.contains("plant_identifications")) {
                 List<Map<String, Object>> identifications = (List<Map<String, Object>>) documentSnapshot.get("plant_identifications");
-                identifications.removeIf(map -> map.get("identification").equals(plant.identification()));
+
+                // Add null checks and safe comparison
+                identifications.removeIf(map -> {
+                    Object mapIdentification = map.get("identification");
+                    String plantIdentification = plant.identification();
+                    return mapIdentification != null && plantIdentification != null
+                            && mapIdentification.equals(plantIdentification);
+                });
 
                 dbManager.getUserDoc(userId).update("plant_identifications", identifications)
                         .addOnSuccessListener(aVoid -> {
-                            Toast.makeText(getContext(), plant.name() + " identification deleted!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), StringUtils.capitalize(plant.name()) + " identification deleted!", Toast.LENGTH_SHORT).show();
                         })
                         .addOnFailureListener(e -> {
                             Toast.makeText(getContext(), "Failed to delete from database", Toast.LENGTH_SHORT).show();

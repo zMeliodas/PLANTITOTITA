@@ -68,7 +68,6 @@ public class PlantInformationFragment extends Fragment {
             transaction.commit();
         });
 
-
         plantImage = view.findViewById(R.id.plantInfoImage);
         plantName = view.findViewById(R.id.plantInformationName);
         scientificName = view.findViewById(R.id.plantInformationScientificName);
@@ -277,4 +276,6 @@ public class PlantInformationFragment extends Fragment {
         TransitionManager.beginDelayedTransition(layout, transition);
         description.setVisibility(visibility);
     }
+
+
 }

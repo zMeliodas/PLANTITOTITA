@@ -9,10 +9,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.meliodas.plantitotita.R;
@@ -155,28 +157,45 @@ public class RegistrationPage extends AppCompatActivity {
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
-                    if (task.getException() == null || task.isSuccessful()) {
-                        // Sign in success, update UI with the signed-in user's information
-
-                        if (mAuth.getCurrentUser() != null){
-                            userID = mAuth.getCurrentUser().getUid();
+                    if (task.isSuccessful()) {
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        if (user != null) {
+                            userID = user.getUid();
+                            sendEmailVerification(user);
+                            saveUserDataToFirestore(name, lastName, email, mobileNumber);
                         }
-
-                        DocumentReference documentReference = fStore.collection("users").document(userID);
-                        Map<String, Object> user = new HashMap<>();
-                        user.put("user_name", name);
-                        user.put("last_name", lastName);
-                        user.put("email_address", email);
-                        user.put("mobile_number", "0" + mobileNumber);
-                        user.put("password", password);
-                        documentReference.set(user).addOnSuccessListener(unused -> showDialog(EnumLayout.SUCCESS));
-                    }
-
-                    if (task.getException() instanceof FirebaseAuthUserCollisionException e) {
+                    } else if (task.getException() instanceof FirebaseAuthUserCollisionException) {
                         editTextEmailAddress.setError("Email already exists");
                         editTextEmailAddress.requestFocus();
+                    } else {
+                        showDialog(EnumLayout.ERROR);
                     }
                 });
+    }
+
+    private void sendEmailVerification(FirebaseUser user) {
+        user.sendEmailVerification()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                                showDialog(EnumLayout.SUCCESS);
+                    } else {
+                        showDialog(EnumLayout.ERROR);
+                    }
+                });
+    }
+
+    private void saveUserDataToFirestore(String name, String lastName, String email, String mobileNumber) {
+        DocumentReference documentReference = fStore.collection("users").document(userID);
+        Map<String, Object> user = new HashMap<>();
+        user.put("user_name", name);
+        user.put("last_name", lastName);
+        user.put("email_address", email);
+        user.put("mobile_number", "0" + mobileNumber);
+        documentReference.set(user).addOnSuccessListener(unused -> {
+            // Data saved successfully
+        }).addOnFailureListener(e -> {
+            Toast.makeText(RegistrationPage.this, "Error saving user data", Toast.LENGTH_SHORT).show();
+        });
     }
 
     private void showDialog(EnumLayout layout) {
@@ -196,7 +215,7 @@ public class RegistrationPage extends AppCompatActivity {
         continueButton.setOnClickListener(view1 -> {
             switch (layout) {
                 case SUCCESS -> {
-                    startActivity(new Intent(getApplicationContext(), HomePage.class));
+                    startActivity(new Intent(RegistrationPage.this, LoginPage.class));
                     finish();
                 }
                 case ERROR -> alertDialog.dismiss();

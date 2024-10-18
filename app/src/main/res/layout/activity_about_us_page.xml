@@ -5,6 +5,166 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/PLANTITOyellow"
         tools:context=".mainmodule.AboutUsPage">
 
+    <Button
+            android:layout_width="44dp"
+            android:layout_height="39dp" android:id="@+id/btnReturn"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
+            android:onClick="onClickReturnAboutUs"
+            android:background="@drawable/resource_return" android:layout_marginTop="13dp"
+            android:layout_marginStart="16dp"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="About Us"
+            android:textAlignment="center" android:fontFamily="@font/mada_black"
+            android:textColor="@color/PLANTITOblack" android:textSize="34sp"
+            android:id="@+id/signUpTitle"
+            android:contextClickable="false"
+            android:textColorHighlight="@color/black"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="72dp"/>
+
+    <TextView
+            android:text="At Plantitotita, we leverage advanced AR technology to enhance plant identification and provide detailed, scientifically accurate information. Our goal is to empower plant enthusiasts and horticulturists to deepen their knowledge and appreciation of plant species through an interactive and accessible platform. Whether you are expanding your expertise or just beginning your botanical journey, our app facilitates learning by connecting you directly to the world of plants with every scan."
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/mada_medium"
+            android:textSize="19sp"
+            android:padding="15dp"
+            android:textColor="@color/PLANTITOblack"
+            app:layout_constraintTop_toBottomOf="@+id/signUpTitle" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:justificationMode="inter_word"
+            android:id="@+id/caption"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/custom_shape"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="380dp">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Meet The Developers!"
+                android:textAlignment="center" android:fontFamily="@font/mada_black"
+                android:textColor="@color/PLANTITOyellow" android:textSize="32sp"
+                android:id="@+id/meetTheDevelopers"
+                android:contextClickable="false"
+                android:textColorHighlight="@color/black"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="10dp"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cedrick Lemuel F. Cabansag"
+                android:textAlignment="center" android:fontFamily="@font/mada_black"
+                android:textColor="@color/PLANTITOyellow" android:textSize="28sp"
+                android:id="@+id/name1"
+                android:contextClickable="false"
+                android:textColorHighlight="@color/black"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@id/meetTheDevelopers"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="10dp"/>
+
+        <TextView
+                android:text="Programming Specialist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/mada_medium"
+                android:textSize="20sp"
+                android:textColor="@color/PLANTITOblack"
+                app:layout_constraintTop_toBottomOf="@+id/name1"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="38dp"
+                android:id="@+id/role1"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="John Mark H. Francisco"
+                android:textAlignment="center" android:fontFamily="@font/mada_black"
+                android:textColor="@color/PLANTITOyellow" android:textSize="28sp"
+                android:id="@+id/name2"
+                android:contextClickable="false"
+                android:textColorHighlight="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/role1"
+                android:layout_marginStart="35dp"
+                android:layout_marginTop="5dp"/>
+
+        <TextView
+                android:text="System Analyst"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/mada_medium"
+                android:textSize="20sp"
+                android:textColor="@color/PLANTITOblack"
+                app:layout_constraintTop_toBottomOf="@+id/name2" app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="38dp"
+                android:id="@+id/role2"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Maxel Morgan G. Malay"
+                android:textAlignment="center" android:fontFamily="@font/mada_black"
+                android:textColor="@color/PLANTITOyellow" android:textSize="28sp"
+                android:id="@+id/name3"
+                android:contextClickable="false"
+                android:textColorHighlight="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/role2"
+                android:layout_marginStart="35dp"
+                android:layout_marginTop="5dp"/>
+
+        <TextView
+                android:text="Quality Assurance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/mada_medium"
+                android:textSize="20sp"
+                android:textColor="@color/PLANTITOblack"
+                app:layout_constraintTop_toBottomOf="@+id/name3" app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="38dp"
+                android:id="@+id/role3"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Jian Lee C. Ramos"
+                android:textAlignment="center" android:fontFamily="@font/mada_black"
+                android:textColor="@color/PLANTITOyellow" android:textSize="28sp"
+                android:id="@+id/name4"
+                android:contextClickable="false"
+                android:textColorHighlight="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/role3"
+                android:layout_marginStart="35dp"
+                android:layout_marginTop="5dp"/>
+
+        <TextView
+                android:text="Project Manager"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/mada_medium"
+                android:textSize="20sp"
+                android:textColor="@color/PLANTITOblack"
+                app:layout_constraintTop_toBottomOf="@+id/name4" app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="38dp"
+                android:id="@+id/role4"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -136,6 +136,7 @@
                         android:textColor="@color/PLANTITOgreen" app:layout_constraintTop_toBottomOf="@+id/btnLogin1"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
+                        android:onClick="onClickForgotPassword"
                         android:layout_marginTop="20dp"
                         android:textAllCaps="false" android:background="#00FFFFFF"/>
 

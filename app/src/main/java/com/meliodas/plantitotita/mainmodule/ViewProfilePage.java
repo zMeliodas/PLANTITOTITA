@@ -66,7 +66,7 @@ public class ViewProfilePage extends AppCompatActivity {
 
                 viewProfileFirstName.setText(firstName);
                 viewProfileLastName.setText(lastName);
-                viewProfileEmail.setText(eMail);
+                viewProfileEmail.setText(maskEmail(eMail));
                 viewProfileMobileNum.setText(mobileNum);
 
                 if (imageViewPhoto == null || imageViewPhoto.isEmpty()) {
@@ -102,5 +102,26 @@ public class ViewProfilePage extends AppCompatActivity {
     public void onClickReturn2(View view) {
         startActivity(new Intent(this, HomePage.class));
         finish();
+    }
+
+    private String maskEmail(String email) {
+        String[] parts = email.split("@");
+        String localPart = parts[0];
+        String domainPart = parts[1];
+
+        if (localPart.length() > 3) {
+            String firstChar = localPart.substring(0, 1);
+            String lastChars = localPart.substring(localPart.length() - 2);
+
+            StringBuilder masked = new StringBuilder();
+            for (int i = 0; i < localPart.length() - 3; i++) {
+                masked.append("*");
+            }
+
+            return firstChar + masked.toString() + lastChars + "@" + domainPart;
+
+        } else {
+            return email;
+        }
     }
 }

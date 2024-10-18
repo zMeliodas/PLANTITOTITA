@@ -19,6 +19,17 @@
     <string name="ConfirmPasswordTxtView">Confirm Password
         <font color='#FF0000'>*</font>
     </string>
+    <string name="CurrentEmailTxtView">Current Email Address
+        <font color='#FF0000'>*</font>
+    </string>
+    <string name="CurrentPasswordTxtView">Current Password
+        <font color='#FF0000'>*</font>
+    </string>
+    <string name="EnterNewPasswordTxtView">Enter New Password
+        <font color='#FF0000'>*</font>
+    </string>
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="large_text">

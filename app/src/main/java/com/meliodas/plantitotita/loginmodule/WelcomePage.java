@@ -3,6 +3,7 @@ package com.meliodas.plantitotita.loginmodule;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,16 +23,22 @@ public class WelcomePage extends AppCompatActivity {
         setContentView(R.layout.activity_welcome_page);
         mAuth = FirebaseAuth.getInstance();
     }
+
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
-            startActivity(new Intent(this, HomePage.class));
-            finish();
+            if(currentUser.isEmailVerified()) {
+                startActivity(new Intent(this, HomePage.class));
+                finish();
+            } else {
+                Toast.makeText(this, "Please verify your email before logging in.", Toast.LENGTH_LONG).show();
+                mAuth.signOut();
+            }
         }
     }
+
     public void onClickSignIn(View v){
         startActivity(new Intent(this, LoginPage.class));
     }
