@@ -3,6 +3,7 @@ package com.meliodas.plantitotita.mainmodule;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.media.Rating;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,28 +59,33 @@ public class FeedbackPage extends AppCompatActivity {
             String userID = currentUser.getUid();
             String userEmail = currentUser.getEmail();
 
-            FirebaseFirestore.getInstance().collection("users").document(userID)
+            // Retrieve user data from Firestore
+            fStore.collection("users").document(userID)
                     .get().addOnCompleteListener(task -> {
                         if (task.isSuccessful() && task.getResult() != null) {
                             String firstName = task.getResult().getString("user_name");
+                            String lastName = task.getResult().getString("last_name");
 
                             if (!feedback.isEmpty()) {
                                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
                                 String currentDate = sdf.format(new Date());
 
+                                // Prepare feedback data to save to Firestore
                                 Map<String, Object> feedbackData = new HashMap<>();
                                 feedbackData.put("feedback", feedback);
                                 feedbackData.put("rating", rating);
                                 feedbackData.put("user_id", userID);
                                 feedbackData.put("email", userEmail);
                                 feedbackData.put("first_name", firstName);
+                                feedbackData.put("last_name", lastName);
                                 feedbackData.put("date", currentDate);
 
-                                FirebaseFirestore.getInstance().collection("feedbacks").add(feedbackData)
+                                fStore.collection("feedbacks").add(feedbackData)
                                         .addOnSuccessListener(documentReference -> {
-                                            showCustomDialog();
+                                            // Clear input fields
                                             feedbackText.setText("");
                                             ratingBar.setRating(1);
+                                            sendFeedbackEmail(firstName, lastName, userEmail, feedback, rating, currentDate);
                                         })
                                         .addOnFailureListener(e -> {
                                             Log.e("FeedbackSubmission", "Error adding feedback", e);
@@ -99,24 +105,16 @@ public class FeedbackPage extends AppCompatActivity {
         }
     }
 
-    private void showCustomDialog() {
-        View view = LayoutInflater.from(this).inflate(R.layout.custom_alert_dialog_feedback_thankyou, null);
+    private void sendFeedbackEmail(String firstName, String lastName, String userEmail, String feedback, float rating, String date) {
+        String recipientEmail = "cedrickqwez23@gmail.com";
+        String subject = "New Feedback in PLANTITOTITA Submitted by: " + firstName + " " + lastName;
+        String message = "User: " + firstName + " " +lastName + "\n" +
+                "Email: " + userEmail + "\n" +
+                "Rating: " + rating + "\n" +
+                "Feedback: " + feedback + "\n" +
+                "Date: " + date;
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setView(view);
-
-        final AlertDialog alertDialog = builder.create();
-
-        Button continueButton = view.findViewById(R.id.dialogContinueButton);
-
-        continueButton.setOnClickListener(view1 -> {
-            alertDialog.dismiss();
-        });
-
-        if (alertDialog.getWindow() != null) {
-            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-        }
-
-        alertDialog.show();
+        JavaMailAPI javaMailAPI = new JavaMailAPI(this, recipientEmail, subject, message);
+        javaMailAPI.execute();
     }
 }

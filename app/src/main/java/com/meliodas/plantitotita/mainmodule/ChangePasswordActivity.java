@@ -11,6 +11,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -22,6 +24,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
     private TextView currentEmailTxtView, currentPasswordTxtView, newPasswordTxtView;
     private Button btnChangePasswordConfirm, btnChangePasswordSave;
     private ConstraintLayout newPasswordLayout;
+    private String currentPassword;
+    FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +43,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         currentPasswordTxtView = findViewById(R.id.changePasswordCurrentPasswordTxtView);
         newPasswordTxtView = findViewById(R.id.textView354);
 
-        updateAsterisk(editTextCurrentEmail, currentEmailTxtView, "Current Email", R.string.CurrentEmailTxtView);
+        updateAsterisk(editTextCurrentEmail, currentEmailTxtView, "Current Email Address", R.string.CurrentEmailTxtView);
         updateAsterisk(editTextCurrentPassword, currentPasswordTxtView, "Current Password", R.string.CurrentPasswordTxtView);
         updateAsterisk(editTextNewPassword, newPasswordTxtView, "New Password", R.string.EnterNewPasswordTxtView);
 
@@ -52,21 +56,34 @@ public class ChangePasswordActivity extends AppCompatActivity {
     }
 
     private void validateCurrentCredentials() {
-        String email = editTextCurrentEmail.getText().toString().trim();
-        String currentPassword = editTextCurrentPassword.getText().toString().trim();
+        String inputEmail = editTextCurrentEmail.getText().toString().trim();
+        currentPassword = editTextCurrentPassword.getText().toString().trim();
 
-        if (email.isEmpty() || currentPassword.isEmpty()) {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser == null) {
+            Toast.makeText(this, "No user is currently logged in", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String loggedInUserEmail = currentUser.getEmail();
+
+        if (inputEmail.isEmpty() || currentPassword.isEmpty()) {
             Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, currentPassword)
+        if (!inputEmail.equals(loggedInUserEmail)) {
+            Toast.makeText(this, "Current Email is incorrect", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(loggedInUserEmail, currentPassword)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         // Current credentials are valid, show new password input
                         newPasswordLayout.setVisibility(View.VISIBLE);
                     } else {
-                        Toast.makeText(this, "Invalid email or password", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Current Password is incorrect", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -76,6 +93,11 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
         if (newPassword.isEmpty()) {
             Toast.makeText(this, "Please enter a new password", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (newPassword.equals(currentPassword)) {
+            Toast.makeText(this, "New password must be different from the current password", Toast.LENGTH_SHORT).show();
             return;
         }
 

@@ -3,6 +3,7 @@ package com.meliodas.plantitotita.mainmodule;
 import android.net.Uri;
 import android.util.Log;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
@@ -46,27 +47,50 @@ public class DatabaseManager {
         });
     }
 
-    public void addHealthAssessment(HealthIdentification healthIdentification, String userId, String imageUrl) {
+    public void addHealthAssessment(HealthIdentification healthIdentification, String userId, String imageUrl, Runnable onComplete) {
         DocumentReference userDoc = getUserDoc(userId);
 
         userDoc.get().addOnSuccessListener(documentSnapshot -> {
             List<Map<String, Object>> data;
+
+            // Check if the document exists and contains the "plant_health_assessments" field
             if (documentSnapshot.exists() && documentSnapshot.contains("plant_health_assessments")) {
                 data = (List<Map<String, Object>>) documentSnapshot.get("plant_health_assessments");
             } else {
                 data = new ArrayList<>();
             }
 
+            // Create a map for health data and add the image URL
             Map<String, Object> healthData = getHealthData(healthIdentification);
             healthData.put("image", imageUrl);
 
+            // Add the new health data to the existing list
             data.add(healthData);
-            
+
+            // Update the user document with the new data
             userDoc.set(new HashMap<String, Object>() {{
-                put("plant_health_assessments", data);
-            }}, SetOptions.merge());
+                        put("plant_health_assessments", data);
+                    }}, SetOptions.merge())
+                    .addOnSuccessListener(aVoid -> {
+                        // Notify that the operation is complete
+                        if (onComplete != null) {
+                            onComplete.run();
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        // Log error and notify failure
+                        Log.e("DatabaseManager", "Error updating document", e);
+                        if (onComplete != null) {
+                            onComplete.run(); // Call onComplete even on failure
+                        }
+                    });
+
         }).addOnFailureListener(e -> {
+            // Log error when fetching document fails
             Log.e("DatabaseManager", "Error getting document", e);
+            if (onComplete != null) {
+                onComplete.run(); // Call onComplete even on failure
+            }
         });
     }
 

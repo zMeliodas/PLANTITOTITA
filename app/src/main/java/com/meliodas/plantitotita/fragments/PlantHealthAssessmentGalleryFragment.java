@@ -58,6 +58,7 @@ public class PlantHealthAssessmentGalleryFragment extends Fragment {
 
     private ActivityResultLauncher<Intent> pickImageLauncher;
     private ActivityResultLauncher<Uri> takePhotoLauncher;
+    private androidx.appcompat.app.AlertDialog processingDialog;
 
     @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
@@ -90,7 +91,7 @@ public class PlantHealthAssessmentGalleryFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_plant_health_assessment, container, false);
 
         plantGalleryLayout = view.findViewById(R.id.plantGalleryLayout);
-        refreshPlantList();
+        refreshPlantList(null);
 
         return view;
     }
@@ -182,12 +183,14 @@ public class PlantHealthAssessmentGalleryFragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.P)
     private void processImage(Uri uri) {
+        showProcessingDialog();
         new Thread(() -> {
             try {
                 Bitmap bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(requireContext().getContentResolver(), uri));
                 processImageBitmap(bitmap, uri);
             } catch (IOException e) {
                 e.printStackTrace();
+                dismissProcessingDialog();
             }
         }).start();
     }
@@ -208,18 +211,21 @@ public class PlantHealthAssessmentGalleryFragment extends Fragment {
             requireActivity().runOnUiThread(() -> {
                 if (uri != null) {
                     dbManager.uploadImage(FirebaseAuth.getInstance().getUid(), uri, imageUrl -> {
-                        dbManager.addHealthAssessment(healthIdentification, FirebaseAuth.getInstance().getUid(), imageUrl);
-                        refreshPlantList();
+                        dbManager.addHealthAssessment(healthIdentification, FirebaseAuth.getInstance().getUid(), imageUrl, () -> {
+                            refreshPlantList(this::dismissProcessingDialog);
+                        });
                     });
                 } else {
                     Toast.makeText(requireContext(), "Error: Image URI is null", Toast.LENGTH_SHORT).show();
+                    dismissProcessingDialog();
                 }
             });
         } catch (IOException | JSONException e) {
             e.printStackTrace();
-            requireActivity().runOnUiThread(() ->
-                    Toast.makeText(requireContext(), "Error processing image", Toast.LENGTH_SHORT).show()
-            );
+            requireActivity().runOnUiThread(() -> {
+                Toast.makeText(requireContext(), "Error processing image", Toast.LENGTH_SHORT).show();
+                dismissProcessingDialog();
+            });
         }
     }
 
@@ -250,7 +256,7 @@ public class PlantHealthAssessmentGalleryFragment extends Fragment {
         return File.createTempFile(imageFileName, ".jpg", storageDir);
     }
 
-    private void refreshPlantList() {
+    private void refreshPlantList(Runnable onComplete) {
         String userId = FirebaseAuth.getInstance().getUid();
         dbManager.getHealthAssessments(userId, healthIdentifications -> {
             this.healthIdentifications = healthIdentifications;
@@ -270,35 +276,13 @@ public class PlantHealthAssessmentGalleryFragment extends Fragment {
                 }
             }
 
-            getActivity().runOnUiThread(() -> showPlants(plantList, getLayoutInflater()));
-        });
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private void processImageBitmap(Bitmap bitmap) {
-        try {
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-            byte[] imageData = byteArrayOutputStream.toByteArray();
-
-            double longitude = 0.0;
-            double latitude = 0.0;
-
-            PlantIdApi plantIdApi = new PlantIdApi();
-            healthIdentification = plantIdApi.identifyHealth(imageData, longitude, latitude);
-
-            requireActivity().runOnUiThread(() -> {
-                dbManager.uploadImage(FirebaseAuth.getInstance().getUid(), imageUri, imageUrl -> {
-                    dbManager.addHealthAssessment(healthIdentification, FirebaseAuth.getInstance().getUid(), imageUrl);
-                    refreshPlantList(); // Add this line to refresh the plant list after adding a new assessment
-                });
+            getActivity().runOnUiThread(() -> {
+                showPlants(plantList, getLayoutInflater());
+                if (onComplete != null) {
+                    onComplete.run();
+                }
             });
-        } catch (IOException | JSONException e) {
-            e.printStackTrace();
-            requireActivity().runOnUiThread(() ->
-                    Toast.makeText(requireContext(), "Error processing image", Toast.LENGTH_SHORT).show()
-            );
-        }
+        });
     }
 
     private void showDeleteConfirmationDialog(Plant plant) {
@@ -409,6 +393,28 @@ public class PlantHealthAssessmentGalleryFragment extends Fragment {
             } else {
                 Toast.makeText(getContext(), "Camera permission is required to take photos", Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    private void showProcessingDialog() {
+        View view = LayoutInflater.from(requireContext()).inflate(R.layout.custom_alert_dialog_processing_plant_image, null);
+
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(requireContext());
+        builder.setView(view);
+
+        processingDialog = builder.create();
+
+        if (processingDialog.getWindow() != null) {
+            processingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        }
+
+        processingDialog.setCancelable(false);
+        processingDialog.show();
+    }
+
+    private void dismissProcessingDialog() {
+        if (processingDialog != null && processingDialog.isShowing()) {
+            processingDialog.dismiss();
         }
     }
 }
