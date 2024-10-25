@@ -47,7 +47,7 @@ public class PlantSearchResultsFragment extends Fragment {
             } catch (IOException e) {
                 if (e.getMessage().startsWith("No plants found for query")) {
                     getActivity().runOnUiThread(() -> {
-                        noResults.setText("No results found for query: " + searchQuery);
+                        noResults.setText("No results found for query: " + "\n" + searchQuery);
                     });
                 } else {
                     e.printStackTrace();

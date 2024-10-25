@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.hbb20.CountryCodePicker;
 import com.meliodas.plantitotita.R;
 import com.meliodas.plantitotita.mainmodule.HomePage;
 import java.util.HashMap;
@@ -28,6 +29,7 @@ public class RegistrationPage extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseFirestore fStore;
     private String userID;
+    CountryCodePicker ccp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,9 @@ public class RegistrationPage extends AppCompatActivity {
         editTextMobileNumber = findViewById(R.id.editTxtMobileNumber);
         editTextPassword = findViewById(R.id.editTxtPassword);
         editTextConfirmPassword = findViewById(R.id.editTxtConfirmPassword);
+        ccp = findViewById(R.id.countryCodePicker);
+
+        ccp.registerCarrierNumberEditText(editTextMobileNumber);
 
         TextView textViewName = findViewById(R.id.regNameTxtView);
         TextView textViewLastName = findViewById(R.id.regLastNameTxtView);
@@ -119,13 +124,7 @@ public class RegistrationPage extends AppCompatActivity {
             return;
         }
 
-        if (editTextMobileNumber.length() > 10 || editTextMobileNumber.length() < 10){
-            editTextMobileNumber.setError("You can only enter 10 numbers");
-            editTextMobileNumber.requestFocus();
-            return;
-        }
-
-        if (!editTextMobileNumber.getText().toString().matches("^\\d{10}$")){
+        if (!ccp.isValidFullNumber()){
             editTextMobileNumber.setError("Invalid mobile number format");
             editTextMobileNumber.requestFocus();
             return;
@@ -152,7 +151,8 @@ public class RegistrationPage extends AppCompatActivity {
         String name = editTextFirstName.getText().toString();
         String lastName = editTextLastName.getText().toString();
         String email = editTextEmailAddress.getText().toString();
-        String mobileNumber = editTextMobileNumber.getText().toString();
+        String mobileNumber = ccp.getFullNumber();
+        String formattedMobileNumber = ccp.getFormattedFullNumber();
         String password = editTextPassword.getText().toString();
 
         mAuth.createUserWithEmailAndPassword(email, password)
@@ -162,7 +162,7 @@ public class RegistrationPage extends AppCompatActivity {
                         if (user != null) {
                             userID = user.getUid();
                             sendEmailVerification(user);
-                            saveUserDataToFirestore(name, lastName, email, mobileNumber);
+                            saveUserDataToFirestore(name, lastName, email, mobileNumber, formattedMobileNumber);
                         }
                     } else if (task.getException() instanceof FirebaseAuthUserCollisionException) {
                         editTextEmailAddress.setError("Email already exists");
@@ -184,13 +184,14 @@ public class RegistrationPage extends AppCompatActivity {
                 });
     }
 
-    private void saveUserDataToFirestore(String name, String lastName, String email, String mobileNumber) {
+    private void saveUserDataToFirestore(String name, String lastName, String email, String mobileNumber, String formattedMobileNumber) {
         DocumentReference documentReference = fStore.collection("users").document(userID);
         Map<String, Object> user = new HashMap<>();
         user.put("user_name", name);
         user.put("last_name", lastName);
         user.put("email_address", email);
-        user.put("mobile_number", "0" + mobileNumber);
+        user.put("mobile_number", mobileNumber);
+        user.put("formatted_mobile_number", formattedMobileNumber);
         documentReference.set(user).addOnSuccessListener(unused -> {
             // Data saved successfully
         }).addOnFailureListener(e -> {

@@ -62,7 +62,7 @@ public class ViewProfilePage extends AppCompatActivity {
                 firstName = value.getString("user_name");
                 lastName = value.getString("last_name");
                 eMail = value.getString("email_address");
-                mobileNum = value.getString("mobile_number");
+                mobileNum = value.getString("formatted_mobile_number");
 
                 viewProfileFirstName.setText(firstName);
                 viewProfileLastName.setText(lastName);

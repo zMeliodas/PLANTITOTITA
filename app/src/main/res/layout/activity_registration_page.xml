@@ -151,22 +151,52 @@
                         android:textColor="@color/white" app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="345dp"
                         android:layout_marginStart="40dp"/>
-                <EditText
-                        android:layout_width="320dp"
-                        android:layout_height="70dp"
-                        android:id="@+id/editTxtMobileNumber"
+
+                <LinearLayout
+                        android:id="@+id/phoneLinearLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        android:inputType="text|phone|number"
-                        android:hint="+63"
-                        android:textColorHint="#8B424443"
-                        android:maxLength="10"
-                        android:layout_gravity="center_horizontal"
-                        android:background="@drawable/custom_button_white"
-                        android:layout_marginTop="1dp"
-                        android:textSize="20sp" android:textColor="@color/black" android:fontFamily="@font/mada_medium"
-                        android:paddingStart="25dp" android:paddingEnd="15dp"
-                        app:layout_constraintTop_toBottomOf="@+id/regMobileNumTxtView"/>
+                        app:layout_constraintTop_toBottomOf="@+id/regMobileNumTxtView">
+
+                    <com.hbb20.CountryCodePicker
+                            android:id="@+id/countryCodePicker"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:ccp_showNameCode="false"
+                            app:ccp_autoDetectCountry="true"
+                            app:ccp_autoFormatNumber="true"
+                            app:ccpDialog_keyboardAutoPopup="false"
+                            app:ccp_rememberLastSelection="true"
+                            app:ccp_countryPreference="PH"
+                            app:ccpDialog_allowSearch="true"
+                            app:ccp_contentColor="@color/PLANTITOyellow"
+                            app:ccpDialog_searchEditTextTint="@color/PLANTITOyellow"
+                            app:ccpDialog_backgroundColor="@color/PLANTITOdarkgreen"
+                            app:ccpDialog_textColor="@color/PLANTITOyellow"
+                            app:ccpDialog_fastScroller_bubbleColor="@color/PLANTITOyellow"
+                            app:ccpDialog_fastScroller_bubbleTextAppearance="@font/mada_black"
+                            app:ccpDialog_fastScroller_handleColor="@color/PLANTITOyellow"
+                            android:layout_marginTop="15dp"
+                            app:ccp_textSize="16dp">
+                    </com.hbb20.CountryCodePicker>
+
+                    <EditText
+                            android:layout_width="210dp"
+                            android:layout_height="70dp"
+                            android:id="@+id/editTxtMobileNumber"
+                            android:inputType="text|phone|number"
+                            android:maxLength="12"
+                            android:textColorHint="#8B424443"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@drawable/custom_button_white"
+                            android:layout_marginTop="1dp"
+                            android:textSize="20sp" android:textColor="@color/black" android:fontFamily="@font/mada_medium"
+                            android:paddingStart="25dp" android:paddingEnd="15dp"/>
+
+                </LinearLayout>
+
                 <TextView
                         android:text="@string/PasswordTxtView"
                         android:layout_width="wrap_content"
