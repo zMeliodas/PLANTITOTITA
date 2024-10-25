@@ -22,6 +22,9 @@ import java.util.HashMap;
 import java.util.List;
 
 public class PlantSearchResultsFragment extends Fragment {
+
+    private TextView noResults;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -32,21 +35,19 @@ public class PlantSearchResultsFragment extends Fragment {
         Bundle bundle = getArguments();
         assert bundle != null;
         String searchQuery = bundle.getString("searchQuery") != null ? bundle.getString("searchQuery") : "No search query found";
+        noResults = view.findViewById(R.id.noResultsTxtView);
 
         new Thread(() -> {
             PlantIdApi plantIdApi = new PlantIdApi();
             try {
                 List<HashMap<String, String>> plants = plantIdApi.searchAndGetAccessTokens(searchQuery);
                 for (HashMap<String, String> plant : plants) {
-                    getActivity().runOnUiThread(() -> plantGallery.addView(resultView(plant.get("name"), plant.get("matched_in_type"), plant.get("access_token"), plant.get("image"))));
+                    getActivity().runOnUiThread(() -> plantGallery.addView(resultView(plant.get("name"), plant.get("access_token"), plant.get("image"))));
                 }
             } catch (IOException e) {
                 if (e.getMessage().startsWith("No plants found for query")) {
                     getActivity().runOnUiThread(() -> {
-                        // TODO - Add a TextView to the actual layout instead of programatically creating one
-                        TextView noResults = new TextView(getContext());
                         noResults.setText("No results found for query: " + searchQuery);
-                        plantGallery.addView(noResults);
                     });
                 } else {
                     e.printStackTrace();
@@ -59,7 +60,7 @@ public class PlantSearchResultsFragment extends Fragment {
         return view;
     }
 
-    private View resultView(String plantName, String matchType, String accessToken, String image) {
+    private View resultView(String plantName, String accessToken, String image) {
         View view = getLayoutInflater().inflate(R.layout.custom_container_plantgallery, null);
         TextView plantNameTextView = view.findViewById(R.id.plantIDName);
         TextView plantScientificNameTextView = view.findViewById(R.id.plantIDScientificName);

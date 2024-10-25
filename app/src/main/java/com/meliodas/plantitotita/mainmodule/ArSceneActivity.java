@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Point;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -15,6 +16,7 @@ import android.os.*;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.PixelCopy;
 import android.view.View;
 import android.widget.TextView;
@@ -66,6 +68,9 @@ public class ArSceneActivity extends AppCompatActivity {
     private AlertDialog locationDialog;
     private double latitude = 0.0;
     private double longitude = 0.0;
+
+    private boolean isScanning = true;
+    private androidx.appcompat.app.AlertDialog processingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,7 +182,7 @@ public class ArSceneActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if (!isUpdatingTextPosition) return;
-                updateTextPosition();
+                if (!isScanning) updateTextPosition();
                 handler.postDelayed(this, UPDATE_INTERVAL_MS);
 
                 Session session = arFragment.getArSceneView().getSession();
@@ -276,6 +281,10 @@ public class ArSceneActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void onClickCamera(View view) {
+        if (isScanning) {
+            showProcessingDialog();
+        }
+
         ArSceneView sceneView = arFragment.getArSceneView();
 
         Bitmap bitmap = Bitmap.createBitmap(sceneView.getWidth(), sceneView.getHeight(), Bitmap.Config.ARGB_8888);
@@ -289,7 +298,7 @@ public class ArSceneActivity extends AppCompatActivity {
                     // Save the bitmap and get the URI
                     Uri imageUri = saveBitmapToDisk(bitmap);
                     runOnUiThread(() ->
-                            Toast.makeText(ArSceneActivity.this, "Screenshot saved successfully", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(ArSceneActivity.this, "Scanning your plant", Toast.LENGTH_SHORT).show()
                     );
 
                     // Process the image with PlantID API using the saved URI
@@ -326,7 +335,7 @@ public class ArSceneActivity extends AppCompatActivity {
         if (uri != null) {
             try (OutputStream outputStream = getContentResolver().openOutputStream(uri)) {
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-                Toast.makeText(this, "Screenshot saved to gallery", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Scanning your plant", Toast.LENGTH_SHORT).show();
                 return uri; // Return the URI of the saved image
             }
         }
@@ -353,9 +362,10 @@ public class ArSceneActivity extends AppCompatActivity {
                 plantName = plant.name();
                 plantScientificName = plant.scientificName();
                 this.plant = plant;
-                Log.i("lopit", "Plant identified: " + plant.toString());
                 runOnUiThread(() -> {
                     updateArText(plantName, plantScientificName);
+                    isScanning = false;
+                    dismissProcessingDialog();
                     Toast.makeText(ArSceneActivity.this, plant.toString(), Toast.LENGTH_SHORT).show();
                 });
             } catch (Exception e) {
@@ -461,4 +471,25 @@ public class ArSceneActivity extends AppCompatActivity {
         finish();
     }
 
+    private void showProcessingDialog() {
+        View view = LayoutInflater.from(this).inflate(R.layout.custom_alert_dialog_scanning_your_plant, null);
+
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+        builder.setView(view);
+
+        processingDialog = builder.create();
+
+        if (processingDialog.getWindow() != null) {
+            processingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        }
+
+        processingDialog.setCancelable(false);
+        processingDialog.show();
+    }
+
+    private void dismissProcessingDialog() {
+        if (processingDialog != null && processingDialog.isShowing()) {
+            processingDialog.dismiss();
+        }
+    }
 }

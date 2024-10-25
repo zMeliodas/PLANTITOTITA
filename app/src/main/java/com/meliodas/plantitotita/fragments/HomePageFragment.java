@@ -76,6 +76,7 @@ public class HomePageFragment extends Fragment {
 //
 //            }
 //        });
+
         searchEditText.setOnKeyListener((v, keyCode, event) -> {
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP) {
                 String searchQuery = searchEditText.getText().toString();
@@ -206,7 +207,7 @@ public class HomePageFragment extends Fragment {
             plantInfoFragment.setArguments(args);
 
             getParentFragmentManager().beginTransaction()
-                    .add(R.id.frameLayout, plantInfoFragment)
+                    .replace(R.id.frameLayout, plantInfoFragment)
                     .addToBackStack(null)
                     .commit();
         });
