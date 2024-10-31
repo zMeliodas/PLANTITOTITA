@@ -26,7 +26,6 @@ import com.meliodas.plantitotita.R;
 import com.meliodas.plantitotita.mainmodule.DatabaseManager;
 import com.meliodas.plantitotita.mainmodule.StringUtils;
 import com.squareup.picasso.Picasso;
-
 import java.util.List;
 import java.util.Map;
 
@@ -45,6 +44,7 @@ public class PlantHealthAssessmentInformationFragment extends Fragment {
     private static String imageViewPhoto;
     private LinearLayout diseaseLayout, biologicalLayout, chemicalLayout, preventionLayout;
     private CardView diseaseCard, biologicalCard, chemicalCard, preventionCard;
+    private ImageView arrowImg, arrowImg1, arrowImg2, arrowImg3;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -79,10 +79,15 @@ public class PlantHealthAssessmentInformationFragment extends Fragment {
         chemicalCard = view.findViewById(R.id.cardView3);
         preventionCard = view.findViewById(R.id.cardView4);
 
-        setOnClickListener(diseaseDescription, diseaseLayout, diseaseCard);
-        setOnClickListener(biologicalTreatments, biologicalLayout, biologicalCard);
-        setOnClickListener(chemicalTreatments, chemicalLayout, chemicalCard);
-        setOnClickListener(prevention, preventionLayout, preventionCard);
+        arrowImg = view.findViewById(R.id.arrowImg);
+        arrowImg1 = view.findViewById(R.id.arrowImg1);
+        arrowImg2 = view.findViewById(R.id.arrowImg2);
+        arrowImg3 = view.findViewById(R.id.arrowImg3);
+
+        setOnClickListener(diseaseDescription, diseaseLayout, diseaseCard, arrowImg);
+        setOnClickListener(biologicalTreatments, biologicalLayout, biologicalCard, arrowImg1);
+        setOnClickListener(chemicalTreatments, chemicalLayout, chemicalCard, arrowImg2);
+        setOnClickListener(prevention, preventionLayout, preventionCard, arrowImg3);
 
         dbManager = new DatabaseManager();
 
@@ -112,13 +117,13 @@ public class PlantHealthAssessmentInformationFragment extends Fragment {
         return view;
     }
 
-    private void setOnClickListener(TextView textView, LinearLayout linearLayout, CardView cardViews) {
+    private void setOnClickListener(TextView textView, LinearLayout linearLayout, CardView cardViews, ImageView arrowImg) {
         linearLayout.setOnClickListener(v -> {
-            expandView(textView, linearLayout);
+            expandView(textView, linearLayout, arrowImg);
         });
 
         cardViews.setOnClickListener(v -> {
-            expandView(textView, linearLayout);
+            expandView(textView, linearLayout, arrowImg);
         });
     }
 
@@ -174,53 +179,30 @@ public class PlantHealthAssessmentInformationFragment extends Fragment {
         dialog.show();
     }
 
-    public void expandView(TextView description, LinearLayout layout) {
+    public void expandView(TextView description, LinearLayout layout, ImageView arrowImg) {
         int visibility = (description.getVisibility() == View.GONE) ? View.VISIBLE : View.GONE;
 
         // Create an AutoTransition for the description's visibility
         AutoTransition transition = new AutoTransition();
-
-        // Set a longer duration for the expansion/collapse of the card
-        transition.setDuration(300); // Increase this duration for a slower expansion
-
-        // Use a smooth interpolator
+        transition.setDuration(300);
         transition.setInterpolator(new FastOutSlowInInterpolator());
-
-        // Disable layout transitions to prevent overlap issues during the animation
         layout.setLayoutTransition(null);
 
-        // Add a listener to manage the layout transitions after the description animation
+        // Rotate arrow based on visibility
+        arrowImg.setRotation(visibility == View.VISIBLE ? 180f : 0f);
+
         transition.addListener(new Transition.TransitionListener() {
             @Override
-            public void onTransitionStart(Transition transition) {
-                // Nothing to do at the start of the transition
-            }
-
-            @Override
             public void onTransitionEnd(Transition transition) {
-                // Re-enable layout transitions after the description's animation ends
                 LayoutTransition layoutTransition = new LayoutTransition();
-
                 layout.setLayoutTransition(layoutTransition);
             }
-
-            @Override
-            public void onTransitionCancel(Transition transition) {
-                // Handle cancellation if needed
-            }
-
-            @Override
-            public void onTransitionPause(Transition transition) {
-                // Handle pause if needed
-            }
-
-            @Override
-            public void onTransitionResume(Transition transition) {
-                // Handle resume if needed
-            }
+            @Override public void onTransitionStart(Transition transition) {}
+            @Override public void onTransitionCancel(Transition transition) {}
+            @Override public void onTransitionPause(Transition transition) {}
+            @Override public void onTransitionResume(Transition transition) {}
         });
 
-        // Begin the transition for the description's visibility
         TransitionManager.beginDelayedTransition(layout, transition);
         description.setVisibility(visibility);
     }

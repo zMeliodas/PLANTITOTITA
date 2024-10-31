@@ -43,10 +43,9 @@ public class PlantInformationFragment extends Fragment {
     private TextView bestWatering;
     private TextView taxonomy;
     private static String imageViewPhoto;
-    private TextView descriptionTitle, ediblePartsTitle, propagationMethodsTitle, commonUsesTitle, culturalSignificanceTitle, toxicityTitle, bestLightConditionTitle, bestSoilTypeTitle, bestWateringTitle, taxonomyTitle;
     private LinearLayout layout1, layout2, layout3, layout4, layout5, layout6, layout7, layout8, layout9, layout10;
     private CardView cardView1, cardView2, cardView3, cardView4, cardView5, cardView6, cardView7, cardView8, cardView9, cardView10;
-
+    private ImageView arrowImg, arrowImg1, arrowImg2, arrowImg3, arrowImg4, arrowImg5, arrowImg6, arrowImg7, arrowImg8, arrowImg9;
 
     private static final List<String> TAXONOMY_ORDER = Arrays.asList(
             "kingdom", "phylum", "class", "order", "family", "genus", "species"
@@ -105,16 +104,27 @@ public class PlantInformationFragment extends Fragment {
         cardView9 = view.findViewById(R.id.cardView9);
         cardView10 = view.findViewById(R.id.cardView10);
 
-        setOnClickListener(description, layout1, cardView1);
-        setOnClickListener(taxonomy, layout2, cardView2);
-        setOnClickListener(commonUses, layout3, cardView3);
-        setOnClickListener(culturalSignificance, layout4, cardView4);
-        setOnClickListener(toxicity, layout5, cardView5);
-        setOnClickListener(propagationMethods, layout6, cardView6);
-        setOnClickListener(edibleParts, layout7, cardView7);
-        setOnClickListener(bestLightCondition, layout8, cardView8);
-        setOnClickListener(bestSoilType, layout9, cardView9);
-        setOnClickListener(bestWatering, layout10, cardView10);
+        arrowImg = view.findViewById(R.id.arrowImg);
+        arrowImg1 = view.findViewById(R.id.arrowImg1);
+        arrowImg2 = view.findViewById(R.id.arrowImg2);
+        arrowImg3 = view.findViewById(R.id.arrowImg3);
+        arrowImg4 = view.findViewById(R.id.arrowImg4);
+        arrowImg5 = view.findViewById(R.id.arrowImg5);
+        arrowImg6 = view.findViewById(R.id.arrowImg6);
+        arrowImg7 = view.findViewById(R.id.arrowImg7);
+        arrowImg8 = view.findViewById(R.id.arrowImg8);
+        arrowImg9 = view.findViewById(R.id.arrowImg9);
+
+        setOnClickListener(description, layout1, cardView1, arrowImg);
+        setOnClickListener(taxonomy, layout2, cardView2, arrowImg1);
+        setOnClickListener(commonUses, layout3, cardView3, arrowImg2);
+        setOnClickListener(culturalSignificance, layout4, cardView4, arrowImg3);
+        setOnClickListener(toxicity, layout5, cardView5, arrowImg4);
+        setOnClickListener(propagationMethods, layout6, cardView6, arrowImg5);
+        setOnClickListener(edibleParts, layout7, cardView7, arrowImg6);
+        setOnClickListener(bestLightCondition, layout8, cardView8, arrowImg7);
+        setOnClickListener(bestSoilType, layout9, cardView9, arrowImg8);
+        setOnClickListener(bestWatering, layout10, cardView10, arrowImg9);
 
         Bundle args = getArguments();
 
@@ -199,13 +209,13 @@ public class PlantInformationFragment extends Fragment {
         return view;
     }
 
-    private void setOnClickListener(TextView textView, LinearLayout linearLayout, CardView cardViews) {
+    private void setOnClickListener(TextView textView, LinearLayout linearLayout, CardView cardViews, ImageView arrowImg) {
         linearLayout.setOnClickListener(v -> {
-            expandView(textView, linearLayout);
+            expandView(textView, linearLayout, arrowImg);
         });
 
         cardViews.setOnClickListener(v -> {
-            expandView(textView, linearLayout);
+            expandView(textView, linearLayout, arrowImg);
         });
     }
 
@@ -226,56 +236,31 @@ public class PlantInformationFragment extends Fragment {
         dialog.show();
     }
 
-    public void expandView(TextView description, LinearLayout layout) {
+    public void expandView(TextView description, LinearLayout layout, ImageView arrowImg) {
         int visibility = (description.getVisibility() == View.GONE) ? View.VISIBLE : View.GONE;
 
         // Create an AutoTransition for the description's visibility
         AutoTransition transition = new AutoTransition();
-
-        // Set a longer duration for the expansion/collapse of the card
-        transition.setDuration(300); // Increase this duration for a slower expansion
-
-        // Use a smooth interpolator
+        transition.setDuration(300);
         transition.setInterpolator(new FastOutSlowInInterpolator());
-
-        // Disable layout transitions to prevent overlap issues during the animation
         layout.setLayoutTransition(null);
 
-        // Add a listener to manage the layout transitions after the description animation
+        // Rotate arrow based on visibility
+        arrowImg.setRotation(visibility == View.VISIBLE ? 180f : 0f);
+
         transition.addListener(new Transition.TransitionListener() {
             @Override
-            public void onTransitionStart(Transition transition) {
-                // Nothing to do at the start of the transition
-            }
-
-            @Override
             public void onTransitionEnd(Transition transition) {
-                // Re-enable layout transitions after the description's animation ends
                 LayoutTransition layoutTransition = new LayoutTransition();
-
                 layout.setLayoutTransition(layoutTransition);
             }
-
-            @Override
-            public void onTransitionCancel(Transition transition) {
-                // Handle cancellation if needed
-            }
-
-            @Override
-            public void onTransitionPause(Transition transition) {
-                // Handle pause if needed
-            }
-
-            @Override
-            public void onTransitionResume(Transition transition) {
-                // Handle resume if needed
-            }
+            @Override public void onTransitionStart(Transition transition) {}
+            @Override public void onTransitionCancel(Transition transition) {}
+            @Override public void onTransitionPause(Transition transition) {}
+            @Override public void onTransitionResume(Transition transition) {}
         });
 
-        // Begin the transition for the description's visibility
         TransitionManager.beginDelayedTransition(layout, transition);
         description.setVisibility(visibility);
     }
-
-
 }

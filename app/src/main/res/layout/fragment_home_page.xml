@@ -164,6 +164,39 @@
                             app:layout_constraintEnd_toEndOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
+                <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="135dp"
+                        android:layout_height="120dp"
+                        android:id="@+id/getStartedLayout4"
+                        android:background="@drawable/custom_container_green"
+                        android:layout_marginEnd="8dp">
+
+                    <Button
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:id="@+id/getStartedContainerIcon4"
+                            android:layout_marginTop="20dp"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:background="@mipmap/health_icon" />
+
+                    <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="5dp"
+                            android:id="@+id/plantIDName4"
+                            app:layout_constraintTop_toBottomOf="@id/getStartedContainerIcon4"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:text="Plant Health Assessment: Diagnose your Plants"
+                            android:textAlignment="center"
+                            android:fontFamily="@font/mada_medium"
+                            android:textSize="10sp"
+                            android:textColor="@color/PLANTITOyellow"
+                            app:layout_constraintEnd_toEndOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
                 <!-- Additional scrollable items can be added here -->
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -194,7 +227,7 @@
                             android:text="Profile Setup: Personalize Your Experience"
                             android:textAlignment="center"
                             android:fontFamily="@font/mada_medium"
-                            android:textSize="12sp"
+                            android:textSize="10sp"
                             android:textColor="@color/PLANTITOyellow"
                             app:layout_constraintEnd_toEndOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
