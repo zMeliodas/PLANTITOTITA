@@ -371,7 +371,6 @@ public class ArSceneActivity extends AppCompatActivity {
             } catch (IOException e) {
                 if (e.getMessage().equalsIgnoreCase("The image does not contain a plant")) {
                     runOnUiThread(() -> {
-                        isScanning = false;
                         dismissProcessingDialog();
                         Toast.makeText(ArSceneActivity.this, "The image does not contain a plant", Toast.LENGTH_SHORT).show();
                         // replace this with a dialog
