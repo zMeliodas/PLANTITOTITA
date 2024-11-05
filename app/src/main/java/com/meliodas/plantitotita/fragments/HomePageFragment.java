@@ -53,29 +53,15 @@ public class HomePageFragment extends Fragment {
         Button button1 = view.findViewById(R.id.getStartedContainerIcon1);
         Button button2 = view.findViewById(R.id.getStartedContainerIcon2);
         Button button3 = view.findViewById(R.id.getStartedContainerIcon3);
+        Button button7 = view.findViewById(R.id.getStartedContainerIcon4);
+
         ConstraintLayout button4 = view.findViewById(R.id.getStartedLayout1);
         ConstraintLayout button5 = view.findViewById(R.id.getStartedLayout2);
         ConstraintLayout button6 = view.findViewById(R.id.getStartedLayout3);
+        ConstraintLayout button8 = view.findViewById(R.id.getStartedLayout4);
+
 
         EditText searchEditText = view.findViewById(R.id.editTxtSearch);
-
-//        searchEditText.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//                // Do nothing
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                // Do nothing
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//                String searchQuery = s.toString();
-//
-//            }
-//        });
 
         searchEditText.setOnKeyListener((v, keyCode, event) -> {
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP) {
@@ -98,6 +84,8 @@ public class HomePageFragment extends Fragment {
         button4.setOnClickListener(v -> onClickGetStartedScanPlant());
         button5.setOnClickListener(v -> onClickGetStartedPlantGallery());
         button6.setOnClickListener(v -> onClickGetStartedProfileSetup());
+        button7.setOnClickListener(v -> onClickGetStartedPlantHealthAssessment());
+        button8.setOnClickListener(v -> onClickGetStartedPlantHealthAssessment());
 
         fetchUserName();
         fetchRecentScans();
@@ -222,6 +210,14 @@ public class HomePageFragment extends Fragment {
 
     private void onClickGetStartedPlantGallery() {
         PlantGalleryFragment fragment = new PlantGalleryFragment();
+        requireActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frameLayout, fragment) // Replace with your fragment container ID
+                .addToBackStack(null)
+                .commit();
+    }
+
+    private void onClickGetStartedPlantHealthAssessment() {
+        PlantHealthAssessmentGalleryFragment fragment = new PlantHealthAssessmentGalleryFragment();
         requireActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.frameLayout, fragment) // Replace with your fragment container ID
                 .addToBackStack(null)

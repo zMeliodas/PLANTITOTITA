@@ -154,6 +154,15 @@
                                     android:textColor="@color/PLANTITOblack"
                                     android:textSize="18sp"/>
                         </LinearLayout>
+
+                        <ImageView
+                                android:id="@+id/arrowImg"
+                                android:layout_width="54dp"
+                                android:layout_height="54dp"
+                                android:paddingTop="5dp"
+                                android:layout_gravity="end"
+                                android:src="@drawable/dropdown_arrow_svgrepo_com">
+                        </ImageView>
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
@@ -202,6 +211,15 @@
                                     android:textColor="@color/PLANTITOblack"
                                     android:textSize="18sp"/>
                         </LinearLayout>
+
+                        <ImageView
+                                android:id="@+id/arrowImg1"
+                                android:layout_width="54dp"
+                                android:layout_height="54dp"
+                                android:paddingTop="5dp"
+                                android:layout_gravity="end"
+                                android:src="@drawable/dropdown_arrow_svgrepo_com">
+                        </ImageView>
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
@@ -250,6 +268,15 @@
                                     android:textColor="@color/PLANTITOblack"
                                     android:textSize="18sp"/>
                         </LinearLayout>
+
+                        <ImageView
+                                android:id="@+id/arrowImg2"
+                                android:layout_width="54dp"
+                                android:layout_height="54dp"
+                                android:paddingTop="5dp"
+                                android:layout_gravity="end"
+                                android:src="@drawable/dropdown_arrow_svgrepo_com">
+                        </ImageView>
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
@@ -299,6 +326,15 @@
                                     android:textColor="@color/PLANTITOblack"
                                     android:textSize="18sp"/>
                         </LinearLayout>
+
+                        <ImageView
+                                android:id="@+id/arrowImg3"
+                                android:layout_width="54dp"
+                                android:layout_height="54dp"
+                                android:paddingTop="5dp"
+                                android:layout_gravity="end"
+                                android:src="@drawable/dropdown_arrow_svgrepo_com">
+                        </ImageView>
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
@@ -347,6 +383,15 @@
                                     android:textColor="@color/PLANTITOblack"
                                     android:textSize="18sp"/>
                         </LinearLayout>
+
+                        <ImageView
+                                android:id="@+id/arrowImg4"
+                                android:layout_width="54dp"
+                                android:layout_height="54dp"
+                                android:paddingTop="5dp"
+                                android:layout_gravity="end"
+                                android:src="@drawable/dropdown_arrow_svgrepo_com">
+                        </ImageView>
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
@@ -395,6 +440,15 @@
                                     android:textColor="@color/PLANTITOblack"
                                     android:textSize="18sp"/>
                         </LinearLayout>
+
+                        <ImageView
+                                android:id="@+id/arrowImg5"
+                                android:layout_width="54dp"
+                                android:layout_height="54dp"
+                                android:paddingTop="5dp"
+                                android:layout_gravity="end"
+                                android:src="@drawable/dropdown_arrow_svgrepo_com">
+                        </ImageView>
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
@@ -443,6 +497,15 @@
                                     android:textColor="@color/PLANTITOblack"
                                     android:textSize="18sp"/>
                         </LinearLayout>
+
+                        <ImageView
+                                android:id="@+id/arrowImg6"
+                                android:layout_width="54dp"
+                                android:layout_height="54dp"
+                                android:paddingTop="5dp"
+                                android:layout_gravity="end"
+                                android:src="@drawable/dropdown_arrow_svgrepo_com">
+                        </ImageView>
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
@@ -491,6 +554,15 @@
                                     android:textColor="@color/PLANTITOblack"
                                     android:textSize="18sp"/>
                         </LinearLayout>
+
+                        <ImageView
+                                android:id="@+id/arrowImg7"
+                                android:layout_width="54dp"
+                                android:layout_height="54dp"
+                                android:paddingTop="5dp"
+                                android:layout_gravity="end"
+                                android:src="@drawable/dropdown_arrow_svgrepo_com">
+                        </ImageView>
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
@@ -539,6 +611,15 @@
                                     android:textColor="@color/PLANTITOblack"
                                     android:textSize="18sp"/>
                         </LinearLayout>
+
+                        <ImageView
+                                android:id="@+id/arrowImg8"
+                                android:layout_width="54dp"
+                                android:layout_height="54dp"
+                                android:paddingTop="5dp"
+                                android:layout_gravity="end"
+                                android:src="@drawable/dropdown_arrow_svgrepo_com">
+                        </ImageView>
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
@@ -588,6 +669,15 @@
                                     android:textColor="@color/PLANTITOblack"
                                     android:textSize="18sp"/>
                         </LinearLayout>
+
+                        <ImageView
+                                android:id="@+id/arrowImg9"
+                                android:layout_width="54dp"
+                                android:layout_height="54dp"
+                                android:paddingTop="5dp"
+                                android:layout_gravity="end"
+                                android:src="@drawable/dropdown_arrow_svgrepo_com">
+                        </ImageView>
                     </androidx.cardview.widget.CardView>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </ScrollView>

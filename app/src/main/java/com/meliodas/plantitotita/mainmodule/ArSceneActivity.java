@@ -386,7 +386,11 @@ public class ArSceneActivity extends AppCompatActivity {
                 }
             } catch (Exception e) {
                 Log.e(TAG, "Error processing image with PlantID API", e);
-                runOnUiThread(() -> Toast.makeText(ArSceneActivity.this, "Failed to identify plant", Toast.LENGTH_SHORT).show());
+                runOnUiThread(() -> {
+                    Toast.makeText(ArSceneActivity.this, "Failed to identify plant", Toast.LENGTH_SHORT).show();
+                    isScanning = false;
+                    dismissProcessingDialog();
+                });
             }
         }).start();
     }
