@@ -361,6 +361,14 @@ public class PlantIdApi {
             Plant plant = identifyAndGetDetails(imageData, latitude, longitude);
 
             JSONObject jsonResponse = new JSONObject(responseBody);
+            HealthIdentification.Result.IsPlant isPlant = new HealthIdentification.Builder()
+                    .result(HealthIdentificationParser.parseHealthIdentification(jsonResponse).getResult())
+                    .build().getResult().getIsPlant();
+
+            if (isPlant.getProbability() < 0.5) {
+                throw new IOException("The image does not contain a plant");
+            }
+            
             return new HealthIdentification.Builder()
                     .result(HealthIdentificationParser.parseHealthIdentification(jsonResponse).getResult())
                     .plant(plant)

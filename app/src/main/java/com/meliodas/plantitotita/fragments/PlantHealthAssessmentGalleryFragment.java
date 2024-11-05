@@ -221,6 +221,13 @@ public class PlantHealthAssessmentGalleryFragment extends Fragment {
                 }
             });
         } catch (IOException | JSONException e) {
+            if (e instanceof IOException && (e.getMessage() != null && e.getMessage().equalsIgnoreCase("The image does not contain a plant"))) {
+                requireActivity().runOnUiThread(() -> {
+                    Toast.makeText(requireContext(), "The image does not contain a plant", Toast.LENGTH_SHORT).show();
+                    dismissProcessingDialog();
+                });
+            }
+
             e.printStackTrace();
             requireActivity().runOnUiThread(() -> {
                 Toast.makeText(requireContext(), "Error processing image", Toast.LENGTH_SHORT).show();
