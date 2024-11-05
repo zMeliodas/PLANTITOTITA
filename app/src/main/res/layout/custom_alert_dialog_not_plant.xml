@@ -26,7 +26,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:text="It looks like the image you're scanning doesn't seem to be a plant. \n\nDouble-check your photo and make sure it's clear and focused on the plant. If you need help, try positioning the camera a little closer to capture just the leaves or main parts of the plant."
+                android:text="It looks like the object you're scanning doesn't seem to be a plant. \n\nDouble-check your photo and make sure it's clear and focused on the plant. If you need help, try positioning the camera a little closer to capture just the leaves or main parts of the plant."
                 android:fontFamily="@font/mada_black"
                 android:textSize="16sp" android:textColor="@color/PLANTITOblack">
         </TextView>
@@ -39,27 +39,12 @@
                 android:textSize="18sp"
                 android:textColor="@color/PLANTITOgreen"
                 android:fontFamily="@font/mada_black"
-                android:layout_marginStart="120dp"
                 android:background="#00000000"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/dialogMessage">
         </Button>
 
-        <Button
-                android:layout_width="100dp"
-                android:layout_height="40dp"
-                android:id="@+id/dialogContinueButton1"
-                android:text="View Image"
-                android:textSize="18sp"
-                android:textColor="@color/PLANTITOgreen"
-                android:fontFamily="@font/mada_black"
-                android:layout_marginEnd="95dp"
-                android:background="#00000000"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/dialogMessage">
-        </Button>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageButton

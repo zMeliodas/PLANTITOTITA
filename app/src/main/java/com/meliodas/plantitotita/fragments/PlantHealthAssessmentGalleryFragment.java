@@ -223,8 +223,8 @@ public class PlantHealthAssessmentGalleryFragment extends Fragment {
         } catch (IOException | JSONException e) {
             if (e instanceof IOException && (e.getMessage() != null && e.getMessage().equalsIgnoreCase("The image does not contain a plant"))) {
                 requireActivity().runOnUiThread(() -> {
-                    Toast.makeText(requireContext(), "The image does not contain a plant", Toast.LENGTH_SHORT).show();
                     dismissProcessingDialog();
+                    showNotAPlantDialog();
                 });
             }
 
@@ -424,4 +424,26 @@ public class PlantHealthAssessmentGalleryFragment extends Fragment {
             processingDialog.dismiss();
         }
     }
+
+    private void showNotAPlantDialog() {
+        View view = LayoutInflater.from(requireContext()).inflate(R.layout.custom_alert_dialog_not_plant, null);
+
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(requireContext());
+        builder.setView(view);
+
+        final androidx.appcompat.app.AlertDialog alertDialog = builder.create();
+
+        Button continueButton = view.findViewById(R.id.dialogContinueButton);
+
+        continueButton.setOnClickListener(view1 -> {
+            alertDialog.dismiss();
+        });
+
+        if (alertDialog.getWindow() != null) {
+            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+
+        alertDialog.show();
+    }
+
 }

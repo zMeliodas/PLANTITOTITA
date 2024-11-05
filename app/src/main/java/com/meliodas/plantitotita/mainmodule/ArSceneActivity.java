@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.PixelCopy;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.RequiresApi;
@@ -39,6 +40,9 @@ import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 import com.google.firebase.auth.FirebaseAuth;
 import com.meliodas.plantitotita.R;
+import com.meliodas.plantitotita.loginmodule.EnumLayout;
+import com.meliodas.plantitotita.loginmodule.LoginPage;
+import com.meliodas.plantitotita.loginmodule.RegistrationPage;
 import kotlin.io.ByteStreamsKt;
 
 import java.io.*;
@@ -372,8 +376,7 @@ public class ArSceneActivity extends AppCompatActivity {
                 if (e.getMessage().equalsIgnoreCase("The image does not contain a plant")) {
                     runOnUiThread(() -> {
                         dismissProcessingDialog();
-                        Toast.makeText(ArSceneActivity.this, "The image does not contain a plant", Toast.LENGTH_SHORT).show();
-                        // replace this with a dialog
+                        showNotAPlantDialog();
                     });
                 } else {
                     Log.e(TAG, "Error processing image with PlantID API", e);
@@ -510,5 +513,26 @@ public class ArSceneActivity extends AppCompatActivity {
         if (processingDialog != null && processingDialog.isShowing()) {
             processingDialog.dismiss();
         }
+    }
+
+    private void showNotAPlantDialog() {
+        View view = LayoutInflater.from(this).inflate(R.layout.custom_alert_dialog_not_plant, null);
+
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+        builder.setView(view);
+
+        final androidx.appcompat.app.AlertDialog alertDialog = builder.create();
+
+        Button continueButton = view.findViewById(R.id.dialogContinueButton);
+
+        continueButton.setOnClickListener(view1 -> {
+            alertDialog.dismiss();
+        });
+
+        if (alertDialog.getWindow() != null) {
+            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+
+        alertDialog.show();
     }
 }

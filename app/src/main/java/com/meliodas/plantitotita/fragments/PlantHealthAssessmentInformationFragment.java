@@ -206,6 +206,4 @@ public class PlantHealthAssessmentInformationFragment extends Fragment {
         TransitionManager.beginDelayedTransition(layout, transition);
         description.setVisibility(visibility);
     }
-
-
 }
