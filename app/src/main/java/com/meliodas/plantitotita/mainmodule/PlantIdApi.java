@@ -60,6 +60,10 @@ public class PlantIdApi {
             JSONObject jsonResponse = new JSONObject(responseBody);
             JSONObject result = jsonResponse.getJSONObject("result");
 
+            if (result.getJSONObject("is_plant").getDouble("probability") < 0.5) {
+                throw new IOException("The image does not contain a plant");
+            }
+
             // Extract the plant ID from the first suggestion in the classification array
             JSONObject suggestion = result.getJSONObject("classification").getJSONArray("suggestions").getJSONObject(0);
             String name = suggestion.getString("name");
