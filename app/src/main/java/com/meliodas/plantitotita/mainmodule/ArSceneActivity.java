@@ -368,6 +368,22 @@ public class ArSceneActivity extends AppCompatActivity {
                     dismissProcessingDialog();
                     Toast.makeText(ArSceneActivity.this, plant.toString(), Toast.LENGTH_SHORT).show();
                 });
+            } catch (IOException e) {
+                if (e.getMessage().equalsIgnoreCase("The image does not contain a plant")) {
+                    runOnUiThread(() -> {
+                        isScanning = false;
+                        dismissProcessingDialog();
+                        Toast.makeText(ArSceneActivity.this, "The image does not contain a plant", Toast.LENGTH_SHORT).show();
+                        // replace this with a dialog
+                    });
+                } else {
+                    Log.e(TAG, "Error processing image with PlantID API", e);
+                    runOnUiThread(() -> {
+                        isScanning = false;
+                        dismissProcessingDialog();
+                        Toast.makeText(ArSceneActivity.this, "Failed to identify plant", Toast.LENGTH_SHORT).show();
+                    });
+                }
             } catch (Exception e) {
                 Log.e(TAG, "Error processing image with PlantID API", e);
                 runOnUiThread(() -> Toast.makeText(ArSceneActivity.this, "Failed to identify plant", Toast.LENGTH_SHORT).show());
