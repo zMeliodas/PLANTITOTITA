@@ -359,8 +359,26 @@ public class ArSceneActivity extends AppCompatActivity {
                 byte[] imageBytes = ByteStreamsKt.readBytes(inputStream);
                 Plant plant = plantIdApi.identifyAndGetDetails(imageBytes, latitude, longitude);
 
-                // Store plant identification data in the database
-                databaseManager.addIdentification(plant, FirebaseAuth.getInstance().getUid());
+                DatabaseManager databaseManager = new DatabaseManager();
+                databaseManager.getPlantIdentifications(
+                        FirebaseAuth.getInstance().getUid(),
+                        (identifications) -> {
+                            boolean plantAlreadyIdentified = false;
+                            for (Map<String, Object> identification : identifications) {
+                                String identificationScientificName = (String) identification.getOrDefault("scientificName", "");
+
+                                if (identificationScientificName.equalsIgnoreCase(plant.scientificName())) {
+                                    plantAlreadyIdentified = true;
+                                    break;
+                                }
+                            }
+                            if (!plantAlreadyIdentified) {
+                                databaseManager.addIdentification(plant, FirebaseAuth.getInstance().getUid());
+                            } else {
+                                showPlantAlreadyExistsDialog();
+                            }
+                        }
+                );
 
                 // Update the plant name and refresh the AR text
                 plantName = plant.name();
@@ -384,6 +402,13 @@ public class ArSceneActivity extends AppCompatActivity {
                         isScanning = false;
                         dismissProcessingDialog();
                         Toast.makeText(ArSceneActivity.this, "Failed to identify plant", Toast.LENGTH_SHORT).show();
+                    });
+                }
+            } catch (RuntimeException e) {
+                if (e.getMessage().equalsIgnoreCase("Plant already identified")) {
+                    runOnUiThread(() -> {
+                        dismissProcessingDialog();
+                        showPlantAlreadyExistsDialog();
                     });
                 }
             } catch (Exception e) {
@@ -526,6 +551,51 @@ public class ArSceneActivity extends AppCompatActivity {
         Button continueButton = view.findViewById(R.id.dialogContinueButton);
 
         continueButton.setOnClickListener(view1 -> {
+            alertDialog.dismiss();
+        });
+
+        if (alertDialog.getWindow() != null) {
+            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+
+        alertDialog.show();
+    }
+
+    private void showPlantAlreadyExistsDialog() {
+        View view = LayoutInflater.from(this).inflate(R.layout.custom_alert_dialog_plant_already_exists, null);
+
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+        builder.setView(view);
+
+        final androidx.appcompat.app.AlertDialog alertDialog = builder.create();
+
+        Button continueButton = view.findViewById(R.id.dialogContinueButton);
+        Button cancelButton = view.findViewById(R.id.dialogCancelButton);
+
+        continueButton.setOnClickListener(view1 -> {
+            alertDialog.dismiss();
+            isUpdatingTextPosition = false; // Stop updating text position
+            Intent intent = new Intent(this, PlantInformationActivity.class);
+            intent.putExtra("isFromGallery", false);
+            intent.putExtra("plantName", this.plantName != null ? this.plantName : "");
+            intent.putExtra("plantScientificName", plant.scientificName() != null ? plant.scientificName() : "");
+            intent.putExtra("plantImageUrl", plant.image() != null ? plant.image() : "");
+            intent.putExtra("identification", plant.identification() != null ? plant.identification() : "");
+            intent.putExtra("plantDescription", plant.description() != null ? plant.description() : "");
+            intent.putExtra("edibleParts", plant.edibleParts() != null ? plant.edibleParts() : new ArrayList<>());
+            intent.putExtra("propagationMethods", plant.propagationMethods() != null ? plant.propagationMethods() : new ArrayList<>());
+            intent.putExtra("commonUses", plant.commonUses() != null ? plant.commonUses() : "");
+            intent.putExtra("toxicity", plant.toxicity() != null ? plant.toxicity() : "");
+            intent.putExtra("culturalSignificance", plant.culturalSignificance() != null ? plant.culturalSignificance() : "");
+            intent.putExtra("bestLightCondition", plant.bestLightCondition() != null ? plant.bestLightCondition() : "");
+            intent.putExtra("bestSoilType", plant.bestSoilType() != null ? plant.bestSoilType() : "");
+            intent.putExtra("bestWatering", plant.bestWatering() != null ? plant.bestWatering() : "");
+            intent.putExtra("taxonomy", new HashMap<>(plant.taxonomy()));
+
+            startActivity(intent);
+        });
+
+        cancelButton.setOnClickListener(view1 -> {
             alertDialog.dismiss();
         });
 
