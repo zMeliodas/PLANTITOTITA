@@ -59,14 +59,6 @@ public class PlantInformationFragment extends Fragment {
         View backButton = view.findViewById(R.id.btnReturnPlantInfo);
         Button saveButton = view.findViewById(R.id.btnSaveToGallery);
 
-        backButton.setOnClickListener(v -> {
-            PlantGalleryFragment plantGalleryFragment = new PlantGalleryFragment();
-            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-            transaction.replace(R.id.frameLayout, plantGalleryFragment);
-            transaction.addToBackStack(null);
-            transaction.commit();
-        });
-
         plantImage = view.findViewById(R.id.plantInfoImage);
         plantName = view.findViewById(R.id.plantInformationName);
         scientificName = view.findViewById(R.id.plantInformationScientificName);
@@ -129,6 +121,8 @@ public class PlantInformationFragment extends Fragment {
         Bundle args = getArguments();
 
         if (args != null) {
+            boolean isFromGallery = args.getBoolean("isFromGallery", true);
+
             String name = args.getString("plantName", "");
             String sciName = args.getString("plantScientificName", "");
             String desc = args.getString("plantDescription", "");
@@ -176,6 +170,18 @@ public class PlantInformationFragment extends Fragment {
             saveButton.setOnClickListener(v -> {
                 DatabaseManager databaseManager = new DatabaseManager();
                 databaseManager.addIdentification(plant, FirebaseAuth.getInstance().getCurrentUser().getUid());
+            });
+
+            backButton.setOnClickListener(v -> {
+                if (isFromGallery) {
+                    PlantGalleryFragment plantGalleryFragment = new PlantGalleryFragment();
+                    FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                    transaction.replace(R.id.frameLayout, plantGalleryFragment);
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+                } else {
+                    requireActivity().finish();
+                }
             });
 
             if (taxonomyMap != null && !taxonomyMap.isEmpty()) {

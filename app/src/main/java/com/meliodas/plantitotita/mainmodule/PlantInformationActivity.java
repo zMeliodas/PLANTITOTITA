@@ -20,6 +20,7 @@ public class PlantInformationActivity extends AppCompatActivity {
 
             // Get all plant information from the intent
             Bundle args = new Bundle();
+            args.putBoolean("isFromGallery", getIntent().getBooleanExtra("isFromGallery", false));
             args.putString("plantName", getIntent().getStringExtra("plantName"));
             args.putString("plantScientificName", getIntent().getStringExtra("plantScientificName"));
             args.putString("plantDescription", getIntent().getStringExtra("plantDescription"));

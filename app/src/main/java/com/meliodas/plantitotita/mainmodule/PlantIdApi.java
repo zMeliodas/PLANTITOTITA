@@ -3,6 +3,7 @@ package com.meliodas.plantitotita.mainmodule;
 import android.os.Build;
 import android.util.Log;
 import androidx.annotation.RequiresApi;
+import com.google.firebase.auth.FirebaseAuth;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONArray;
@@ -368,7 +369,7 @@ public class PlantIdApi {
             if (isPlant.getProbability() < 0.5) {
                 throw new IOException("The image does not contain a plant");
             }
-            
+
             return new HealthIdentification.Builder()
                     .result(HealthIdentificationParser.parseHealthIdentification(jsonResponse).getResult())
                     .plant(plant)
