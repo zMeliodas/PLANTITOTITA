@@ -33,7 +33,6 @@ public class WelcomePage extends AppCompatActivity {
                 startActivity(new Intent(this, HomePage.class));
                 finish();
             } else {
-                Toast.makeText(this, "Please verify your email before logging in.", Toast.LENGTH_LONG).show();
                 mAuth.signOut();
             }
         }
