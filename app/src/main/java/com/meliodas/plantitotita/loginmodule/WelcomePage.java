@@ -7,10 +7,14 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
+import android.net.Network;
 import android.net.NetworkInfo;
+import android.net.NetworkRequest;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,55 +27,114 @@ public class WelcomePage extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private BroadcastReceiver networkReceiver;
     private AlertDialog noInternetDialog;
+    private ConnectivityManager.NetworkCallback networkCallback;
+    private ConnectivityManager connectivityManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_page);
-        mAuth = FirebaseAuth.getInstance();
 
-        // Initialize the network receiver
-        networkReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                // Check connectivity status when network changes
-                if (!isConnected()) {
-                    showNoInternetDialog();
-                } else if (noInternetDialog != null && noInternetDialog.isShowing()) {
-                    noInternetDialog.dismiss(); // Dismiss dialog when internet is restored
-                }
-            }
-        };
-
-        // Register the network receiver
-        registerReceiver(networkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-
-        // Check internet connection
-        if (!isConnected()) {
-            showNoInternetDialog();
-        }
+        initializeFirebase();
+        setupNetworkMonitoring();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            if(currentUser.isEmailVerified()) {
-                startActivity(new Intent(this, HomePage.class));
-                finish();
-            } else {
-                mAuth.signOut();
-            }
-        }
+        checkUserAuthenticationStatus();
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        if (networkReceiver != null) {
-            unregisterReceiver(networkReceiver);
+    protected void onDestroy() {
+        super.onDestroy();
+        cleanupResources();
+    }
+
+    private void setupNetworkMonitoring() {
+        connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            // Modern way to monitor network state
+            networkCallback = new ConnectivityManager.NetworkCallback() {
+                @Override
+                public void onAvailable(@NonNull Network network) {
+                    super.onAvailable(network);
+                    runOnUiThread(() -> {
+                        if (noInternetDialog != null && noInternetDialog.isShowing()) {
+                            noInternetDialog.dismiss();
+                        }
+                    });
+                }
+
+                @Override
+                public void onLost(@NonNull Network network) {
+                    super.onLost(network);
+                    runOnUiThread(() -> showNoInternetDialog());
+                }
+            };
+
+            NetworkRequest request = new NetworkRequest.Builder().build();
+            connectivityManager.registerNetworkCallback(request, networkCallback);
+        } else {
+            // Legacy way for older Android versions
+            networkReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    if (!isConnected()) {
+                        showNoInternetDialog();
+                    } else if (noInternetDialog != null && noInternetDialog.isShowing()) {
+                        noInternetDialog.dismiss();
+                    }
+                }
+            };
+            registerReceiver(networkReceiver,
+                    new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+
+        // Initial connection check
+        if (!isConnected()) {
+            showNoInternetDialog();
+        }
+    }
+
+    private void initializeFirebase() {
+        mAuth = FirebaseAuth.getInstance();
+    }
+
+    private void checkUserAuthenticationStatus() {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null && currentUser.isEmailVerified()) {
+            navigateToHomePage();
+        } else if (currentUser != null) {
+            mAuth.signOut();
+        }
+    }
+
+    private void navigateToHomePage() {
+        Intent intent = new Intent(this, HomePage.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+    private void cleanupResources() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && networkCallback != null) {
+            try {
+                connectivityManager.unregisterNetworkCallback(networkCallback);
+            } catch (IllegalArgumentException e) {
+                // Handle case where callback was not registered
+            }
+        } else if (networkReceiver != null) {
+            try {
+                unregisterReceiver(networkReceiver);
+            } catch (IllegalArgumentException e) {
+                // Handle case where receiver was not registered
+            }
+        }
+
+        if (noInternetDialog != null && noInternetDialog.isShowing()) {
+            noInternetDialog.dismiss();
         }
     }
 
