@@ -305,7 +305,7 @@ public class RegistrationPage extends AppCompatActivity {
         user.sendEmailVerification()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                                showDialog(EnumLayout.SUCCESS);
+                        showDialog(EnumLayout.SUCCESS);
                     } else {
                         showDialog(EnumLayout.ERROR);
                     }
