@@ -1,12 +1,15 @@
 package com.meliodas.plantitotita.fragments;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.ImageDecoder;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
+import android.net.*;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -59,6 +62,8 @@ public class PlantHealthAssessmentGalleryFragment extends Fragment {
     private ActivityResultLauncher<Intent> pickImageLauncher;
     private ActivityResultLauncher<Uri> takePhotoLauncher;
     private androidx.appcompat.app.AlertDialog processingDialog;
+    private BroadcastReceiver networkReceiver;
+    private AlertDialog noInternetDialog;
 
     @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
@@ -101,13 +106,32 @@ public class PlantHealthAssessmentGalleryFragment extends Fragment {
         View uploadImageBtn = view.findViewById(R.id.PlantHealthAssessmentLayout);
         Button uploadImageBtnIcon = view.findViewById(R.id.PlantHealthAssessmentUploadIcon);
         Button takePhotoBtn = view.findViewById(R.id.PlantHealthAssessmentTakePhotoIcon);
-        uploadImageBtn.setOnClickListener(v -> selectImage());
-        uploadImageBtnIcon.setOnClickListener(v -> selectImage());
-        takePhotoBtn.setOnClickListener(v -> {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                checkCameraPermission();
+
+        uploadImageBtn.setOnClickListener(v -> {
+            if (isInternetAvailable()) {
+                selectImage();
             } else {
-                takePhoto();  // Older versions do not require runtime permissions
+                showNoInternetDialog();
+            }
+        });
+
+        uploadImageBtnIcon.setOnClickListener(v -> {
+            if (isInternetAvailable()) {
+                selectImage();
+            } else {
+                showNoInternetDialog();
+            }
+        });
+
+        takePhotoBtn.setOnClickListener(v -> {
+            if (isInternetAvailable()) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    checkCameraPermission();
+                } else {
+                    takePhoto();  // Older versions do not require runtime permissions
+                }
+            } else {
+                showNoInternetDialog();
             }
         });
     }
@@ -446,4 +470,42 @@ public class PlantHealthAssessmentGalleryFragment extends Fragment {
         alertDialog.show();
     }
 
+    private boolean isInternetAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager != null) {
+            Network network = connectivityManager.getActiveNetwork();
+            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(network);
+            return networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
+        }
+        return false;
+    }
+
+    private void showNoInternetDialog() {
+        if (noInternetDialog != null && noInternetDialog.isShowing()) {
+            return; // Avoid showing the dialog multiple times
+        }
+
+        // Inflate the custom layout for no connection dialog
+        View view = LayoutInflater.from(requireContext()).inflate(R.layout.custom_alert_dialog_no_connection, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setView(view);
+        builder.setCancelable(false); // Prevent dismissing by outside touches
+
+        noInternetDialog = builder.create();
+
+        // Set transparent background
+        if (noInternetDialog.getWindow() != null) {
+            noInternetDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+
+        Button continueButton = view.findViewById(R.id.dialogContinueButton);
+
+        // Retry connection on "Continue" button click
+        continueButton.setOnClickListener(view1 -> {
+            noInternetDialog.dismiss();
+        });
+
+        noInternetDialog.show();
+    }
 }

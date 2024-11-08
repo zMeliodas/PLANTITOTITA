@@ -1,7 +1,13 @@
 package com.meliodas.plantitotita.fragments;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Base64;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,6 +30,7 @@ import java.util.List;
 public class PlantSearchResultsFragment extends Fragment {
 
     private TextView noResults;
+    private AlertDialog noInternetDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -31,31 +38,36 @@ public class PlantSearchResultsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_plant_search_results, container, false);
         LinearLayout plantGallery = view.findViewById(R.id.plantSearchLayout);
+        noResults = view.findViewById(R.id.noResultsTxtView);
 
         Bundle bundle = getArguments();
         assert bundle != null;
         String searchQuery = bundle.getString("searchQuery") != null ? bundle.getString("searchQuery") : "No search query found";
-        noResults = view.findViewById(R.id.noResultsTxtView);
 
-        new Thread(() -> {
-            PlantIdApi plantIdApi = new PlantIdApi();
-            try {
-                List<HashMap<String, String>> plants = plantIdApi.searchAndGetAccessTokens(searchQuery);
-                for (HashMap<String, String> plant : plants) {
-                    getActivity().runOnUiThread(() -> plantGallery.addView(resultView(plant.get("name"), plant.get("access_token"), plant.get("image"))));
-                }
-            } catch (IOException e) {
-                if (e.getMessage().startsWith("No plants found for query")) {
-                    getActivity().runOnUiThread(() -> {
-                        noResults.setText("No results found for query: " + "\n" + searchQuery);
-                    });
-                } else {
+        // Check internet connection before making API call
+        if (isInternetAvailable()) {
+            new Thread(() -> {
+                PlantIdApi plantIdApi = new PlantIdApi();
+                try {
+                    List<HashMap<String, String>> plants = plantIdApi.searchAndGetAccessTokens(searchQuery);
+                    for (HashMap<String, String> plant : plants) {
+                        getActivity().runOnUiThread(() -> plantGallery.addView(resultView(plant.get("name"), plant.get("access_token"), plant.get("image"))));
+                    }
+                } catch (IOException e) {
+                    if (e.getMessage().startsWith("No plants found for query")) {
+                        getActivity().runOnUiThread(() -> {
+                            noResults.setText("No results found for query: " + "\n" + searchQuery);
+                        });
+                    } else {
+                        e.printStackTrace();
+                    }
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }).start();
+            }).start();
+        } else {
+            showNoInternetDialog();
+        }
 
         return view;
     }
@@ -113,13 +125,43 @@ public class PlantSearchResultsFragment extends Fragment {
         return view;
     }
 
-    private String cleanMatchType(String matchType) {
-        return switch (matchType) {
-            case "common_name", "entity_name" -> "Common Name";
-            case "scientific_name" -> "Scientific Name";
-            case "family" -> "Family";
-            case "genus" -> "Genus";
-            default -> "Unknown";
-        };
+    private boolean isInternetAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    private void showNoInternetDialog() {
+        if (noInternetDialog != null && noInternetDialog.isShowing()) {
+            return; // Avoid showing the dialog multiple times
+        }
+
+        // Inflate the custom layout for no connection dialog
+        View view = LayoutInflater.from(requireContext()).inflate(R.layout.custom_alert_dialog_no_connection, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setView(view);
+        builder.setCancelable(false); // Prevent dismissing by outside touches
+
+        noInternetDialog = builder.create();
+
+        // Set transparent background
+        if (noInternetDialog.getWindow() != null) {
+            noInternetDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+
+        Button continueButton = view.findViewById(R.id.dialogContinueButton);
+
+        // Retry connection on "Continue" button click
+        continueButton.setOnClickListener(view1 -> {
+            noInternetDialog.dismiss();
+            HomePageFragment fragment = new HomePageFragment();
+            requireActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.frameLayout, fragment) // Replace with your fragment container ID
+                    .addToBackStack(null)
+                    .commit();
+        });
+
+        noInternetDialog.show();
     }
 }

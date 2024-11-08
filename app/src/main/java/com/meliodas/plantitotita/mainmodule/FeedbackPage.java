@@ -1,8 +1,12 @@
 package com.meliodas.plantitotita.mainmodule;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.media.Rating;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,6 +36,7 @@ public class FeedbackPage extends AppCompatActivity {
     private FirebaseAuth fAuth;
     private EditText feedbackText;
     private RatingBar ratingBar;
+    private android.app.AlertDialog noInternetDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +55,11 @@ public class FeedbackPage extends AppCompatActivity {
     }
 
     public void onClickSubmitFeedback(View view) {
+        if (!isInternetAvailable()) {
+            showNoInternetDialog();
+            return;
+        }
+
         String feedback = feedbackText.getText().toString();
         float rating = ratingBar.getRating();
 
@@ -116,5 +126,44 @@ public class FeedbackPage extends AppCompatActivity {
 
         JavaMailAPI javaMailAPI = new JavaMailAPI(this, recipientEmail, subject, message);
         javaMailAPI.execute();
+    }
+
+    private boolean isInternetAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager != null) {
+            Network network = connectivityManager.getActiveNetwork();
+            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(network);
+            return networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
+        }
+        return false;
+    }
+
+    private void showNoInternetDialog() {
+        if (noInternetDialog != null && noInternetDialog.isShowing()) {
+            return; // Avoid showing the dialog multiple times
+        }
+
+        // Inflate the custom layout for no connection dialog
+        View view = LayoutInflater.from(this).inflate(R.layout.custom_alert_dialog_no_connection, null);
+
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        builder.setView(view);
+        builder.setCancelable(false); // Prevent dismissing by outside touches
+
+        noInternetDialog = builder.create();
+
+        // Set transparent background
+        if (noInternetDialog.getWindow() != null) {
+            noInternetDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+
+        Button continueButton = view.findViewById(R.id.dialogContinueButton);
+
+        // Retry connection on "Continue" button click
+        continueButton.setOnClickListener(view1 -> {
+            noInternetDialog.dismiss();
+        });
+
+        noInternetDialog.show();
     }
 }

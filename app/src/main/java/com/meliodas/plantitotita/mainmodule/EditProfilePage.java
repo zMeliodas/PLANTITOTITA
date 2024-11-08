@@ -1,8 +1,13 @@
 package com.meliodas.plantitotita.mainmodule;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
@@ -45,6 +50,8 @@ public class EditProfilePage extends AppCompatActivity {
     private EditText editTextFirstName, editTextLastName, editTextMobileNum;
     private ImageView imageView;
     private boolean imageChanged = false;
+    private BroadcastReceiver networkReceiver;
+    private android.app.AlertDialog noInternetDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +64,80 @@ public class EditProfilePage extends AppCompatActivity {
         fStore = FirebaseFirestore.getInstance();
 
         insertInitialValue();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        // Initialize the network receiver
+        networkReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                // Check connectivity status when network changes
+                if (!isConnected()) {
+                    showNoInternetDialog();
+                } else if (noInternetDialog != null && noInternetDialog.isShowing()) {
+                    noInternetDialog.dismiss(); // Dismiss dialog when internet is restored
+                }
+            }
+        };
+
+        // Register the network receiver
+        registerReceiver(networkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
+        // Check internet connection
+        if (!isConnected()) {
+            showNoInternetDialog();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (networkReceiver != null) {
+            unregisterReceiver(networkReceiver);
+        }
+    }
+
+    // Check if there is an internet connection
+    private boolean isConnected() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager != null) {
+            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+            return networkInfo != null && networkInfo.isConnected();
+        }
+        return false;
+    }
+
+    private void showNoInternetDialog() {
+        if (noInternetDialog != null && noInternetDialog.isShowing()) {
+            return; // Avoid showing the dialog multiple times
+        }
+
+        // Inflate the custom layout for no connection dialog
+        View view = LayoutInflater.from(this).inflate(R.layout.custom_alert_dialog_no_connection, null);
+
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        builder.setView(view);
+        builder.setCancelable(false); // Prevent dismissing by outside touches
+
+        noInternetDialog = builder.create();
+
+        // Set transparent background
+        if (noInternetDialog.getWindow() != null) {
+            noInternetDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+
+        Button continueButton = view.findViewById(R.id.dialogContinueButton);
+
+        // Retry connection on "Continue" button click
+        continueButton.setOnClickListener(view1 -> {
+            startActivity(new Intent(getApplicationContext(), ViewProfilePage.class));
+            finish();
+        });
+
+        noInternetDialog.show();
     }
 
     public void onClickReturn3(View v){

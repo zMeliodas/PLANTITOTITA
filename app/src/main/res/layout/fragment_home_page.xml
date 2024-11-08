@@ -24,7 +24,7 @@
                 android:id="@+id/editTxtSearch"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:inputType="text|textEmailAddress"
+                android:inputType="textCapSentences"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/custom_search_shape_edit_txt"
                 android:textColorHint="#86CF60"

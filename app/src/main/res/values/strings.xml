@@ -29,6 +29,79 @@
         <font color='#FF0000'>*</font>
     </string>
 
+    <!-- Terms of Service -->
+    <string name="terms_of_service">
+        <![CDATA[
+        <h2>Terms of Service</h2>
+        <p><b>1. Acceptance of Terms</b><br>
+        By using PLANTITOTITA, you agree to abide by these Terms of Service ("Terms"). If you do not agree with these Terms, you must not use the application.</p>
+
+        <p><b>2. User Accounts</b><br>
+        To access some features of the app, you must create an account. You agree to provide accurate and up-to-date information, including your first name, last name, email, mobile number, and password. You are responsible for maintaining the security of your account and will be held responsible for all activities under your account.</p>
+
+        <p><b>3. Content and Use</b><br>
+        You may upload profile images and other media to personalize your experience in PLANTITOTITA. By uploading content, you grant us a non-exclusive license to use it as necessary for app functionality.</p>
+
+        <p><b>4. Privacy and Data Collection</b><br>
+        We value your privacy. Please refer to our Privacy Policy (below) to understand how we handle your personal information.</p>
+
+        <p><b>5. Modifications to Terms</b><br>
+        PLANTITOTITA reserves the right to modify these Terms at any time. Users will be notified of changes, and continued use of the app constitutes acceptance of any updated Terms.</p>
+
+        <p><b>6. Limitation of Liability</b><br>
+        PLANTITOTITA is provided on an "as is" basis. We are not liable for any damages arising from the use of the app. You assume full responsibility for any loss resulting from using the app.</p>
+
+        <p><b>7. Contact Us</b><br>
+        For questions regarding these Terms, please contact us at cedrickqwez23@gmail.com.</p>
+        ]]>
+    </string>
+
+    <!-- Privacy Policy -->
+    <string name="privacy_policy">
+        <![CDATA[
+        <h2>Privacy Policy</h2>
+        <p><b>1. Information We Collect</b><br>
+        PLANTITOTITA collects the following information when you create an account:
+        <ul>
+            <li>Personal Information: First Name, Last Name, Email, Mobile Number, and Password.</li>
+            <li>Profile Image: Optional, uploaded by you.</li>
+        </ul></p>
+
+        <p><b>2. How We Use Your Information</b><br>
+        Your information is used to:
+        <ul>
+            <li>Create and manage your user account.</li>
+            <li>Provide personalized features, such as your profile image.</li>
+            <li>Communicate with you about updates, security alerts, and support.</li>
+        </ul></p>
+
+        <p><b>3. Data Storage and Security</b><br>
+        We are committed to protecting your personal information. Data is stored on secure servers, and access is restricted to authorized personnel only. While we employ security measures, we cannot guarantee complete data security.</p>
+
+        <p><b>4. Sharing Your Information</b><br>
+        We do not sell or rent your personal information to third parties. Your information will only be shared:
+        <ul>
+            <li>With service providers as necessary to operate the app.</li>
+            <li>If required by law or legal proceedings.</li>
+        </ul></p>
+
+        <p><b>5. Your Rights</b><br>
+        You have the right to:
+        <ul>
+            <li>Access, update, or delete your personal information.</li>
+            <li>Withdraw consent to data processing.</li>
+        </ul></p>
+
+        <p><b>6. Retention of Data</b><br>
+        Your data will be retained as long as your account is active or as required to fulfill the purposes outlined in this Privacy Policy.</p>
+
+        <p><b>7. Changes to the Privacy Policy</b><br>
+        PLANTITOTITA may update this Privacy Policy at any time. We will notify users of any significant changes. Continued use of the app constitutes acceptance of the revised policy.</p>
+
+        <p><b>8. Contact Us</b><br>
+        If you have questions or concerns about this Privacy Policy, please contact us at cedrickqwez23@gmail.com.</p>
+        ]]>
+    </string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
