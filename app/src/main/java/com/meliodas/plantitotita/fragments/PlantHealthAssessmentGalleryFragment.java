@@ -50,8 +50,6 @@ import java.util.Locale;
 import static android.app.Activity.RESULT_OK;
 
 public class PlantHealthAssessmentGalleryFragment extends Fragment {
-    private static final int PICK_IMAGE_REQUEST = 100;
-    private static final int CAPTURE_IMAGE_REQUEST = 101;
     private static final int CAMERA_REQUEST_CODE = 1001;
     private final DatabaseManager dbManager = new DatabaseManager();
     private HealthIdentification healthIdentification;

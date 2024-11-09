@@ -27,7 +27,6 @@ import com.meliodas.plantitotita.R;
 import com.meliodas.plantitotita.fragments.HomePageFragment;
 import com.meliodas.plantitotita.fragments.PlantGalleryFragment;
 import com.meliodas.plantitotita.fragments.PlantHealthAssessmentGalleryFragment;
-import com.meliodas.plantitotita.fragments.PlantHealthAssessmentInformationFragment;
 import com.meliodas.plantitotita.loginmodule.WelcomePage;
 import com.squareup.picasso.Picasso;
 

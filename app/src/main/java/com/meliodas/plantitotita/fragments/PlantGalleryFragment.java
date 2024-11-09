@@ -27,7 +27,6 @@ public class PlantGalleryFragment extends Fragment {
     private List<Map<String, Object>> identifications;
     private LinearLayout plantGalleryLayout;
     private final List<Plant> plantList = new ArrayList<>();
-    private static final int CAMERA_REQUEST_CODE = 1001;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
