@@ -370,7 +370,7 @@ public class PlantIdApi {
                     .result(HealthIdentificationParser.parseHealthIdentification(jsonResponse).getResult())
                     .build().getResult().getIsHealthy();
 
-            if (isHealthy.getProbability() >= 0.5) {
+            if (isHealthy.getProbability() >= 0.9) {
                 throw new IOException("The image appears to have healthy plant");
             }
 
