@@ -10,6 +10,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -30,6 +32,7 @@ import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
+import com.hbb20.CountryCodePicker;
 import com.meliodas.plantitotita.R;
 import com.squareup.picasso.Picasso;
 import com.yalantis.ucrop.UCrop;
@@ -52,6 +55,7 @@ public class EditProfilePage extends AppCompatActivity {
     private boolean imageChanged = false;
     private BroadcastReceiver networkReceiver;
     private android.app.AlertDialog noInternetDialog;
+    private CountryCodePicker ccp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +67,15 @@ public class EditProfilePage extends AppCompatActivity {
         storageRef = storage.getReference();
         fStore = FirebaseFirestore.getInstance();
 
+        imageView = findViewById(R.id.editProfileImageView);
+        editTextFirstName = findViewById(R.id.editProfileEditTxtFirstName);
+        editTextLastName = findViewById(R.id.editProfileEditTxtLastName);
+
+        ccp = findViewById(R.id.countryCodePicker);
+        editTextMobileNum = findViewById(R.id.editProfileEditTxtContactNumber);
+        ccp.registerCarrierNumberEditText(editTextMobileNum);
+
+        setupValidation();
         insertInitialValue();
     }
 
@@ -154,10 +167,6 @@ public class EditProfilePage extends AppCompatActivity {
     }
 
     public void insertInitialValue(){
-        imageView = findViewById(R.id.editProfileImageView);
-        editTextFirstName = findViewById(R.id.editProfileEditTxtFirstName);
-        editTextLastName = findViewById(R.id.editProfileEditTxtLastName);
-        editTextMobileNum = findViewById(R.id.editProfileEditTxtContactNumber);
 
         DocumentReference documentReference = fStore.collection("users").document(firebaseUser.getUid());
         documentReference.addSnapshotListener(this, (value, error) -> {
@@ -171,7 +180,10 @@ public class EditProfilePage extends AppCompatActivity {
 
                 editTextFirstName.setText(firstName);
                 editTextLastName.setText(lastName);
-                editTextMobileNum.setText(mobileNum);
+
+                if (mobileNum != null && !mobileNum.isEmpty()) {
+                    ccp.setFullNumber(mobileNum);
+                }
 
                 if (imageViewPhoto == null || imageViewPhoto.isEmpty()) {
                     return;
@@ -183,10 +195,14 @@ public class EditProfilePage extends AppCompatActivity {
     }
 
     public void editInformation(){
+        mobileNum = ccp.getFullNumber();
+        String formattedNumber = ccp.getFormattedFullNumber();
+
         Map<String, Object> userInfo = new HashMap<>();
         userInfo.put("user_name", editTextFirstName.getText().toString());
         userInfo.put("last_name", editTextLastName.getText().toString());
-        userInfo.put("mobile_number", editTextMobileNum.getText().toString());
+        userInfo.put("mobile_number", mobileNum);
+        userInfo.put("formatted_mobile_number", formattedNumber);
 
         if(imageChanged) uploadImage(firebaseUser.getEmail());
 
@@ -273,35 +289,19 @@ public class EditProfilePage extends AppCompatActivity {
         Button continueButton1 = view.findViewById(R.id.dialogContinueButton1);
 
         continueButton.setOnClickListener(view1 -> {
-            if (editTextFirstName.getText() == null || editTextFirstName.getText().toString().isEmpty()){
-                alertDialog.dismiss();
-                editTextFirstName.setError("First name can't be blank");
-                return;
-            }
 
-            if (editTextLastName.getText() == null || editTextLastName.getText().toString().isEmpty()){
-                alertDialog.dismiss();
-                editTextLastName.setError("Last name can't be blank");
-                return;
-            }
 
-            if (editTextMobileNum.getText() == null || editTextMobileNum.getText().toString().isEmpty()){
-                alertDialog.dismiss();
-                editTextMobileNum.setError("Mobile number can't be blank");
-                return;
-            }
+            String mobileNumber = editTextMobileNum.getText().toString();
+            validateMobileNumber(mobileNumber);
+            validateFirstName(editTextFirstName.getText().toString());
+            validateLastName(editTextLastName.getText().toString());
+            validateMobileNumber(editTextMobileNum.getText().toString());
 
-            if (editTextMobileNum.length() > 11 || editTextMobileNum.length() < 11){
+            // Check if any field has errors
+            if (editTextFirstName.getError() != null ||
+                    editTextLastName.getError() != null ||
+                    editTextMobileNum.getError() != null) {
                 alertDialog.dismiss();
-                editTextMobileNum.setError("You can only enter 11 numbers");
-                editTextMobileNum.requestFocus();
-                return;
-            }
-
-            if (!editTextMobileNum.getText().toString().matches("^(09)\\d{9}")){
-                alertDialog.dismiss();
-                editTextMobileNum.setError("Invalid mobile number format");
-                editTextMobileNum.requestFocus();
                 return;
             }
 
@@ -318,5 +318,80 @@ public class EditProfilePage extends AppCompatActivity {
         }
 
         alertDialog.show();
+    }
+
+    private void setupValidation() {
+        // First Name validation
+        editTextFirstName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                validateFirstName(s.toString());
+            }
+        });
+
+        // Last Name validation
+        editTextLastName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                validateLastName(s.toString());
+            }
+        });
+
+        // Mobile Number validation
+        editTextMobileNum.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                validateMobileNumber(s.toString());
+            }
+        });
+
+        // Add validation when country code changes
+        ccp.setOnCountryChangeListener(() -> {
+            validateMobileNumber(editTextMobileNum.getText().toString());
+        });
+    }
+
+    private void validateFirstName(String firstName) {
+        if (firstName.trim().isEmpty()) {
+            editTextFirstName.setError("First name can't be blank");
+        } else {
+            editTextFirstName.setError(null);
+        }
+    }
+
+    private void validateLastName(String lastName) {
+        if (lastName.trim().isEmpty()) {
+            editTextLastName.setError("Last name can't be blank");
+        } else {
+            editTextLastName.setError(null);
+        }
+    }
+
+    private void validateMobileNumber(String mobileNumber) {
+        if (mobileNumber.isEmpty()) {
+            editTextMobileNum.setError("Mobile Number can't be blank.");
+        } else if (!ccp.isValidFullNumber()) {
+            editTextMobileNum.setError("Invalid mobile number format");
+        } else {
+            editTextMobileNum.setError(null);
+        }
     }
 }

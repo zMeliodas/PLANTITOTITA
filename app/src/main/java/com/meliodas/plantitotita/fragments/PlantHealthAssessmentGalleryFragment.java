@@ -246,7 +246,14 @@ public class PlantHealthAssessmentGalleryFragment extends Fragment {
             if (e instanceof IOException && (e.getMessage() != null && e.getMessage().equalsIgnoreCase("The image does not contain a plant"))) {
                 requireActivity().runOnUiThread(() -> {
                     dismissProcessingDialog();
-                    showNotAPlantDialog();
+                    showValidatorDialog(R.layout.custom_alert_dialog_not_plant);
+                });
+            }
+
+            if (e instanceof IOException && (e.getMessage() != null && e.getMessage().equalsIgnoreCase("The image appears to have healthy plant"))) {
+                requireActivity().runOnUiThread(() -> {
+                    dismissProcessingDialog();
+                    showValidatorDialog(R.layout.custom_alert_dialog_plant_is_healthy);
                 });
             }
 
@@ -447,8 +454,8 @@ public class PlantHealthAssessmentGalleryFragment extends Fragment {
         }
     }
 
-    private void showNotAPlantDialog() {
-        View view = LayoutInflater.from(requireContext()).inflate(R.layout.custom_alert_dialog_not_plant, null);
+    private void showValidatorDialog(int resId) {
+        View view = LayoutInflater.from(requireContext()).inflate(resId, null);
 
         androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(requireContext());
         builder.setView(view);

@@ -366,6 +366,14 @@ public class PlantIdApi {
                     .result(HealthIdentificationParser.parseHealthIdentification(jsonResponse).getResult())
                     .build().getResult().getIsPlant();
 
+            HealthIdentification.Result.IsHealthy isHealthy = new HealthIdentification.Builder()
+                    .result(HealthIdentificationParser.parseHealthIdentification(jsonResponse).getResult())
+                    .build().getResult().getIsHealthy();
+
+            if (isHealthy.getProbability() >= 0.5) {
+                throw new IOException("The image appears to have healthy plant");
+            }
+
             if (isPlant.getProbability() < 0.5) {
                 throw new IOException("The image does not contain a plant");
             }
