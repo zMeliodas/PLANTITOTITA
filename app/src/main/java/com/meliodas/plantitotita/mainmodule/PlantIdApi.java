@@ -374,7 +374,7 @@ public class PlantIdApi {
                 throw new IOException("The image appears to have healthy plant");
             }
 
-            if (isPlant.getProbability() < 0.5) {
+            if (isPlant.getProbability() < 0.4) {
                 throw new IOException("The image does not contain a plant");
             }
 
