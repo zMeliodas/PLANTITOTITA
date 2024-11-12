@@ -14,11 +14,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -93,6 +92,23 @@ public class PlantHealthAssessmentGalleryFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_plant_health_assessment, container, false);
 
+        EditText searchEditText = view.findViewById(R.id.editTxtSearchHealthAssessment);
+
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                filterPlants(charSequence.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
+
         plantGalleryLayout = view.findViewById(R.id.plantGalleryLayout);
         refreshPlantList(null);
 
@@ -132,6 +148,26 @@ public class PlantHealthAssessmentGalleryFragment extends Fragment {
                 showNoInternetDialog();
             }
         });
+    }
+
+    // Filter the plants based on the search input
+    private void filterPlants(String searchText) {
+        List<Plant> filteredPlants = new ArrayList<>();
+        for (Plant plant : plantList) {
+            // Handle null values using safe comparisons
+            String plantName = plant.name() != null ? plant.name().toLowerCase() : "";
+            String scientificName = plant.scientificName() != null ? plant.scientificName().toLowerCase() : "";
+            String family = plant.family() != null ? plant.family().toLowerCase() : "";
+            String genus = plant.genus() != null ? plant.genus().toLowerCase() : "";
+
+            if (plantName.contains(searchText.toLowerCase()) ||
+                    scientificName.contains(searchText.toLowerCase()) ||
+                    family.contains(searchText.toLowerCase()) ||
+                    genus.contains(searchText.toLowerCase())) {
+                filteredPlants.add(plant);
+            }
+        }
+        showPlants(filteredPlants, getLayoutInflater());
     }
 
     // Dynamically create and display plant items
