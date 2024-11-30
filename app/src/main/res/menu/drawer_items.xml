@@ -4,7 +4,8 @@
       tools:showIn="navigation_view">
 
     <item
-            android:title="Dashboard">
+            android:title="Dashboard"
+            android:id="@+id/dashboardNavMenuTitle">
         <menu>
             <item
                     android:id="@+id/settingsNavMenu"
@@ -23,11 +24,18 @@
                     android:icon="@mipmap/health_icon"
                     android:onClick="onClickPlantHealthAssessment"
                     android:title="Plant Health Assessment"/>
+
+            <item
+                    android:id="@+id/reminder"
+                    android:icon="@drawable/calendar_days_svgrepo_com"
+                    android:onClick="onClickReminder"
+                    android:title="Reminder"/>
         </menu>
     </item>
 
     <item
-            android:title="Feedback &amp; About Us">
+            android:title="Feedback and About Us"
+            android:id="@+id/feedBackAndAboutUsNavMenuTitle">
         <menu>
             <item
                     android:id="@+id/feedBackNavMenu"
@@ -44,7 +52,8 @@
     </item>
 
     <item
-            android:title="Exit">
+            android:title="Exit"
+            android:id="@+id/exitNavMenuTitle">
         <menu>
             <item
                     android:icon="@drawable/ic_logout_drawer"

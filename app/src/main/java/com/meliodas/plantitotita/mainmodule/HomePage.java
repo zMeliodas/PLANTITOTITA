@@ -1,10 +1,14 @@
 package com.meliodas.plantitotita.mainmodule;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.TextAppearanceSpan;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.activity.OnBackPressedCallback;
 import androidx.activity.OnBackPressedDispatcher;
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,6 +32,7 @@ import com.meliodas.plantitotita.R;
 import com.meliodas.plantitotita.fragments.HomePageFragment;
 import com.meliodas.plantitotita.fragments.PlantGalleryFragment;
 import com.meliodas.plantitotita.fragments.PlantHealthAssessmentGalleryFragment;
+import com.meliodas.plantitotita.fragments.ReminderFragment;
 import com.meliodas.plantitotita.loginmodule.WelcomePage;
 import com.squareup.picasso.Picasso;
 
@@ -46,6 +52,7 @@ public class HomePage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
+        NotificationHelper.createNotificationChannel(this);
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.navView);
         inflatedView = getLayoutInflater().inflate(R.layout.drawer_header, null);
@@ -56,6 +63,22 @@ public class HomePage extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
         user = mAuth.getCurrentUser();
+
+        Menu menu = navigationView.getMenu();
+
+        MenuItem dashboard = menu.findItem(R.id.dashboardNavMenuTitle);
+        MenuItem feedBackAboutUs = menu.findItem(R.id.feedBackAndAboutUsNavMenuTitle);
+        MenuItem exit = menu.findItem(R.id.exitNavMenuTitle);
+        SpannableString s = new SpannableString(dashboard.getTitle());
+        SpannableString s1 = new SpannableString(feedBackAboutUs.getTitle());
+        SpannableString s2 = new SpannableString(exit.getTitle());
+        s.setSpan(new TextAppearanceSpan(this, R.style.TextAppearanceTitle), 0, s.length(), 0);
+        s1.setSpan(new TextAppearanceSpan(this, R.style.TextAppearanceTitle), 0, s1.length(), 0);
+        s2.setSpan(new TextAppearanceSpan(this, R.style.TextAppearanceTitle), 0, s2.length(), 0);
+        dashboard.setTitle(s);
+        feedBackAboutUs.setTitle(s1);
+        exit.setTitle(s2);
+
 
         if (user == null) {
             startActivity(new Intent(getApplicationContext(), WelcomePage.class));
@@ -74,6 +97,18 @@ public class HomePage extends AppCompatActivity {
         });
 
         insertInitialValue();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == NotificationHelper.NOTIFICATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                NotificationHelper.showNotification(this, "Permission Granted", "You can now receive notifications.");
+            } else {
+                NotificationHelper.showNotification(this, "Permission Denied", "You need to grant the permission to receive notifications.");
+            }
+        }
     }
 
     public void onBackPress() {
@@ -147,6 +182,11 @@ public class HomePage extends AppCompatActivity {
 
     public void onClickPlantHealthAssessment(MenuItem item) {
         replaceFragment(new PlantHealthAssessmentGalleryFragment());
+        drawerLayout.close();
+    }
+
+    public void onClickReminder(MenuItem item) {
+        replaceFragment(new ReminderFragment());
         drawerLayout.close();
     }
 

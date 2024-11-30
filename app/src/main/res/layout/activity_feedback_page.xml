@@ -5,7 +5,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/PLANTITOyellow"
+        android:background="@color/PLANTITOOffWhite"
         tools:context=".mainmodule.FeedbackPage">
 
     <Button
@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:text="We appreciate your feedback!"
             android:textAlignment="center" android:fontFamily="@font/mada_black"
-            android:textColor="@color/PLANTITOgreen" android:textSize="26sp"
+            android:textColor="@color/PLANTITODarkGreen" android:textSize="26sp"
             android:id="@+id/signUpTitle"
             android:contextClickable="false"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
@@ -34,7 +34,7 @@
             android:fontFamily="@font/mada_medium"
             android:textSize="22sp"
             android:padding="15dp"
-            android:textColor="@color/PLANTITOblack"
+            android:textColor="@color/PLANTITODarkGreen"
             app:layout_constraintTop_toBottomOf="@+id/signUpTitle" app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:justificationMode="inter_word"
@@ -47,7 +47,7 @@
             android:layout_marginTop="40dp"
             android:numStars="5"
             android:stepSize="1"
-            android:progressTint="@color/PLANTITOgreen"
+            android:progressTint="@color/PLANTITOStrongYellow"
             android:layout_marginBottom="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -100,5 +100,5 @@
             android:onClick="onClickSubmitFeedback"
             android:id="@+id/btnSubmitFeedback" android:background="@drawable/custom_button_yellow"
             android:fontFamily="@font/mada_black" android:textAllCaps="false" android:textSize="16sp"
-            android:textColor="@color/PLANTITOblack"/>
+            android:textColor="@color/PLANTITODarkGreen"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

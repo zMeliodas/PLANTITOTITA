@@ -50,7 +50,7 @@ public class EditProfilePage extends AppCompatActivity {
     StorageReference storageRef;
     FirebaseFirestore fStore;
     private String imageViewPhoto, firstName, lastName, eMail, mobileNum;
-    private EditText editTextFirstName, editTextLastName, editTextMobileNum;
+    private EditText editTextFirstName, editTextMobileNum;
     private ImageView imageView;
     private boolean imageChanged = false;
     private BroadcastReceiver networkReceiver;
@@ -69,7 +69,6 @@ public class EditProfilePage extends AppCompatActivity {
 
         imageView = findViewById(R.id.editProfileImageView);
         editTextFirstName = findViewById(R.id.editProfileEditTxtFirstName);
-        editTextLastName = findViewById(R.id.editProfileEditTxtLastName);
 
         ccp = findViewById(R.id.countryCodePicker);
         editTextMobileNum = findViewById(R.id.editProfileEditTxtContactNumber);
@@ -179,7 +178,6 @@ public class EditProfilePage extends AppCompatActivity {
                 mobileNum = value.getString("mobile_number");
 
                 editTextFirstName.setText(firstName);
-                editTextLastName.setText(lastName);
 
                 if (mobileNum != null && !mobileNum.isEmpty()) {
                     ccp.setFullNumber(mobileNum);
@@ -200,7 +198,6 @@ public class EditProfilePage extends AppCompatActivity {
 
         Map<String, Object> userInfo = new HashMap<>();
         userInfo.put("user_name", editTextFirstName.getText().toString());
-        userInfo.put("last_name", editTextLastName.getText().toString());
         userInfo.put("mobile_number", mobileNum);
         userInfo.put("formatted_mobile_number", formattedNumber);
 
@@ -294,12 +291,10 @@ public class EditProfilePage extends AppCompatActivity {
             String mobileNumber = editTextMobileNum.getText().toString();
             validateMobileNumber(mobileNumber);
             validateFirstName(editTextFirstName.getText().toString());
-            validateLastName(editTextLastName.getText().toString());
             validateMobileNumber(editTextMobileNum.getText().toString());
 
             // Check if any field has errors
             if (editTextFirstName.getError() != null ||
-                    editTextLastName.getError() != null ||
                     editTextMobileNum.getError() != null) {
                 alertDialog.dismiss();
                 return;
@@ -335,20 +330,6 @@ public class EditProfilePage extends AppCompatActivity {
             }
         });
 
-        // Last Name validation
-        editTextLastName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                validateLastName(s.toString());
-            }
-        });
-
         // Mobile Number validation
         editTextMobileNum.addTextChangedListener(new TextWatcher() {
             @Override
@@ -374,14 +355,6 @@ public class EditProfilePage extends AppCompatActivity {
             editTextFirstName.setError("First name can't be blank");
         } else {
             editTextFirstName.setError(null);
-        }
-    }
-
-    private void validateLastName(String lastName) {
-        if (lastName.trim().isEmpty()) {
-            editTextLastName.setError("Last name can't be blank");
-        } else {
-            editTextLastName.setError(null);
         }
     }
 

@@ -38,7 +38,7 @@
                 android:fontFamily="@font/mada_medium"
                 android:text="Plant Name"
                 android:textAlignment="center"
-                android:textColor="@color/PLANTITOyellow"
+                android:textColor="@color/PLANTITOOffWhite"
                 android:textSize="42sp"
                 android:clickable="false"
                 android:longClickable="false"
@@ -57,7 +57,7 @@
                 android:fontFamily="@font/mada"
                 android:text="Scientific Name"
                 android:textAlignment="center"
-                android:textColor="@color/PLANTITOyellow"
+                android:textColor="@color/PLANTITOStrongYellow"
                 android:textSize="20sp"
                 android:clickable="false"
                 android:longClickable="false"
@@ -99,7 +99,7 @@
 
                     <androidx.cardview.widget.CardView
                             android:id="@+id/cardView1"
-                            android:backgroundTint="@color/PLANTITOyellow"
+                            android:backgroundTint="@color/PLANTITODarkGreen"
                             android:animateLayoutChanges="true"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -122,26 +122,25 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/mada_black"
                                     android:paddingStart="15dp"
-                                    android:paddingTop="10dp"
-                                    android:paddingEnd="10dp"
-                                    android:paddingBottom="10dp"
+                                    android:paddingTop="5dp"
+                                    android:paddingEnd="36dp"
+                                    android:paddingBottom="5dp"
                                     android:text="Disease"
-                                    android:textColor="@color/PLANTITOblack"
-                                    android:textSize="24sp"/>
+                                    android:textColor="@color/PLANTITOOffWhite"
+                                    android:textSize="36sp"/>
 
                             <TextView
                                     android:id="@+id/diseaseDescription"
-                                    android:visibility="gone"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:visibility="gone"
                                     android:fontFamily="@font/mada"
                                     android:paddingStart="15dp"
-                                    android:paddingTop="10dp"
                                     android:paddingEnd="10dp"
                                     android:paddingBottom="10dp"
-                                    android:textColor="@color/PLANTITOblack"
+                                    android:textColor="@color/PLANTITOOffWhite"
                                     android:text="Plant disease description goes here"
-                                    android:textSize="18sp"/>
+                                    android:textSize="24sp"/>
                         </LinearLayout>
 
                         <ImageView
@@ -157,7 +156,7 @@
 
                     <androidx.cardview.widget.CardView
                             android:id="@+id/cardView2"
-                            android:backgroundTint="@color/PLANTITOyellow"
+                            android:backgroundTint="@color/PLANTITODarkGreen"
                             android:animateLayoutChanges="true"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -180,12 +179,13 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/mada_black"
                                     android:paddingStart="15dp"
-                                    android:paddingTop="10dp"
-                                    android:paddingEnd="10dp"
-                                    android:paddingBottom="10dp"
+                                    android:layout_gravity="center"
+                                    android:paddingTop="5dp"
+                                    android:paddingEnd="36dp"
+                                    android:paddingBottom="5dp"
                                     android:text="Biological Treatment"
-                                    android:textColor="@color/PLANTITOblack"
-                                    android:textSize="24sp"/>
+                                    android:textColor="@color/PLANTITOOffWhite"
+                                    android:textSize="36sp"/>
 
                             <TextView
                                     android:id="@+id/biologicalTreatment"
@@ -194,12 +194,11 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/mada"
                                     android:paddingStart="15dp"
-                                    android:paddingTop="10dp"
                                     android:paddingEnd="10dp"
                                     android:paddingBottom="10dp"
                                     android:text="Biological Treatment description goes here"
-                                    android:textColor="@color/PLANTITOblack"
-                                    android:textSize="18sp"/>
+                                    android:textColor="@color/PLANTITOOffWhite"
+                                    android:textSize="24sp"/>
                         </LinearLayout>
 
                         <ImageView
@@ -215,7 +214,7 @@
 
                     <androidx.cardview.widget.CardView
                             android:id="@+id/cardView3"
-                            android:backgroundTint="@color/PLANTITOyellow"
+                            android:backgroundTint="@color/PLANTITODarkGreen"
                             android:animateLayoutChanges="true"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -238,12 +237,12 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/mada_black"
                                     android:paddingStart="15dp"
-                                    android:paddingTop="10dp"
-                                    android:paddingEnd="10dp"
-                                    android:paddingBottom="10dp"
+                                    android:paddingTop="5dp"
+                                    android:paddingEnd="36dp"
+                                    android:paddingBottom="5dp"
                                     android:text="Chemical Treatment"
-                                    android:textColor="@color/PLANTITOblack"
-                                    android:textSize="24sp"/>
+                                    android:textColor="@color/PLANTITOOffWhite"
+                                    android:textSize="36sp"/>
 
                             <TextView
                                     android:id="@+id/chemicalTreatment"
@@ -252,12 +251,11 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/mada"
                                     android:paddingStart="15dp"
-                                    android:paddingTop="10dp"
                                     android:paddingEnd="10dp"
                                     android:paddingBottom="10dp"
                                     android:text="Chemical Treatment description goes here"
-                                    android:textColor="@color/PLANTITOblack"
-                                    android:textSize="18sp"/>
+                                    android:textColor="@color/PLANTITOOffWhite"
+                                    android:textSize="24sp"/>
                         </LinearLayout>
 
                         <ImageView
@@ -273,7 +271,7 @@
 
                     <androidx.cardview.widget.CardView
                             android:id="@+id/cardView4"
-                            android:backgroundTint="@color/PLANTITOyellow"
+                            android:backgroundTint="@color/PLANTITODarkGreen"
                             android:animateLayoutChanges="true"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -298,12 +296,12 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/mada_black"
                                     android:paddingStart="15dp"
-                                    android:paddingTop="10dp"
-                                    android:paddingEnd="10dp"
-                                    android:paddingBottom="10dp"
+                                    android:paddingTop="5dp"
+                                    android:paddingEnd="36dp"
+                                    android:paddingBottom="5dp"
                                     android:text="Prevention"
-                                    android:textColor="@color/PLANTITOblack"
-                                    android:textSize="24sp"/>
+                                    android:textColor="@color/PLANTITOOffWhite"
+                                    android:textSize="36sp"/>
 
                             <TextView
                                     android:id="@+id/prevention"
@@ -316,8 +314,8 @@
                                     android:paddingEnd="10dp"
                                     android:paddingBottom="10dp"
                                     android:text="Prevention description goes here"
-                                    android:textColor="@color/PLANTITOblack"
-                                    android:textSize="18sp"/>
+                                    android:textColor="@color/PLANTITOOffWhite"
+                                    android:textSize="24sp"/>
                         </LinearLayout>
 
                         <ImageView

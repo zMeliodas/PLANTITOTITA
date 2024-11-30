@@ -9,7 +9,7 @@
             android:layout_width="300dp"
             android:layout_height="160dp"
             android:id="@+id/alertDialogLayout"
-            android:background="@drawable/custom_dialog_layout"
+            android:background="@drawable/custom_dialog_layout_1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -28,7 +28,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:text="Incorrect Email or Password."
                 android:fontFamily="@font/mada_black"
-                android:textSize="20sp" android:textColor="@color/PLANTITOblack">
+                android:textSize="20sp" android:textColor="@color/PLANTITOOffWhite">
         </TextView>
 
         <Button
@@ -39,7 +39,7 @@
                 android:text="Try again"
                 android:fontFamily="@font/mada_black"
                 android:textSize="17sp"
-                android:textColor="@color/PLANTITOgreen"
+                android:textColor="@color/PLANTITOStrongYellow"
                 android:layout_marginStart="190dp"
                 android:layout_marginTop="5dp"
                 app:layout_constraintStart_toStartOf="parent"

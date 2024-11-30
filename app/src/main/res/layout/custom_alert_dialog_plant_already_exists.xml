@@ -9,7 +9,7 @@
             android:layout_width="300dp"
             android:layout_height="200dp"
             android:id="@+id/layoutDialog"
-            android:background="@drawable/custom_dialog_layout"
+            android:background="@drawable/custom_dialog_layout_1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -27,7 +27,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:text="This plant already exists in your Plant Gallery. Would you like to view the Plant?"
                 android:fontFamily="@font/mada_black"
-                android:textSize="16sp" android:textColor="@color/PLANTITOblack">
+                android:textSize="16sp" android:textColor="@color/PLANTITOOffWhite">
         </TextView>
 
         <Button
@@ -38,7 +38,7 @@
                 android:layout_marginTop="5dp"
                 android:text="View Plant"
                 android:textSize="18sp"
-                android:textColor="@color/PLANTITOgreen"
+                android:textColor="@color/PLANTITOStrongYellow"
                 android:fontFamily="@font/mada_black"
                 android:background="#00000000"
                 app:layout_constraintStart_toEndOf="@id/dialogCancelButton"
@@ -54,7 +54,7 @@
                 android:layout_marginTop="5dp"
                 android:text="Cancel"
                 android:textSize="18sp"
-                android:textColor="@color/PLANTITOgreen"
+                android:textColor="@color/PLANTITOStrongYellow"
                 android:fontFamily="@font/mada_black"
                 android:background="#00000000"
                 app:layout_constraintStart_toStartOf="parent"

@@ -27,11 +27,11 @@
                 android:inputType="textCapSentences"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/custom_search_shape_edit_txt"
-                android:textColorHint="#86CF60"
+                android:textColorHint="@color/PLANTITODarkGreen"
                 android:hint="   Search for Plants by Name or Type..."
                 android:layout_marginTop="7dp"
                 android:drawableStart="@drawable/search_svgrepo_com"
-                android:textSize="16sp" android:textColor="@color/black" android:fontFamily="@font/mada_medium"
+                android:textSize="16sp" android:textColor="@color/PLANTITODarkGreen" android:fontFamily="@font/mada_medium"
                 android:paddingStart="12dp" android:paddingEnd="15dp"
                 app:layout_constraintTop_toTopOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -70,7 +70,7 @@
                 android:layout_marginStart="10dp"
                 android:text="Get Started"
                 android:fontFamily="@font/mada_medium"
-                android:textColor="@color/PLANTITOgreen"
+                android:textColor="@color/PLANTITODarkGreen"
                 android:textSize="20sp">
         </TextView>
 
@@ -126,7 +126,7 @@
                             android:textAlignment="center"
                             android:fontFamily="@font/mada_medium"
                             android:textSize="12sp"
-                            android:textColor="@color/PLANTITOyellow"
+                            android:textColor="@color/PLANTITOOffWhite"
                             app:layout_constraintEnd_toEndOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -160,7 +160,7 @@
                             android:textAlignment="center"
                             android:fontFamily="@font/mada_medium"
                             android:textSize="12sp"
-                            android:textColor="@color/PLANTITOyellow"
+                            android:textColor="@color/PLANTITOOffWhite"
                             app:layout_constraintEnd_toEndOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -193,7 +193,7 @@
                             android:textAlignment="center"
                             android:fontFamily="@font/mada_medium"
                             android:textSize="10sp"
-                            android:textColor="@color/PLANTITOyellow"
+                            android:textColor="@color/PLANTITOOffWhite"
                             app:layout_constraintEnd_toEndOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -228,7 +228,7 @@
                             android:textAlignment="center"
                             android:fontFamily="@font/mada_medium"
                             android:textSize="10sp"
-                            android:textColor="@color/PLANTITOyellow"
+                            android:textColor="@color/PLANTITOOffWhite"
                             app:layout_constraintEnd_toEndOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
@@ -306,7 +306,7 @@
                 android:layout_marginStart="10dp"
                 android:text="Recent Scans"
                 android:fontFamily="@font/mada_medium"
-                android:textColor="@color/PLANTITOgreen"
+                android:textColor="@color/PLANTITODarkGreen"
                 android:textSize="20sp">
         </TextView>
     </androidx.constraintlayout.widget.ConstraintLayout>

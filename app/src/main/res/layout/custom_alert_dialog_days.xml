@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/alertDialogSuccess"
+        android:layout_width="300dp"
+        android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/alertDialogLayout"
+            android:background="@drawable/custom_dialog_layout_1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Repeat"
+                android:id="@+id/repeatTxtView"
+                android:fontFamily="@font/mada_black"
+                android:textColor="@color/PLANTITOOffWhite"
+                android:textSize="20sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/linearLayoutMonday"
+                android:layout_marginTop="10dp">
+        </TextView>
+
+        <LinearLayout
+                android:id="@+id/linearLayoutMonday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+
+                app:layout_constraintTop_toBottomOf="@id/repeatTxtView">
+
+            <CheckBox
+                    android:id="@+id/checkboxMonday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+            </CheckBox>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Monday"
+                    android:fontFamily="@font/mada_black"
+                    android:textColor="@color/PLANTITOOffWhite"
+                    android:textSize="20sp">
+            </TextView>
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/linearLayoutTuesday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="20dp"
+                app:layout_constraintTop_toBottomOf="@id/linearLayoutMonday">
+
+            <CheckBox
+                    android:id="@+id/checkboxTuesday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+            </CheckBox>
+
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:text="Tuesday"
+                      android:fontFamily="@font/mada_black"
+                      android:textColor="@color/PLANTITOOffWhite"
+                      android:textSize="20sp">
+            </TextView>
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/linearLayoutWednesday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="20dp"
+                app:layout_constraintTop_toBottomOf="@id/linearLayoutTuesday">
+
+            <CheckBox android:id="@+id/checkboxWednesday" android:layout_width="wrap_content"
+                      android:layout_height="wrap_content">
+            </CheckBox>
+
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:text="Wednesday"
+                      android:fontFamily="@font/mada_black"
+                      android:textColor="@color/PLANTITOOffWhite"
+                      android:textSize="20sp">
+            </TextView>
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/linearLayoutThursday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="20dp"
+                app:layout_constraintTop_toBottomOf="@id/linearLayoutWednesday">
+
+            <CheckBox android:id="@+id/checkboxThursday" android:layout_width="wrap_content"
+                      android:layout_height="wrap_content">
+            </CheckBox>
+
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:text="Thursday"
+                      android:fontFamily="@font/mada_black"
+                      android:textColor="@color/PLANTITOOffWhite"
+                      android:textSize="20sp">
+            </TextView>
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/linearLayoutFriday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="20dp"
+                app:layout_constraintTop_toBottomOf="@id/linearLayoutThursday">
+
+            <CheckBox android:id="@+id/checkboxFriday" android:layout_width="wrap_content"
+                      android:layout_height="wrap_content">
+            </CheckBox>
+
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:text="Friday"
+                      android:fontFamily="@font/mada_black"
+                      android:textColor="@color/PLANTITOOffWhite"
+                      android:textSize="20sp">
+            </TextView>
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/linearLayoutSaturday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="20dp"
+                app:layout_constraintTop_toBottomOf="@id/linearLayoutFriday">
+
+            <CheckBox android:id="@+id/checkboxSaturday" android:layout_width="wrap_content"
+                      android:layout_height="wrap_content">
+            </CheckBox>
+
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:text="Saturday"
+                      android:fontFamily="@font/mada_black"
+                      android:textColor="@color/PLANTITOOffWhite"
+                      android:textSize="20sp">
+            </TextView>
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/linearLayoutSunday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="20dp"
+                app:layout_constraintTop_toBottomOf="@id/linearLayoutSaturday">
+
+            <CheckBox android:id="@+id/checkboxSunday" android:layout_width="wrap_content"
+                      android:layout_height="wrap_content">
+            </CheckBox>
+
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:text="Sunday"
+                      android:fontFamily="@font/mada_black"
+                      android:textColor="@color/PLANTITOOffWhite"
+                      android:textSize="20sp">
+            </TextView>
+        </LinearLayout>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnOkay"
+                android:text="Okay"
+                android:fontFamily="@font/mada_black"
+                android:textColor="@color/PLANTITOStrongYellow"
+                android:textSize="20sp"
+                app:layout_constraintTop_toBottomOf="@id/linearLayoutSunday"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="25dp"
+                android:layout_marginTop="10dp"
+                android:paddingBottom="20dp">
+        </TextView>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnCancel"
+                android:text="Cancel"
+                android:fontFamily="@font/mada_black"
+                android:textColor="@color/PLANTITOStrongYellow"
+                android:textSize="20sp"
+                app:layout_constraintTop_toBottomOf="@id/linearLayoutSunday"
+                app:layout_constraintEnd_toStartOf="@id/btnOkay"
+                android:layout_marginEnd="25dp"
+                android:layout_marginTop="10dp"
+                android:paddingBottom="20dp">
+        </TextView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

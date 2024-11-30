@@ -6,7 +6,7 @@
 
 
 
-            <solid android:color="#AFAEAC" />
+            <solid android:color="#afaeac" />
         </shape>
     </item>
 
@@ -14,7 +14,7 @@
         <shape android:shape="rectangle" >
             <corners android:radius="14dp" />
 
-            <solid android:color="#FAF9F6" />
+            <solid android:color="@color/PLANTITOOffWhite" />
         </shape>
     </item>
 </layer-list>

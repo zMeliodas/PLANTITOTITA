@@ -54,6 +54,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.1.0"))
     implementation("com.google.firebase:firebase-storage")
     implementation 'com.google.android.gms:play-services-location:21.3.0'
+    implementation 'com.google.android.gms:play-services-auth:21.2.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
@@ -63,6 +64,8 @@ dependencies {
     implementation files('libs/mail.jar')
     implementation files('libs/activation.jar')
     implementation 'com.hbb20:ccp:2.5.4'
+    implementation 'com.google.firebase:firebase-messaging:20.2.4'
+    implementation 'com.github.shobhitpuri:custom-google-signin-button:2.0.0'
 
     // Provides ARCore Session and related resources.
     implementation 'com.google.ar:core:1.45.0'

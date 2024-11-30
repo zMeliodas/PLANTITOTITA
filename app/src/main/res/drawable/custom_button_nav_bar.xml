@@ -3,14 +3,14 @@
     <item android:bottom="0dp" android:top="0dp">
         <shape android:shape="oval" >
 
-            <solid android:color="#298839" />
+            <solid android:color="#1d2e1f" />
         </shape>
     </item>
 
     <item android:start="1dp" android:end="1dp" android:top="0dp" android:bottom="6dp" >
         <shape android:shape="oval" >
 
-            <solid android:color="@color/PLANTITOgreen" />
+            <solid android:color="@color/PLANTITOStrongYellow" />
         </shape>
     </item>
 </layer-list>

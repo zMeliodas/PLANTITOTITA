@@ -15,11 +15,11 @@
             android:layout_height="match_parent"
             android:id="@+id/navView"
             app:menu="@menu/drawer_items"
-            app:itemTextColor="@color/PLANTITOyellow"
-            app:itemIconTint="@color/PLANTITOyellow"
-            app:itemBackground="@color/PLANTITOdarkgreen"
+            app:itemTextColor="@color/PLANTITOOffWhite"
+            app:itemIconTint="@color/PLANTITOOffWhite"
+            app:itemBackground="@color/PLANTITODarkGreen"
             app:itemIconSize="30dp"
-            android:backgroundTint="@color/PLANTITOgreen"
+            android:backgroundTint="@color/PLANTITODarkGreen"
             android:layout_gravity="start">
 
     </com.google.android.material.navigation.NavigationView>
@@ -40,6 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 app:layout_constraintHeight_percent="0.11"
+                android:elevation="20dp"
                 android:id="@+id/navBar"
                 android:background="@drawable/custom_shape_nav_bar"
                 app:layout_constraintStart_toStartOf="parent"
@@ -72,17 +73,18 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageButton
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
                 android:id="@+id/navBarCamButton"
                 android:background="@drawable/custom_button_nav_bar"
                 android:src="@drawable/camera_icon_nav_bar"
+                android:elevation="100dp"
                 android:scaleType="fitCenter"
                 android:onClick="onClickCamera"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/navBar"
-                app:layout_constraintTop_toTopOf="@id/navBar" android:clickable="false">
+                android:clickable="false"
+                app:layout_constraintBottom_toTopOf="@+id/navBar" android:layout_marginBottom="-56dp">
         </ImageButton>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.drawerlayout.widget.DrawerLayout>

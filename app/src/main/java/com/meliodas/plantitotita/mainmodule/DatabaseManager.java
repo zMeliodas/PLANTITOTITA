@@ -1,16 +1,23 @@
 package com.meliodas.plantitotita.mainmodule;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.util.Log;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
+import android.widget.Toast;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.*;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class DatabaseManager {
     FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -22,6 +29,17 @@ public class DatabaseManager {
 
     public DocumentReference getUserDoc(String document) {
         return getDocumentReference("users", document);
+    }
+
+    public void hasUserDoc(String userId, BooleanCallback callback) {
+        getDocumentReference("users", userId).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    callback.onCallback(documentSnapshot.exists());
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("DatabaseManager", "Error getting document", e);
+                    callback.onCallback(false);
+                });
     }
 
     public void addIdentification(Plant plant, String userId) {
@@ -214,7 +232,116 @@ public class DatabaseManager {
         });
     }
 
+    public void deleteReminder(String id, VoidCallback callback) {
+        fStore.collection("reminders").document(id)
+                .delete().addOnSuccessListener(
+                        (unused) -> {
+                            callback.onCallback();
+                        });
+    }
+
     public interface UploadCallback {
         void onUploadComplete(String imageUrl);
+    }
+
+    public void saveReminder(Reminder reminder, Context context, VoidCallback callback) {
+        String id = fStore.collection("reminders").document().getId();
+        reminder.setId(id);
+
+        Map<String, Object> reminderMap = new HashMap<>();
+        reminderMap.put("id", reminder.getId());
+        reminderMap.put("title", reminder.getTitle());
+        reminderMap.put("task", reminder.getTask());
+        reminderMap.put("plant", reminder.getPlant());
+        reminderMap.put("image", reminder.getImage());
+        reminderMap.put("timeInMillis", reminder.getTimeInMillis());
+        reminderMap.put("repeat", reminder.isRepeat());
+        reminderMap.put("repeatDays", reminder.getRepeatDays());
+        reminderMap.put("userId", FirebaseAuth.getInstance().getUid());
+
+        fStore.collection("reminders").document(id)
+                .set(reminderMap)
+                .addOnSuccessListener(unused -> {
+                    callback.onCallback();
+                    scheduleNotification(reminder, context);
+                })
+                .addOnFailureListener(e -> Log.e("SaveReminder", "Error saving reminder", e));
+    }
+
+    private void scheduleNotification(Reminder reminder, Context context) {
+        Intent intent = new Intent(context, ReminderReceiver.class);
+        intent.putExtra("title", reminder.getTitle());
+        intent.putExtra("message", reminder.getTask());
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                context,
+                reminder.getId().hashCode(),
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+        );
+
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (alarmManager.canScheduleExactAlarms()) {
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, reminder.getTimeInMillis(), pendingIntent);
+            } else {
+                Log.e("DatabaseManager", "Cannot schedule exact alarms");
+            }
+        } else {
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, reminder.getTimeInMillis(), pendingIntent);
+        }
+    }
+
+    public void getRemindersForDate(String userId, long dateInMillis, FetchDataCallback callback) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(dateInMillis);
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+
+        fStore.collection("reminders")
+                .whereEqualTo("userId", userId)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    List<Map<String, Object>> data = new ArrayList<>();
+                    for (DocumentSnapshot document : queryDocumentSnapshots) {
+                        Map<String, Object> reminderData = document.getData();
+                        boolean isRepeat = (boolean) reminderData.get("repeat");
+                        if (isRepeat) {
+                            List<String> repeatDays = (List<String>) reminderData.get("repeatDays");
+                            if (repeatDays != null && repeatDays.contains(getDayName(dayOfWeek))) {
+                                data.add(reminderData);
+                            }
+                        } else {
+                            long reminderTimeInMillis = (long) reminderData.get("timeInMillis");
+                            Calendar reminderCalendar = Calendar.getInstance();
+                            reminderCalendar.setTimeInMillis(reminderTimeInMillis);
+                            if (isSameDay(calendar, reminderCalendar)) {
+                                data.add(reminderData);
+                            }
+                        }
+                    }
+                    callback.onFetchComplete(data);
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("DatabaseManager", "Error getting reminders", e);
+                });
+    }
+
+    private boolean isSameDay(Calendar cal1, Calendar cal2) {
+        return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
+                cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR);
+    }
+
+    private String getDayName(int dayOfWeek) {
+        return switch (dayOfWeek) {
+            case Calendar.MONDAY -> "Monday";
+            case Calendar.TUESDAY -> "Tuesday";
+            case Calendar.WEDNESDAY -> "Wednesday";
+            case Calendar.THURSDAY -> "Thursday";
+            case Calendar.FRIDAY -> "Friday";
+            case Calendar.SATURDAY -> "Saturday";
+            case Calendar.SUNDAY -> "Sunday";
+            default -> "";
+        };
     }
 }

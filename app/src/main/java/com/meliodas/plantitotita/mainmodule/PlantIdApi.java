@@ -3,12 +3,9 @@ package com.meliodas.plantitotita.mainmodule;
 import android.os.Build;
 import android.util.Log;
 import androidx.annotation.RequiresApi;
-import com.google.firebase.auth.FirebaseAuth;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONArray;
-
-import java.io.Console;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ExecutionException;

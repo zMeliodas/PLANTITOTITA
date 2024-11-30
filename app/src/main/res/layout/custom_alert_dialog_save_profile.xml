@@ -9,7 +9,7 @@
             android:layout_width="300dp"
             android:layout_height="160dp"
             android:id="@+id/layoutDialog"
-            android:background="@drawable/custom_dialog_layout"
+            android:background="@drawable/custom_dialog_layout_1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -28,7 +28,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:text="Are you sure you want to save the changes made to your profile?"
                 android:fontFamily="@font/mada_black"
-                android:textSize="18sp" android:textColor="@color/PLANTITOblack">
+                android:textSize="18sp" android:textColor="@color/PLANTITOOffWhite">
         </TextView>
 
         <Button
@@ -37,7 +37,7 @@
                 android:id="@+id/dialogContinueButton"
                 android:text="Yes"
                 android:textSize="18sp"
-                android:textColor="@color/PLANTITOgreen"
+                android:textColor="@color/PLANTITOStrongYellow"
                 android:fontFamily="@font/mada_black"
                 android:layout_marginStart="230dp"
                 android:layout_marginTop="-10dp"
@@ -53,7 +53,7 @@
                 android:id="@+id/dialogContinueButton1"
                 android:text="No"
                 android:textSize="18sp"
-                android:textColor="@color/PLANTITOgreen"
+                android:textColor="@color/PLANTITOStrongYellow"
                 android:fontFamily="@font/mada_black"
                 android:layout_marginStart="130dp"
                 android:layout_marginTop="-10dp"

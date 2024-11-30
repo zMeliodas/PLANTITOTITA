@@ -5,7 +5,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/PLANTITOyellow"
+        android:background="@color/PLANTITOOffWhite"
         tools:context=".fragments.PlantHealthAssessmentGalleryFragment">
 
     <TextView
@@ -13,7 +13,7 @@
             android:layout_height="wrap_content"
             android:text="Plant Health Assessment"
             android:textAlignment="center" android:fontFamily="@font/mada_black"
-            android:textColor="@color/PLANTITOgreen" android:textSize="32sp"
+            android:textColor="@color/PLANTITODarkGreen" android:textSize="32sp"
             android:id="@+id/plantGalleryTitle"
             android:contextClickable="false"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
@@ -39,9 +39,9 @@
                 android:inputType="textCapSentences"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/custom_search_shape_edit_txt"
-                android:textColorHint="#86CF60"
+                android:textColorHint="@color/PLANTITODarkGreen"
                 android:hint="  Search for Plants by Name or Sci. Name"
-                android:layout_marginTop="7dp"
+                android:layout_marginTop="8dp"
                 android:drawableStart="@drawable/search_svgrepo_com"
                 android:textSize="16sp" android:textColor="@color/black" android:fontFamily="@font/mada_medium"
                 android:paddingStart="12dp" android:paddingEnd="15dp"
@@ -80,7 +80,7 @@
                 android:textAlignment="center"
                 android:fontFamily="@font/mada_medium"
                 android:textSize="18sp"
-                android:textColor="@color/PLANTITOyellow"
+                android:textColor="@color/PLANTITOOffWhite"
                 app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -116,7 +116,7 @@
                 android:textAlignment="center"
                 android:fontFamily="@font/mada_medium"
                 android:textSize="18sp"
-                android:textColor="@color/PLANTITOyellow"
+                android:textColor="@color/PLANTITOOffWhite"
                 app:layout_constraintEnd_toEndOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -38,7 +38,7 @@
                 android:text="Exploring Plant Information"
                 android:textAlignment="center"
                 android:fontFamily="@font/mada_medium"
-                android:textSize="12sp" android:textColor="@color/PLANTITOyellow"
+                android:textSize="12sp" android:textColor="@color/PLANTITOOffWhite"
                 app:layout_constraintEnd_toEndOf="parent">
         </TextView>
     </androidx.constraintlayout.widget.ConstraintLayout>

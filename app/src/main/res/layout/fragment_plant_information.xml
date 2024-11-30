@@ -50,7 +50,7 @@
                 android:fontFamily="@font/mada_medium"
                 android:text="Plant Name"
                 android:textAlignment="center"
-                android:textColor="@color/PLANTITOyellow"
+                android:textColor="@color/PLANTITOOffWhite"
                 android:textSize="42sp"
                 android:clickable="false"
                 android:longClickable="false"
@@ -69,7 +69,7 @@
                 android:fontFamily="@font/mada"
                 android:text="Scientific Name"
                 android:textAlignment="center"
-                android:textColor="@color/PLANTITOyellow"
+                android:textColor="@color/PLANTITOStrongYellow"
                 android:textSize="20sp"
                 android:clickable="false"
                 android:longClickable="false"
@@ -112,7 +112,7 @@
 
                     <androidx.cardview.widget.CardView
                             android:id="@+id/cardView1"
-                            android:backgroundTint="@color/PLANTITOyellow"
+                            android:backgroundTint="@color/PLANTITODarkGreen"
                             android:animateLayoutChanges="true"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -135,12 +135,12 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/mada_black"
                                     android:paddingStart="15dp"
-                                    android:paddingTop="10dp"
+                                    android:paddingTop="5dp"
                                     android:paddingEnd="10dp"
-                                    android:paddingBottom="10dp"
+                                    android:paddingBottom="5dp"
                                     android:text="Description"
-                                    android:textColor="@color/PLANTITOblack"
-                                    android:textSize="24sp"/>
+                                    android:textColor="@color/PLANTITOOffWhite"
+                                    android:textSize="36sp"/>
 
                             <TextView
                                     android:id="@+id/plantInformationDescription"
@@ -149,12 +149,11 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/mada"
                                     android:paddingStart="15dp"
-                                    android:paddingTop="10dp"
                                     android:paddingEnd="10dp"
                                     android:paddingBottom="10dp"
                                     android:text="Plant description goes here"
-                                    android:textColor="@color/PLANTITOblack"
-                                    android:textSize="18sp"/>
+                                    android:textColor="@color/PLANTITOOffWhite"
+                                    android:textSize="24sp"/>
                         </LinearLayout>
 
                         <ImageView
@@ -170,7 +169,7 @@
 
                     <androidx.cardview.widget.CardView
                             android:id="@+id/cardView2"
-                            android:backgroundTint="@color/PLANTITOyellow"
+                            android:backgroundTint="@color/PLANTITODarkGreen"
                             android:animateLayoutChanges="true"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -193,12 +192,12 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/mada_black"
                                     android:paddingStart="15dp"
-                                    android:paddingTop="10dp"
+                                    android:paddingTop="5dp"
                                     android:paddingEnd="10dp"
-                                    android:paddingBottom="10dp"
+                                    android:paddingBottom="5dp"
                                     android:text="Plant Taxonomy"
-                                    android:textColor="@color/PLANTITOblack"
-                                    android:textSize="24sp"/>
+                                    android:textColor="@color/PLANTITOOffWhite"
+                                    android:textSize="36sp"/>
 
                             <TextView
                                     android:id="@+id/plantTaxonomy"
@@ -207,12 +206,11 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/mada"
                                     android:paddingStart="15dp"
-                                    android:paddingTop="10dp"
                                     android:paddingEnd="10dp"
                                     android:paddingBottom="10dp"
                                     android:text="Plant Taxonomy"
-                                    android:textColor="@color/PLANTITOblack"
-                                    android:textSize="18sp"/>
+                                    android:textColor="@color/PLANTITOOffWhite"
+                                    android:textSize="24sp"/>
                         </LinearLayout>
 
                         <ImageView
@@ -227,7 +225,7 @@
 
                     <androidx.cardview.widget.CardView
                             android:id="@+id/cardView3"
-                            android:backgroundTint="@color/PLANTITOyellow"
+                            android:backgroundTint="@color/PLANTITODarkGreen"
                             android:animateLayoutChanges="true"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -250,12 +248,12 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/mada_black"
                                     android:paddingStart="15dp"
-                                    android:paddingTop="10dp"
+                                    android:paddingTop="5dp"
                                     android:paddingEnd="10dp"
-                                    android:paddingBottom="10dp"
+                                    android:paddingBottom="5dp"
                                     android:text="Common Uses"
-                                    android:textColor="@color/PLANTITOblack"
-                                    android:textSize="24sp"/>
+                                    android:textColor="@color/PLANTITOOffWhite"
+                                    android:textSize="36sp"/>
 
                             <TextView
                                     android:id="@+id/commonUses"
@@ -264,12 +262,11 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/mada"
                                     android:paddingStart="15dp"
-                                    android:paddingTop="10dp"
                                     android:paddingEnd="10dp"
                                     android:paddingBottom="10dp"
                                     android:text="Plant Taxonomy"
-                                    android:textColor="@color/PLANTITOblack"
-                                    android:textSize="18sp"/>
+                                    android:textColor="@color/PLANTITOOffWhite"
+                                    android:textSize="24sp"/>
                         </LinearLayout>
 
                         <ImageView
@@ -284,7 +281,7 @@
 
                     <androidx.cardview.widget.CardView
                             android:id="@+id/cardView4"
-                            android:backgroundTint="@color/PLANTITOyellow"
+                            android:backgroundTint="@color/PLANTITODarkGreen"
                             android:animateLayoutChanges="true"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -293,7 +290,7 @@
                             app:cardElevation="10dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/cardView3">
+                            app:layout_constraintTop_toBottomOf="@id/cardView3" android:layout_marginTop="16dp">
 
                         <LinearLayout
                                 android:id="@+id/layout4"
@@ -308,12 +305,12 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/mada_black"
                                     android:paddingStart="15dp"
-                                    android:paddingTop="10dp"
+                                    android:paddingTop="5dp"
                                     android:paddingEnd="10dp"
-                                    android:paddingBottom="10dp"
+                                    android:paddingBottom="5dp"
                                     android:text="Cultural Significance"
-                                    android:textColor="@color/PLANTITOblack"
-                                    android:textSize="24sp"/>
+                                    android:textColor="@color/PLANTITOOffWhite"
+                                    android:textSize="36sp"/>
 
                             <TextView
                                     android:id="@+id/culturalSignificance"
@@ -322,12 +319,11 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/mada"
                                     android:paddingStart="15dp"
-                                    android:paddingTop="10dp"
                                     android:paddingEnd="10dp"
                                     android:paddingBottom="10dp"
                                     android:text="Cultural Significance"
-                                    android:textColor="@color/PLANTITOblack"
-                                    android:textSize="18sp"/>
+                                    android:textColor="@color/PLANTITOOffWhite"
+                                    android:textSize="24sp"/>
                         </LinearLayout>
 
                         <ImageView
@@ -339,10 +335,9 @@
                                 android:src="@drawable/dropdown_arrow_svgrepo_com">
                         </ImageView>
                     </androidx.cardview.widget.CardView>
-
                     <androidx.cardview.widget.CardView
                             android:id="@+id/cardView5"
-                            android:backgroundTint="@color/PLANTITOyellow"
+                            android:backgroundTint="@color/PLANTITODarkGreen"
                             android:animateLayoutChanges="true"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -365,12 +360,12 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/mada_black"
                                     android:paddingStart="15dp"
-                                    android:paddingTop="10dp"
+                                    android:paddingTop="5dp"
                                     android:paddingEnd="10dp"
-                                    android:paddingBottom="10dp"
+                                    android:paddingBottom="5dp"
                                     android:text="Toxicity"
-                                    android:textColor="@color/PLANTITOblack"
-                                    android:textSize="24sp"/>
+                                    android:textColor="@color/PLANTITOOffWhite"
+                                    android:textSize="36sp"/>
 
                             <TextView
                                     android:id="@+id/toxicity"
@@ -379,12 +374,11 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/mada"
                                     android:paddingStart="15dp"
-                                    android:paddingTop="10dp"
                                     android:paddingEnd="10dp"
                                     android:paddingBottom="10dp"
                                     android:text="Toxicity"
-                                    android:textColor="@color/PLANTITOblack"
-                                    android:textSize="18sp"/>
+                                    android:textColor="@color/PLANTITOOffWhite"
+                                    android:textSize="24sp"/>
                         </LinearLayout>
 
                         <ImageView
@@ -399,7 +393,7 @@
 
                     <androidx.cardview.widget.CardView
                             android:id="@+id/cardView6"
-                            android:backgroundTint="@color/PLANTITOyellow"
+                            android:backgroundTint="@color/PLANTITODarkGreen"
                             android:animateLayoutChanges="true"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -416,19 +410,19 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical">
+
                             <TextView
                                     android:id="@+id/propagationMethodsTitle"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/mada_black"
                                     android:paddingStart="15dp"
-                                    android:paddingTop="10dp"
+                                    android:paddingTop="5dp"
                                     android:paddingEnd="10dp"
-                                    android:paddingBottom="10dp"
+                                    android:paddingBottom="5dp"
                                     android:text="Propagation Methods"
-                                    android:textColor="@color/PLANTITOblack"
-                                    android:textSize="24sp"/>
-
+                                    android:textColor="@color/PLANTITOOffWhite"
+                                    android:textSize="36sp"/>
                             <TextView
                                     android:id="@+id/propagationMethods"
                                     android:visibility="gone"
@@ -436,12 +430,11 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/mada"
                                     android:paddingStart="15dp"
-                                    android:paddingTop="10dp"
                                     android:paddingEnd="10dp"
                                     android:paddingBottom="10dp"
                                     android:text="Propagation Methods"
-                                    android:textColor="@color/PLANTITOblack"
-                                    android:textSize="18sp"/>
+                                    android:textColor="@color/PLANTITOOffWhite"
+                                    android:textSize="24sp"/>
                         </LinearLayout>
 
                         <ImageView
@@ -456,7 +449,7 @@
 
                     <androidx.cardview.widget.CardView
                             android:id="@+id/cardView7"
-                            android:backgroundTint="@color/PLANTITOyellow"
+                            android:backgroundTint="@color/PLANTITODarkGreen"
                             android:animateLayoutChanges="true"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -479,12 +472,12 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/mada_black"
                                     android:paddingStart="15dp"
-                                    android:paddingTop="10dp"
+                                    android:paddingTop="5dp"
                                     android:paddingEnd="10dp"
-                                    android:paddingBottom="10dp"
+                                    android:paddingBottom="5dp"
                                     android:text="Edible Parts"
-                                    android:textColor="@color/PLANTITOblack"
-                                    android:textSize="24sp"/>
+                                    android:textColor="@color/PLANTITOOffWhite"
+                                    android:textSize="36sp"/>
 
                             <TextView
                                     android:id="@+id/edibleParts"
@@ -493,12 +486,11 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/mada"
                                     android:paddingStart="15dp"
-                                    android:paddingTop="10dp"
                                     android:paddingEnd="10dp"
                                     android:paddingBottom="10dp"
                                     android:text="Edible Parts"
-                                    android:textColor="@color/PLANTITOblack"
-                                    android:textSize="18sp"/>
+                                    android:textColor="@color/PLANTITOOffWhite"
+                                    android:textSize="24sp"/>
                         </LinearLayout>
 
                         <ImageView
@@ -513,7 +505,7 @@
 
                     <androidx.cardview.widget.CardView
                             android:id="@+id/cardView8"
-                            android:backgroundTint="@color/PLANTITOyellow"
+                            android:backgroundTint="@color/PLANTITODarkGreen"
                             android:animateLayoutChanges="true"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -536,12 +528,12 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/mada_black"
                                     android:paddingStart="15dp"
-                                    android:paddingTop="10dp"
+                                    android:paddingTop="5dp"
                                     android:paddingEnd="10dp"
-                                    android:paddingBottom="10dp"
+                                    android:paddingBottom="5dp"
                                     android:text="Best Light Condition"
-                                    android:textColor="@color/PLANTITOblack"
-                                    android:textSize="24sp"/>
+                                    android:textColor="@color/PLANTITOOffWhite"
+                                    android:textSize="36sp"/>
 
                             <TextView
                                     android:id="@+id/bestLightCondition"
@@ -550,12 +542,11 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/mada"
                                     android:paddingStart="15dp"
-                                    android:paddingTop="10dp"
                                     android:paddingEnd="10dp"
                                     android:paddingBottom="10dp"
                                     android:text="Best Light Condition"
-                                    android:textColor="@color/PLANTITOblack"
-                                    android:textSize="18sp"/>
+                                    android:textColor="@color/PLANTITOOffWhite"
+                                    android:textSize="24sp"/>
                         </LinearLayout>
 
                         <ImageView
@@ -570,7 +561,7 @@
 
                     <androidx.cardview.widget.CardView
                             android:id="@+id/cardView9"
-                            android:backgroundTint="@color/PLANTITOyellow"
+                            android:backgroundTint="@color/PLANTITODarkGreen"
                             android:animateLayoutChanges="true"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -593,12 +584,12 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/mada_black"
                                     android:paddingStart="15dp"
-                                    android:paddingTop="10dp"
+                                    android:paddingTop="5dp"
                                     android:paddingEnd="10dp"
-                                    android:paddingBottom="10dp"
+                                    android:paddingBottom="5dp"
                                     android:text="Best Soil Type"
-                                    android:textColor="@color/PLANTITOblack"
-                                    android:textSize="24sp"/>
+                                    android:textColor="@color/PLANTITOOffWhite"
+                                    android:textSize="36sp"/>
 
                             <TextView
                                     android:id="@+id/bestSoilType"
@@ -607,12 +598,11 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/mada"
                                     android:paddingStart="15dp"
-                                    android:paddingTop="10dp"
                                     android:paddingEnd="10dp"
                                     android:paddingBottom="10dp"
                                     android:text="Best Soil Type"
-                                    android:textColor="@color/PLANTITOblack"
-                                    android:textSize="18sp"/>
+                                    android:textColor="@color/PLANTITOOffWhite"
+                                    android:textSize="24sp"/>
                         </LinearLayout>
 
                         <ImageView
@@ -627,7 +617,7 @@
 
                     <androidx.cardview.widget.CardView
                             android:id="@+id/cardView10"
-                            android:backgroundTint="@color/PLANTITOyellow"
+                            android:backgroundTint="@color/PLANTITODarkGreen"
                             android:animateLayoutChanges="true"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -651,12 +641,12 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/mada_black"
                                     android:paddingStart="15dp"
-                                    android:paddingTop="10dp"
+                                    android:paddingTop="5dp"
                                     android:paddingEnd="10dp"
-                                    android:paddingBottom="10dp"
+                                    android:paddingBottom="5dp"
                                     android:text="Best Watering"
-                                    android:textColor="@color/PLANTITOblack"
-                                    android:textSize="24sp"/>
+                                    android:textColor="@color/PLANTITOOffWhite"
+                                    android:textSize="36sp"/>
 
                             <TextView
                                     android:id="@+id/bestWatering"
@@ -665,12 +655,11 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/mada"
                                     android:paddingStart="15dp"
-                                    android:paddingTop="10dp"
                                     android:paddingEnd="10dp"
                                     android:paddingBottom="10dp"
                                     android:text="Best Watering"
-                                    android:textColor="@color/PLANTITOblack"
-                                    android:textSize="18sp"/>
+                                    android:textColor="@color/PLANTITOOffWhite"
+                                    android:textSize="24sp"/>
                         </LinearLayout>
 
                         <ImageView

@@ -7,10 +7,13 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="PLANTITOyellow">#FFF67E</color>
+    <color name="PLANTITOOffWhite">#E9E8E4</color>
     <color name="PLANTITOlightergreen">#BFEA7C</color>
     <color name="PLANTITOlightgreen">#9BCF53</color>
     <color name="PLANTITOgreen">#36B54C</color>
     <color name="PLANTITOdarkgreen">#2B913D</color>
-    <color name="PLANTITOblack">#1d1d1f</color>
+    <color name="PLANTITODarkGreen">#263D29</color>
+    <color name="PLANTITOStrongYellow">#FFDE4D</color>
+    <color name="colorPrimary"/>
+    <color name="PLANTITOGrey">#79747e</color>
 </resources>

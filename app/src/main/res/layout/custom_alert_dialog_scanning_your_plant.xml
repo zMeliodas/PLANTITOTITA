@@ -9,7 +9,7 @@
             android:layout_width="300dp"
             android:layout_height="150dp"
             android:id="@+id/alertDialogLayout"
-            android:background="@drawable/custom_dialog_layout"
+            android:background="@drawable/custom_dialog_layout_1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -27,7 +27,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:text="Scanning Plant"
                 android:fontFamily="@font/mada_black"
-                android:textSize="18sp" android:textColor="@color/PLANTITOblack">
+                android:textSize="18sp" android:textColor="@color/PLANTITOOffWhite">
         </TextView>
 
         <ProgressBar
@@ -39,7 +39,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/dialogMessageTitle"
                 app:layout_constraintStart_toStartOf="parent"
                 android:indeterminate="true"
-                android:indeterminateTint="@color/PLANTITOgreen">
+                android:indeterminateTint="@color/PLANTITOStrongYellow">
         </ProgressBar>
 
         <TextView
@@ -53,7 +53,7 @@
                 app:layout_constraintTop_toBottomOf="@id/dialogMessageTitle"
                 android:text="Please wait..."
                 android:fontFamily="@font/mada_black"
-                android:textSize="20sp" android:textColor="@color/PLANTITOblack">
+                android:textSize="20sp" android:textColor="@color/PLANTITOOffWhite">
         </TextView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

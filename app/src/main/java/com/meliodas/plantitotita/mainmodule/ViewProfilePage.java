@@ -27,10 +27,9 @@ public class ViewProfilePage extends AppCompatActivity {
     FirebaseFirestore fStore;
     private static String imageViewPhoto;
     private String firstName;
-    private String lastName;
     private String eMail;
     private String mobileNum;
-    private TextView viewProfileFirstName, viewProfileLastName, viewProfileEmail, viewProfileMobileNum;
+    private TextView viewProfileFirstName, viewProfileEmail, viewProfileMobileNum;
     private ImageView imageView;
 
     @Override
@@ -49,7 +48,6 @@ public class ViewProfilePage extends AppCompatActivity {
     public void insertInitialValue(){
         imageView = findViewById(R.id.viewProfileImageView);
         viewProfileFirstName = findViewById(R.id.viewProfileFirstName);
-        viewProfileLastName = findViewById(R.id.viewProfileLastName);
         viewProfileEmail = findViewById(R.id.viewProfileEmail);
         viewProfileMobileNum = findViewById(R.id.viewProfileContactNumber);
 
@@ -60,12 +58,10 @@ public class ViewProfilePage extends AppCompatActivity {
             if (value != null) {
                 imageViewPhoto = value.getString("profile_picture");
                 firstName = value.getString("user_name");
-                lastName = value.getString("last_name");
                 eMail = value.getString("email_address");
                 mobileNum = value.getString("formatted_mobile_number");
 
                 viewProfileFirstName.setText(firstName);
-                viewProfileLastName.setText(lastName);
                 viewProfileEmail.setText(maskEmail(eMail));
                 viewProfileMobileNum.setText(mobileNum);
 

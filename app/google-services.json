@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "268915967310",
+    "firebase_url": "https://plantitotita-23161-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "plantitotita-23161",
     "storage_bucket": "plantitotita-23161.appspot.com"
   },
@@ -12,7 +13,28 @@
           "package_name": "com.meliodas.plantitotita"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "268915967310-gu2velqrt7sd61cv5j9931oenj901pm4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.meliodas.plantitotita",
+            "certificate_hash": "f5772da1d83ca8489ea4b80cebc481c63a367fe6"
+          }
+        },
+        {
+          "client_id": "268915967310-ptkoldnt8v785gjm433eq8dup70dendr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.meliodas.plantitotita",
+            "certificate_hash": "6c64da02c2b0bd934ea324c5867973a0777f24f8"
+          }
+        },
+        {
+          "client_id": "268915967310-l8017ov5ou4jg3tokel733k8bfmd7emn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyD8ifSRBx3ks2W7hRXOoOuIlNZwnON5qwU"
@@ -20,7 +42,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "268915967310-l8017ov5ou4jg3tokel733k8bfmd7emn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

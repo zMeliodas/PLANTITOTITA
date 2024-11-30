@@ -5,7 +5,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:background="@color/PLANTITOgreen"
+        android:background="@color/PLANTITOOffWhite"
         tools:context=".mainmodule.ViewProfilePage">
 
     <Button
@@ -44,7 +44,7 @@
             app:layout_constraintTop_toBottomOf="@id/viewProfileImageView"
             android:id="@+id/btnEditProfile" android:background="@drawable/custom_button_yellow"
             android:fontFamily="@font/mada_black" android:textAllCaps="false" android:textSize="16sp"
-            android:textColor="@color/PLANTITOblack"/>
+            android:textColor="@color/PLANTITODarkGreen"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/yellowbg"
@@ -65,10 +65,10 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="30dp"
-                android:textColor="@color/PLANTITOblack"
+                android:textColor="@color/PLANTITOOffWhite"
                 android:fontFamily="@font/mada_black"
                 android:textSize="24sp"
-                android:text="First Name">
+                android:text="Name">
         </TextView>
 
         <TextView
@@ -79,7 +79,7 @@
                 app:layout_constraintTop_toBottomOf="@id/viewProfileFirstNameLabel"
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="2dp"
-                android:textColor="@color/PLANTITOgreen"
+                android:textColor="@color/PLANTITOStrongYellow"
                 android:fontFamily="@font/mada_medium"
                 android:textSize="20sp"
                 android:text="Cedrick">
@@ -90,7 +90,7 @@
               android:id="@+id/viewProfileDivider"
               app:layout_constraintStart_toStartOf="parent"
               app:layout_constraintEnd_toEndOf="parent"
-              android:background="@color/PLANTITOblack"
+              android:background="@color/PLANTITOOffWhite"
               android:layout_marginStart="20dp"
               android:layout_marginEnd="20dp"
               android:layout_marginTop="12dp"
@@ -98,57 +98,17 @@
         </View>
 
         <TextView
-                android:id="@+id/viewProfileLastNameLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/viewProfileDivider"
-                android:layout_marginStart="25dp"
-                android:layout_marginTop="30dp"
-                android:textColor="@color/PLANTITOblack"
-                android:fontFamily="@font/mada_black"
-                android:textSize="24sp"
-                android:text="Last Name">
-        </TextView>
-
-        <TextView
-                android:id="@+id/viewProfileLastName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/viewProfileLastNameLabel"
-                android:layout_marginStart="25dp"
-                android:layout_marginTop="2dp"
-                android:textColor="@color/PLANTITOgreen"
-                android:fontFamily="@font/mada_medium"
-                android:textSize="20sp"
-                android:text="Cabansag">
-        </TextView>
-
-        <View android:layout_width="340dp"
-              android:layout_height="2dp"
-              android:id="@+id/viewProfileDivider1"
-              app:layout_constraintStart_toStartOf="parent"
-              app:layout_constraintEnd_toEndOf="parent"
-              android:background="@color/PLANTITOblack"
-              android:layout_marginStart="20dp"
-              android:layout_marginEnd="20dp"
-              android:layout_marginTop="12dp"
-              app:layout_constraintTop_toBottomOf="@+id/viewProfileLastName">
-        </View>
-
-        <TextView
                 android:id="@+id/viewProfileEmailLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/viewProfileDivider1"
-                android:layout_marginStart="25dp"
+                app:layout_constraintTop_toBottomOf="@id/viewProfileDivider"
                 android:layout_marginTop="30dp"
-                android:textColor="@color/PLANTITOblack"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="25dp"
+                android:textColor="@color/PLANTITOOffWhite"
                 android:fontFamily="@font/mada_black"
                 android:textSize="24sp"
-                android:text="E-Mail Address">
+                android:text="E-Mail Address" tools:layout_editor_absoluteY="235dp">
         </TextView>
 
         <TextView
@@ -159,7 +119,7 @@
                 app:layout_constraintTop_toBottomOf="@id/viewProfileEmailLabel"
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="2dp"
-                android:textColor="@color/PLANTITOgreen"
+                android:textColor="@color/PLANTITOStrongYellow"
                 android:fontFamily="@font/mada_medium"
                 android:textSize="20sp"
                 android:text="cedrickqwez23@gmail.com">
@@ -170,7 +130,7 @@
               android:id="@+id/viewProfileDivider2"
               app:layout_constraintStart_toStartOf="parent"
               app:layout_constraintEnd_toEndOf="parent"
-              android:background="@color/PLANTITOblack"
+              android:background="@color/PLANTITOOffWhite"
               android:layout_marginStart="20dp"
               android:layout_marginEnd="20dp"
               android:layout_marginTop="12dp"
@@ -185,7 +145,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/viewProfileDivider2"
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="30dp"
-                android:textColor="@color/PLANTITOblack"
+                android:textColor="@color/PLANTITOOffWhite"
                 android:fontFamily="@font/mada_black"
                 android:textSize="24sp"
                 android:text="Contact Number">
@@ -199,7 +159,7 @@
                 app:layout_constraintTop_toBottomOf="@id/viewProfileContactNumberLabel"
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="2dp"
-                android:textColor="@color/PLANTITOgreen"
+                android:textColor="@color/PLANTITOStrongYellow"
                 android:fontFamily="@font/mada_medium"
                 android:textSize="20sp"
                 android:text="09364539632">
@@ -210,7 +170,7 @@
               android:id="@+id/viewProfileDivider3"
               app:layout_constraintStart_toStartOf="parent"
               app:layout_constraintEnd_toEndOf="parent"
-              android:background="@color/PLANTITOblack"
+              android:background="@color/PLANTITOOffWhite"
               android:layout_marginStart="20dp"
               android:layout_marginEnd="20dp"
               android:layout_marginTop="12dp"
